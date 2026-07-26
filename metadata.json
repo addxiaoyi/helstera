@@ -1,0 +1,6 @@
+{
+  "name": "Helstera",
+  "description": "Compliant AI Computing Power for Global Developers. Access DeepSeek, Qwen, GLM and more through a fully compliant cross-border API gateway.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

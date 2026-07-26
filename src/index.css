@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #F8F7F4;
+  --ink: #1C1C1C;
+  --accent: #C73E28;
+  --ink-faint: rgba(28, 28, 28, 0.08);
+  --ink-muted: rgba(28, 28, 28, 0.55);
+}
+
+@layer base {
+  body {
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    selection-background-color: var(--accent);
+  }
+
+  ::selection {
+    background: #C73E28;
+    color: #ffffff;
+  }
+}
+
+/* Custom Editorial Typography Classes */
+.font-serif-title {
+  font-family: 'Cormorant Garamond', 'Noto Serif SC', 'Noto Serif JP', 'Songti SC', 'Source Han Serif SC', Georgia, serif;
+}
+
+.font-mono-tag {
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.font-sans-body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Editorial Buttons & Borders */
+.btn-editorial-primary {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.7rem 1.6rem;
+  border-radius: 9999px;
+  background-color: #1C1C1C;
+  color: #F8F7F4;
+  border: 1px solid #1C1C1C;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-editorial-primary:hover {
+  background-color: #C73E28;
+  border-color: #C73E28;
+  color: #ffffff;
+}
+
+.btn-editorial-outline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.7rem 1.6rem;
+  border-radius: 9999px;
+  background-color: transparent;
+  color: #1C1C1C;
+  border: 1px solid rgba(28, 28, 28, 0.3);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-editorial-outline:hover {
+  background-color: #1C1C1C;
+  color: #F8F7F4;
+  border-color: #1C1C1C;
+}
+
+/* Paper Card & Grid Styling */
+.editorial-card {
+  background-color: #ffffff;
+  border: 1px solid rgba(28, 28, 28, 0.08);
+  box-shadow: 0 4px 20px -8px rgba(28, 28, 28, 0.05);
+  transition: all 0.25s ease;
+}
+
+.editorial-card:hover {
+  border-color: rgba(28, 28, 28, 0.25);
+  box-shadow: 0 8px 30px -10px rgba(28, 28, 28, 0.08);
+}
+
+.editorial-divider {
+  border-color: rgba(28, 28, 28, 0.1);
+}
+
+/* Custom crisp scrollbar for warm paper theme */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F8F7F4;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4d0c8;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C73E28;
+}
+
