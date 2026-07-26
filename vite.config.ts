@@ -16,11 +16,17 @@ export default defineConfig(() => {
         output: {
           manualChunks(id) {
             if (id.includes('node_modules')) {
-              if (id.includes('react') || id.includes('react-dom')) {
+              // Keep React and motion in the SAME chunk so React is initialized
+              // before motion's module-level `React.createContext(...)` runs.
+              // Splitting them caused "Cannot read properties of undefined
+              // (reading 'createContext')" on the production build.
+              if (
+                id.includes('react') ||
+                id.includes('react-dom') ||
+                id.includes('motion') ||
+                id.includes('framer-motion')
+              ) {
                 return 'vendor-react';
-              }
-              if (id.includes('motion')) {
-                return 'vendor-motion';
               }
               if (id.includes('lucide-react')) {
                 return 'vendor-icons';
