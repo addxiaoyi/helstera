@@ -16,6 +16,7 @@ export const SITE_CONFIG = {
     name: 'Helstera',
     title: 'Helstera | Cross-Border AI Compute Gateway',
     description: 'A governed, OpenAI-compatible gateway for current Chinese frontier models, with account-level routing, clear data controls, and enterprise support.',
+    applicationUrl: 'https://ai.0st.top',
     apiBaseUrl: 'https://api.helstera.com/v1',
     contactEmail: 'enterprise@helstera.com',
     supportPhone: '+1 (800) 582-8920',

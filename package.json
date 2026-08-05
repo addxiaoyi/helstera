@@ -10,7 +10,8 @@
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
     "test:content": "tsx scripts/validate-content.ts",
-    "test:i18n": "tsx scripts/validate-translations.ts"
+    "test:i18n": "tsx scripts/validate-translations.ts",
+    "test:navigation": "tsx scripts/validate-navigation.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

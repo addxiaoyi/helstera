@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, useScroll, useSpring } from 'motion/react';
 import { PageView } from './types';
+import { SITE_CONFIG } from './config/siteConfig';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { LanguageProvider } from './i18n/LanguageContext';
@@ -23,6 +24,9 @@ export default function App() {
   const [isContractModalOpen, setIsContractModalOpen] = useState(false);
   const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
   const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
+  const navigateToAiSite = () => {
+    window.location.assign(SITE_CONFIG.brand.applicationUrl);
+  };
 
   // Apple-style Spring Damped Scroll Progress Bar
   const { scrollYProgress } = useScroll();
@@ -51,8 +55,8 @@ export default function App() {
             setCurrentView(view);
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
-          openContractModal={() => setIsContractModalOpen(true)}
-          openApiKeyModal={() => setIsApiKeyModalOpen(true)}
+          openContractModal={navigateToAiSite}
+          openApiKeyModal={navigateToAiSite}
           currency={currency}
           setCurrency={setCurrency}
         />
@@ -65,8 +69,8 @@ export default function App() {
                 setCurrentView(view);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              openContractModal={() => setIsContractModalOpen(true)}
-              openApiKeyModal={() => setIsApiKeyModalOpen(true)}
+              openContractModal={navigateToAiSite}
+              openApiKeyModal={navigateToAiSite}
               currency={currency}
             />
           )}
@@ -77,8 +81,8 @@ export default function App() {
                 setCurrentView(view);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              openContractModal={() => setIsContractModalOpen(true)}
-              openApiKeyModal={() => setIsApiKeyModalOpen(true)}
+              openContractModal={navigateToAiSite}
+              openApiKeyModal={navigateToAiSite}
               currency={currency}
             />
           )}
@@ -89,13 +93,13 @@ export default function App() {
                 setCurrentView(view);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              openContractModal={() => setIsContractModalOpen(true)}
+              openContractModal={navigateToAiSite}
             />
           )}
 
           {currentView === 'docs' && (
             <DocsView
-              openApiKeyModal={() => setIsApiKeyModalOpen(true)}
+              openApiKeyModal={navigateToAiSite}
             />
           )}
 
@@ -105,7 +109,7 @@ export default function App() {
                 setCurrentView(view);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              openContractModal={() => setIsContractModalOpen(true)}
+              openContractModal={navigateToAiSite}
             />
           )}
 
@@ -115,13 +119,13 @@ export default function App() {
                 setCurrentView(view);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              openContractModal={() => setIsContractModalOpen(true)}
+              openContractModal={navigateToAiSite}
             />
           )}
 
           {currentView === 'contact' && (
             <ContactView
-              openContractModal={() => setIsContractModalOpen(true)}
+              openContractModal={navigateToAiSite}
             />
           )}
         </main>
@@ -133,8 +137,8 @@ export default function App() {
               setCurrentView(view);
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            openContractModal={() => setIsContractModalOpen(true)}
-            openApiKeyModal={() => setIsApiKeyModalOpen(true)}
+            openContractModal={navigateToAiSite}
+            openApiKeyModal={navigateToAiSite}
           />
         </div>
 
@@ -157,10 +161,7 @@ export default function App() {
         <TokenBuyModal
           isOpen={isBuyModalOpen}
           onClose={() => setIsBuyModalOpen(false)}
-          openApiKeyModal={() => {
-            setIsBuyModalOpen(false);
-            setIsApiKeyModalOpen(true);
-          }}
+          openApiKeyModal={navigateToAiSite}
         />
       </div>
     </LanguageProvider>
