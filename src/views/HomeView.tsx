@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PageView } from '../types';
 import { motion } from 'motion/react';
-import { SITE_CONFIG } from '../config/siteConfig';
+import { MODELS_DATA } from '../data/modelsData';
 import { useLanguage } from '../i18n/LanguageContext';
 import { InteractiveRouteVisualizer } from '../components/InteractiveRouteVisualizer';
 import { KeynoteScrollStory } from '../components/KeynoteScrollStory';
@@ -37,6 +37,11 @@ import {
   Play
 } from 'lucide-react';
 
+const MODEL_ROUTE_COUNT = MODELS_DATA.length;
+const MODEL_FAMILIES = [...new Set(MODELS_DATA.map((model) => model.provider))];
+const MODEL_FAMILY_COUNT = MODEL_FAMILIES.length;
+const MODEL_FAMILY_LABEL = MODEL_FAMILIES.join(', ');
+
 interface HomeViewProps {
   setCurrentView: (view: PageView) => void;
   openContractModal: () => void;
@@ -53,12 +58,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
   const [isPingModalOpen, setIsPingModalOpen] = useState(false);
   const { t } = useLanguage();
 
-  const scrollToCalculator = () => {
-    const el = document.getElementById('calculator-section');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
   // Framer Motion staggered variants for Hero section
   const heroContainerVariants = {
     hidden: { opacity: 0 },
@@ -104,7 +103,21 @@ export const HomeView: React.FC<HomeViewProps> = ({
                   type="words"
                   direction="left"
                   stagger={0.05}
-                  highlightWords={['Global', 'reach.', '全球触达。', '到達力。']}
+                  highlightWords={[
+                    'frontier',
+                    'governed',
+                    'route.',
+                    '前沿模型',
+                    '路由。',
+                    '先端モデル。',
+                    'ルート。',
+                    'Modelos',
+                    'ruta',
+                    'Aktuelle',
+                    'Route.',
+                    'Modèles',
+                    'route',
+                  ]}
                   highlightClass="italic font-normal text-[#C73E28]"
                   as="h1"
                   className="font-serif-title text-5xl sm:text-7xl lg:text-8xl font-semibold tracking-tight leading-[0.92] text-[#1C1C1C]"
@@ -123,21 +136,21 @@ export const HomeView: React.FC<HomeViewProps> = ({
               {/* Editorial Stat Items Row */}
               <motion.div variants={heroChildVariants} className="grid grid-cols-3 gap-4 py-4 border-t border-b border-[#1C1C1C]/10 my-4">
                 <div className="space-y-0.5">
-                  <span className="font-mono-tag text-[0.65rem] text-[#1C1C1C]/50 block">{t.hero.statCost}</span>
+                  <span className="font-mono-tag text-[0.65rem] text-[#1C1C1C]/50 block">{t.hero.statRoutes}</span>
                   <div className="font-mono-tag text-2xl font-semibold text-[#1C1C1C]">
-                    <NumberTicker value={80} suffix="%" />
+                    <NumberTicker value={MODEL_ROUTE_COUNT} suffix={` ${t.hero.routeUnit}`} />
                   </div>
                 </div>
                 <div className="space-y-0.5">
-                  <span className="font-mono-tag text-[0.65rem] text-[#1C1C1C]/50 block">{t.hero.statUptime}</span>
+                  <span className="font-mono-tag text-[0.65rem] text-[#1C1C1C]/50 block">{t.hero.statRateCard}</span>
                   <div className="font-mono-tag text-2xl font-semibold text-[#1C1C1C]">
-                    <NumberTicker value={99.9} decimals={1} suffix="%" />
+                    {t.hero.liveValue}
                   </div>
                 </div>
                 <div className="space-y-0.5">
-                  <span className="font-mono-tag text-[0.65rem] text-[#1C1C1C]/50 block">{t.hero.statLatency}</span>
+                  <span className="font-mono-tag text-[0.65rem] text-[#1C1C1C]/50 block">{t.hero.statTerms}</span>
                   <div className="font-mono-tag text-lg font-semibold text-[#1C1C1C] pt-0.5">
-                    DPA & SLA
+                    {t.hero.contractValue}
                   </div>
                 </div>
               </motion.div>
@@ -212,10 +225,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
             className="space-y-1 text-center lg:text-left lg:px-4"
           >
             <div className="text-3xl sm:text-4xl font-semibold text-[#1C1C1C] font-mono-tag tracking-tight">
-              <NumberTicker value={80} prefix="Up to " suffix="%" duration={1.8} />
+              <NumberTicker value={MODEL_ROUTE_COUNT} suffix={` ${t.hero.routeUnit}`} duration={1.2} />
             </div>
-            <div className="text-xs font-semibold text-[#1C1C1C]">Cost Savings vs OpenAI</div>
-            <div className="text-[10px] text-[#1C1C1C]/60 font-mono-tag">Pay-as-you-go per 1M tokens</div>
+            <div className="text-xs font-semibold text-[#1C1C1C]">{t.hero.statRoutes}</div>
+            <div className="text-[10px] text-[#1C1C1C]/60 font-mono-tag">{MODEL_FAMILY_LABEL}</div>
           </motion.div>
 
           <motion.div
@@ -226,10 +239,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
             className="space-y-1 text-center lg:text-left lg:px-4 pt-4 lg:pt-0"
           >
             <div className="text-3xl sm:text-4xl font-semibold text-[#1C1C1C] font-mono-tag tracking-tight">
-              <NumberTicker value={99.9} decimals={1} suffix="%" duration={2.0} />
+              {t.hero.liveValue}
             </div>
-            <div className="text-xs font-semibold text-[#1C1C1C]">Guaranteed Uptime SLA</div>
-            <div className="text-[10px] text-[#1C1C1C]/60 font-mono-tag">Dedicated optical submarine lines</div>
+            <div className="text-xs font-semibold text-[#1C1C1C]">{t.hero.statRateCard}</div>
+            <div className="text-[10px] text-[#1C1C1C]/60 font-mono-tag">{t.hero.contractReview}</div>
           </motion.div>
 
           <motion.div
@@ -240,10 +253,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
             className="space-y-1 text-center lg:text-left lg:px-4 pt-4 lg:pt-0"
           >
             <div className="text-3xl sm:text-4xl font-semibold text-[#C73E28] font-mono-tag tracking-tight">
-              <NumberTicker value={8} suffix=" Flagship" duration={1.2} />
+              <NumberTicker value={MODEL_FAMILY_COUNT} suffix={` ${t.hero.familyUnit}`} duration={1.2} />
             </div>
-            <div className="text-xs font-semibold text-[#1C1C1C]">Premier Chinese LLMs</div>
-            <div className="text-[10px] text-[#1C1C1C]/60 font-mono-tag">DeepSeek, Qwen, GLM, MiniMax</div>
+            <div className="text-xs font-semibold text-[#1C1C1C]">{t.hero.familiesLabel}</div>
+            <div className="text-[10px] text-[#1C1C1C]/60 font-mono-tag">{MODEL_FAMILY_LABEL}</div>
           </motion.div>
 
           <motion.div
@@ -253,9 +266,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
             }}
             className="space-y-1 text-center lg:text-left lg:px-4 pt-4 lg:pt-0"
           >
-            <div className="text-3xl sm:text-4xl font-semibold text-[#1C1C1C] font-mono-tag tracking-tight">Formal DPA</div>
-            <div className="text-xs font-semibold text-[#1C1C1C]">& Commercial Paper Contracts</div>
-            <div className="text-[10px] text-[#1C1C1C]/60 font-mono-tag">Authorized Legal Framework</div>
+            <div className="text-3xl sm:text-4xl font-semibold text-[#1C1C1C] font-mono-tag tracking-tight">{t.hero.contractValue}</div>
+            <div className="text-xs font-semibold text-[#1C1C1C]">{t.hero.contractSubline}</div>
+            <div className="text-[10px] text-[#1C1C1C]/60 font-mono-tag">{t.hero.contractReview}</div>
           </motion.div>
         </motion.div>
       </ScrollRevealSection>
@@ -314,7 +327,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <div id="models-section">
           <ModelComparisonTable
             openApiKeyModal={openApiKeyModal}
-            currency={currency}
           />
         </div>
       </ScrollRevealSection>
@@ -327,9 +339,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
         />
       </ScrollRevealSection>
 
-      {/* 6. Savings Calculator */}
+      {/* 6. Usage Planner */}
       <ScrollRevealSection>
-        <div id="calculator-section">
+        <div id="usage-planner-section">
           <SavingsCalculator
             onNavigateToPricing={() => setCurrentView('pricing')}
             currency={currency}
@@ -364,7 +376,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       <div className="py-12 border-t border-b border-[#1C1C1C]/15 text-center space-y-6">
         <div className="space-y-3 max-w-2xl mx-auto">
           <KineticText
-            text="Ready to Upgrade Your AI Compute Infrastructure?"
+            text={t.hero.finalTitle}
             type="words"
             direction="left"
             stagger={0.04}
@@ -372,7 +384,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             className="font-serif-title text-3xl sm:text-5xl font-semibold text-[#1C1C1C] tracking-tight"
           />
           <KineticText
-            text="Join thousands of global developers and tech enterprises accessing flagship LLMs with full legal compliance and unbeatable unit economics."
+            text={t.hero.finalSubtitle}
             type="words"
             direction="right"
             stagger={0.02}
@@ -388,7 +400,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             className="btn-editorial-primary w-full sm:w-auto flex items-center justify-center gap-2 cursor-pointer"
           >
             <Key className="w-4 h-4" />
-            <span>Request API Key</span>
+            <span>{t.hero.primaryCta}</span>
           </button>
 
           <button
@@ -396,7 +408,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             className="btn-editorial-outline w-full sm:w-auto flex items-center justify-center gap-2 cursor-pointer"
           >
             <FileText className="w-4 h-4" />
-            <span>Request Commercial DPA</span>
+            <span>{t.hero.secondaryCta}</span>
           </button>
         </div>
       </div>

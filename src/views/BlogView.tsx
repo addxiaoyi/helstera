@@ -3,6 +3,7 @@ import { BLOG_POSTS } from '../data/blogsData';
 import { BlogPost, PageView } from '../types';
 import { ScrollRevealHeading } from '../components/ScrollRevealHeading';
 import { BookOpen, Clock, ArrowRight, ShieldCheck, Search, Tag, X } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface BlogViewProps {
   setCurrentView: (view: PageView) => void;
@@ -10,10 +11,20 @@ interface BlogViewProps {
 }
 
 export const BlogView: React.FC<BlogViewProps> = ({ setCurrentView, openContractModal }) => {
+  const { t } = useLanguage();
+  const blogCopy = t.ui.blog;
+  const posts = BLOG_POSTS.map((post) => {
+    const copy = t.content.blog[post.id];
+    return {
+      ...post,
+      ...copy,
+      author: { ...post.author, role: copy.authorRole },
+    };
+  });
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredPosts = BLOG_POSTS.filter(p =>
+  const filteredPosts = posts.filter(p =>
     p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     p.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
     p.category.toLowerCase().includes(searchQuery.toLowerCase())
@@ -25,13 +36,13 @@ export const BlogView: React.FC<BlogViewProps> = ({ setCurrentView, openContract
       <ScrollRevealHeading className="text-center space-y-4 max-w-3xl mx-auto">
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-[#1C1C1C]/15 text-[#C73E28] font-mono-tag text-xs font-semibold">
           <BookOpen className="w-3.5 h-3.5 text-[#C73E28]" />
-          Technical & Compliance Resources [05]
+          {blogCopy.eyebrow}
         </span>
         <h1 className="font-serif-title text-4xl sm:text-6xl font-semibold text-[#1C1C1C] tracking-tight">
-          Helstera Engineering & Compliance Insights
+          {blogCopy.heroTitle}
         </h1>
         <p className="text-sm sm:text-base text-[#1C1C1C]/80 leading-relaxed font-sans">
-          In-depth benchmarks, cross-border compliance whitepapers, and step-by-step LLM migration guides for engineering leaders.
+          {blogCopy.heroSubtitle}
         </p>
       </ScrollRevealHeading>
 
@@ -42,7 +53,7 @@ export const BlogView: React.FC<BlogViewProps> = ({ setCurrentView, openContract
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search benchmarks, DPA guides, migration tutorials..."
+          placeholder={blogCopy.searchPlaceholder}
           className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#1C1C1C]/20 rounded-full text-xs font-mono-tag text-[#1C1C1C] focus:outline-none focus:border-[#C73E28] shadow-2xs"
         />
       </div>
@@ -63,7 +74,7 @@ export const BlogView: React.FC<BlogViewProps> = ({ setCurrentView, openContract
             </span>
             <h2 className="font-serif-title text-2xl sm:text-4xl font-semibold text-[#1C1C1C]">{selectedPost.title}</h2>
             <div className="flex items-center gap-3 text-xs text-[#1C1C1C]/60 font-mono-tag">
-              <span>By {selectedPost.author.name} ({selectedPost.author.role})</span>
+              <span>{blogCopy.byPrefix} {selectedPost.author.name} ({selectedPost.author.role})</span>
               <span>•</span>
               <span>{selectedPost.date}</span>
               <span>•</span>
@@ -76,16 +87,14 @@ export const BlogView: React.FC<BlogViewProps> = ({ setCurrentView, openContract
               {selectedPost.summary}
             </p>
             <p>
-              When evaluating LLM API gateways for production deployment, three dimensions dictate long-term viability: unit token economics, latency distribution under high QPS, and legal compliance.
+              {blogCopy.articleLead}
             </p>
             <p>
-              By utilizing DeepSeek-V3 and DeepSeek-R1 via Helstera's cross-border unified gateway, engineering teams consistently observe a 75% to 80% reduction in monthly token billing while retaining full compatibility with existing OpenAI SDK pipelines.
+              {blogCopy.articleBody}
             </p>
             <div className="p-4 bg-[#F8F7F4] rounded-xl border border-[#1C1C1C]/15 font-mono-tag text-xs text-[#1C1C1C] space-y-2">
-              <p className="font-bold text-[#C73E28]">Key Takeaways:</p>
-              <p>1. Swap base_url to "https://api.helstera.com/v1" without altering prompt templates.</p>
-              <p>2. Execute DPA contracts to comply with procurement audit requirements.</p>
-              <p>3. Leverage automated route failover to guarantee 99.9% uptime SLA.</p>
+              <p className="font-bold text-[#C73E28]">{blogCopy.takeawaysTitle}</p>
+              {Object.values(blogCopy.takeaways).map((takeaway, index) => <p key={takeaway}>{index + 1}. {takeaway}</p>)}
             </div>
           </div>
 
@@ -94,13 +103,13 @@ export const BlogView: React.FC<BlogViewProps> = ({ setCurrentView, openContract
               onClick={() => setSelectedPost(null)}
               className="text-xs font-mono-tag text-[#1C1C1C]/60 hover:text-[#1C1C1C] cursor-pointer"
             >
-              ← Back to all articles
+              ← {blogCopy.backToArticles}
             </button>
             <button
               onClick={openContractModal}
               className="btn-editorial-primary text-xs"
             >
-              Request Compliance DPA
+              {blogCopy.requestDpa}
             </button>
           </div>
         </div>
@@ -108,7 +117,11 @@ export const BlogView: React.FC<BlogViewProps> = ({ setCurrentView, openContract
 
       {/* Articles Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 border-t border-b border-[#1C1C1C]/15 py-8 divide-y md:divide-y-0 md:divide-x divide-[#1C1C1C]/15">
-        {filteredPosts.map((post) => (
+        {filteredPosts.length === 0 ? (
+          <div className="col-span-full py-10 text-center text-xs text-[#1C1C1C]/60 font-mono-tag">
+            {blogCopy.noResults} "{searchQuery}".
+          </div>
+        ) : filteredPosts.map((post) => (
           <div
             key={post.id}
             onClick={() => setSelectedPost(post)}
@@ -132,7 +145,7 @@ export const BlogView: React.FC<BlogViewProps> = ({ setCurrentView, openContract
             <div className="pt-4 border-t border-[#1C1C1C]/10 flex items-center justify-between text-xs font-mono-tag text-[#1C1C1C]/60">
               <span>{post.date}</span>
               <span className="text-[#C73E28] font-semibold group-hover:underline inline-flex items-center gap-1">
-                Read Article <ArrowRight className="w-3 h-3" />
+                {blogCopy.readArticle} <ArrowRight className="w-3 h-3" />
               </span>
             </div>
           </div>

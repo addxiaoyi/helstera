@@ -2,12 +2,15 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Zap, Shield, ArrowLeftRight, Check, AlertTriangle, Sparkles, Server, Globe, Cpu } from 'lucide-react';
 import { KineticText } from './KineticText';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface HorizontalComparisonSliderProps {
   openApiKeyModal: () => void;
 }
 
 export const HorizontalComparisonSlider: React.FC<HorizontalComparisonSliderProps> = ({ openApiKeyModal }) => {
+  const { t } = useLanguage();
+  const comparison = t.ui.comparison;
   const [sliderPosition, setSliderPosition] = useState<number>(50); // percentage 0-100
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -40,10 +43,10 @@ export const HorizontalComparisonSlider: React.FC<HorizontalComparisonSliderProp
       <div className="text-center space-y-3 max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C73E28]/10 border border-[#C73E28]/20 text-[#C73E28] text-xs font-mono-tag font-bold">
           <ArrowLeftRight className="w-3.5 h-3.5" />
-          <span>Interactive Horizontal Split View</span>
+          <span>{comparison.eyebrow}</span>
         </div>
         <KineticText
-          text="Slide to Compare Infrastructure"
+          text={comparison.title}
           type="words"
           direction="left"
           stagger={0.04}
@@ -51,7 +54,7 @@ export const HorizontalComparisonSlider: React.FC<HorizontalComparisonSliderProp
           className="font-serif-title text-3xl sm:text-5xl font-semibold text-[#1C1C1C] tracking-tight"
         />
         <KineticText
-          text="Drag the horizontal split handle left and right to see why global engineering teams switch from legacy public routes to Helstera Shantou Marine Line Gateway."
+          text={comparison.subtitle}
           type="words"
           direction="right"
           stagger={0.02}
@@ -77,34 +80,34 @@ export const HorizontalComparisonSlider: React.FC<HorizontalComparisonSliderProp
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping" />
               <span className="text-xs font-mono-tag uppercase tracking-wider text-amber-400 font-bold">
-                Legacy Public OpenAI / US Cloud Route
+                {comparison.publicRoute}
               </span>
             </div>
             <h3 className="font-serif-title text-2xl sm:text-3xl font-semibold text-white">
-              Public Internet Bottlenecks
+              {comparison.publicTitle}
             </h3>
             <p className="text-xs text-stone-400 leading-relaxed font-sans">
-              Subject to multiple public internet hops, peak-hour rate limits, standard retail pricing ($2.50+/1M), and unpredictable cross-border packet throttling.
+              {comparison.publicDescription}
             </p>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 font-mono-tag text-xs max-w-lg">
             <div className="bg-white/5 p-3 rounded-xl border border-white/10 space-y-1">
-              <span className="text-[10px] text-stone-400 uppercase">Input Rate</span>
-              <div className="text-lg font-bold text-amber-400">$2.50 / 1M</div>
+              <span className="text-[10px] text-stone-400 uppercase">{t.ui.showcase.rateSource}</span>
+              <div className="text-lg font-bold text-amber-400">{t.ui.showcase.providerCard}</div>
             </div>
             <div className="bg-white/5 p-3 rounded-xl border border-white/10 space-y-1">
-              <span className="text-[10px] text-stone-400 uppercase">Average Latency</span>
-              <div className="text-lg font-bold text-rose-400">420 - 680 ms</div>
+              <span className="text-[10px] text-stone-400 uppercase">{t.ui.showcase.routeSignal}</span>
+              <div className="text-lg font-bold text-rose-400">{t.ui.showcase.liveTelemetry}</div>
             </div>
             <div className="bg-white/5 p-3 rounded-xl border border-white/10 space-y-1 col-span-2 sm:col-span-1">
-              <span className="text-[10px] text-stone-400 uppercase">Data Logging</span>
-              <div className="text-xs font-bold text-stone-300">Default 30-Day Disk</div>
+              <span className="text-[10px] text-stone-400 uppercase">{comparison.dataLogging}</span>
+              <div className="text-xs font-bold text-stone-300">{comparison.providerPolicy}</div>
             </div>
           </div>
         </div>
 
-        {/* Layer 2: Right Side - Helstera Shantou Marine Line Gateway (Warm Cream / Terracotta Theme) */}
+        {/* Layer 2: Right Side - Helstera governed route (Warm Cream / Terracotta Theme) */}
         <div
           className="absolute inset-y-0 right-0 bg-[#F8F7F4] text-[#1C1C1C] p-6 sm:p-8 flex flex-col justify-between overflow-hidden border-l border-[#C73E28]"
           style={{ width: `${100 - sliderPosition}%` }}
@@ -115,32 +118,32 @@ export const HorizontalComparisonSlider: React.FC<HorizontalComparisonSliderProp
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#C73E28]" />
                 <span className="text-xs font-mono-tag uppercase tracking-wider text-[#C73E28] font-bold">
-                  Helstera Shantou Marine Gateway
+                  {comparison.governedRoute}
                 </span>
               </div>
               <h3 className="font-serif-title text-2xl sm:text-3xl font-semibold text-[#1C1C1C]">
-                Sub-180ms Direct Optical Marine Pipeline
+                {comparison.governedTitle}
               </h3>
               <p className="text-xs text-[#1C1C1C]/75 leading-relaxed font-sans">
-                Dedicated submarine fiber optic lines route straight to Shantou Overseas Chinese Pilot Zone's MoE compute clusters with zero data retention in RAM.
+                {comparison.governedDescription}
               </p>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 font-mono-tag text-xs max-w-lg">
               <div className="bg-white p-3 rounded-xl border border-[#1C1C1C]/15 space-y-1 shadow-2xs">
-                <span className="text-[10px] text-[#1C1C1C]/60 uppercase">Helstera Input</span>
-                <div className="text-lg font-bold text-[#C73E28]">$0.27 / 1M</div>
-                <div className="text-[9px] text-[#C73E28] font-bold">Save 80%</div>
+                <span className="text-[10px] text-[#1C1C1C]/60 uppercase">{comparison.helsteraRate}</span>
+                <div className="text-lg font-bold text-[#C73E28]">{t.ui.showcase.liveTelemetry}</div>
+                <div className="text-[9px] text-[#C73E28] font-bold">{comparison.accountSpecific}</div>
               </div>
               <div className="bg-white p-3 rounded-xl border border-[#1C1C1C]/15 space-y-1 shadow-2xs">
-                <span className="text-[10px] text-[#1C1C1C]/60 uppercase">Average Latency</span>
-                <div className="text-lg font-bold text-emerald-700">138 - 180 ms</div>
-                <div className="text-[9px] text-emerald-700 font-bold">3.5x Faster</div>
+                <span className="text-[10px] text-[#1C1C1C]/60 uppercase">{comparison.routeHealth}</span>
+                <div className="text-lg font-bold text-emerald-700">{t.ui.showcase.liveTelemetry}</div>
+                <div className="text-[9px] text-emerald-700 font-bold">{comparison.validateAccount}</div>
               </div>
               <div className="bg-white p-3 rounded-xl border border-[#1C1C1C]/15 space-y-1 col-span-2 sm:col-span-1 shadow-2xs">
-                <span className="text-[10px] text-[#1C1C1C]/60 uppercase">Data Logging</span>
-                <div className="text-xs font-bold text-[#1C1C1C]">Zero Data (RAM Purge)</div>
-                <div className="text-[9px] text-[#C73E28] font-bold">Formal B2B DPA</div>
+                <span className="text-[10px] text-[#1C1C1C]/60 uppercase">{comparison.dataLogging}</span>
+                <div className="text-xs font-bold text-[#1C1C1C]">{comparison.contractPolicy}</div>
+                <div className="text-[9px] text-[#C73E28] font-bold">{comparison.dpaAvailable}</div>
               </div>
             </div>
           </div>
@@ -159,7 +162,7 @@ export const HorizontalComparisonSlider: React.FC<HorizontalComparisonSliderProp
         {/* Floating Hint Overlay */}
         <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-[#1C1C1C]/80 text-white backdrop-blur-xs px-3 py-1 rounded-full text-[10px] font-mono-tag pointer-events-none z-30 flex items-center gap-1.5">
           <Sparkles className="w-3 h-3 text-[#C73E28]" />
-          <span>Drag horizontally to explore difference ({Math.round(sliderPosition)}% / {Math.round(100 - sliderPosition)}%)</span>
+          <span>{comparison.dragHint} ({Math.round(sliderPosition)}% / {Math.round(100 - sliderPosition)}%)</span>
         </div>
       </div>
     </div>

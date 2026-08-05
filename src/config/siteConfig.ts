@@ -6,7 +6,7 @@ import { ModelInfo, PricingTier, FAQItem, BlogPost, ComplianceDoc } from '../typ
  * 全站统一文案与配置中心
  * 
  * 修改本文件即可直接更新全站的品牌信息、Hero标题、核心功能文案、
- * 模型价格、对比数据、合规条文、常见问题及购买流程。
+ * 模型路由、运营条款、合规条文、常见问题及购买流程。
  * ====================================================================
  */
 
@@ -15,9 +15,8 @@ export const SITE_CONFIG = {
   brand: {
     name: 'Helstera',
     title: 'Helstera | Cross-Border AI Compute Gateway',
-    description: 'Regulated, high-performance, cross-border AI compute gateway bridging global developers to leading Chinese LLMs at 80% cost savings.',
+    description: 'A governed, OpenAI-compatible gateway for current Chinese frontier models, with account-level routing, clear data controls, and enterprise support.',
     apiBaseUrl: 'https://api.helstera.com/v1',
-    pilotZoneName: 'Shantou Overseas Chinese Pilot Zone (汕头华侨试验区来数加工基地)',
     contactEmail: 'enterprise@helstera.com',
     supportPhone: '+1 (800) 582-8920',
     address: 'Building 3, Digital Intelligence Hub, Shantou Overseas Chinese Pilot Zone, Guangdong, China',
@@ -26,36 +25,36 @@ export const SITE_CONFIG = {
 
   // 2. 首页 Hero 区块文案 (Hero Section Copy)
   hero: {
-    eyebrowTag: 'PILOT ZONE APPROVED • CROSS-BORDER COMPUTE GATEWAY [01]',
-    mainTitle: 'Enterprise cloud compute. Global reach.',
-    highlightText: 'Global reach.',
-    subtitle: 'Managed enterprise cloud compute from Shantou Pilot Zone hubs (Local edge compute nodes in Phase II roadmap). Save 80% with 99.9% uptime SLA.',
-    primaryCtaText: 'Get Started with $5 Credit',
-    secondaryCtaText: 'View Enterprise Compliance',
+    eyebrowTag: 'CURRENT MODEL ROUTES • OPENAI-COMPATIBLE GATEWAY [01]',
+    mainTitle: 'Current frontier models. One governed route.',
+    highlightText: 'One governed route.',
+    subtitle: 'Build on current DeepSeek, Qwen, Kimi, and GLM routes through one OpenAI-compatible gateway. Confirm live availability and rate terms from your account.',
+    primaryCtaText: 'Request API Access',
+    secondaryCtaText: 'Review Enterprise Controls',
     stats: [
-      { label: 'COST SAVINGS VS OPENAI', value: 80, suffix: '%' },
-      { label: 'LATENCY SLA GUARANTEE', value: 180, prefix: '<', suffix: 'ms' },
-      { label: 'ENTERPRISE UPTIME SLA', value: 99.9, suffix: '%', decimals: 1 },
+      { label: 'CURRENT MODEL ROUTES', value: 6, suffix: '' },
+      { label: 'RATE CARD', value: 'LIVE', suffix: '' },
+      { label: 'API CONTRACT', value: 'OPENAI', suffix: '' },
     ],
   },
 
   // 3. 核心优势与 5 大功能点 (Core Features Copy)
   bentoFeatures: {
-    sectionTag: 'REGULATED INFRASTRUCTURE ARCHITECTURE [02]',
-    sectionTitle: 'Engineered for Enterprise Compliance & Speed',
-    sectionSubtitle: 'Direct optical connectivity and pilot zone regulatory protections yield unmatched unit economics and legal safety.',
+    sectionTag: 'MODEL ROUTING & DATA CONTROLS [02]',
+    sectionTitle: 'Current routes, clear operating terms',
+    sectionSubtitle: 'Use one stable API contract for model access, account-level routing, and data handling that your team can review.',
     features: [
       {
         id: 'unit-economics',
-        tag: '01 / Unit Economics',
-        title: 'Up to 80% Cost Advantage vs OpenAI',
-        description: "By aggregating compute directly within Shantou Pilot Zone's state-of-the-art data center hubs, we pass favorable electricity, bandwidth, and open-weights MoE model efficiencies straight to developers.",
+        tag: '01 / Rate clarity',
+        title: 'Use the current rate card',
+        description: 'Model pricing and availability change. Helstera keeps the route catalog separate from static marketing claims so teams can confirm terms before production traffic.',
       },
       {
         id: 'sdk-compat',
         tag: '02 / SDK Compatibility',
-        title: '1-Line OpenAI Drop-in',
-        description: 'Zero code rewrites. Point baseURL to Helstera in Python, Node.js, LangChain, or AutoGPT.',
+        title: 'Keep your existing API contract',
+        description: 'Point the base URL to Helstera in Python, Node.js, LangChain, or your own client and select a current model route by ID.',
         codeSnippet: `import OpenAI from "openai";
 const client = new OpenAI({
   baseURL: "https://api.helstera.com/v1",
@@ -64,79 +63,79 @@ const client = new OpenAI({
       },
       {
         id: 'legal-dpa',
-        tag: '03 / Legal Compliance',
-        title: 'Shantou Pilot Zone DPA',
-        description: 'Authorized legal framework under Shantou Overseas Chinese Pilot Zone "Data Processing Zone" policy, backed by formal B2B contracts.',
-        ctaText: 'Request DPA Contract',
+        tag: '03 / Procurement',
+        title: 'Contract-ready governance',
+        description: 'Review data-processing terms, service scope, and account obligations with your procurement and legal teams before rollout.',
+        ctaText: 'Request Contract Pack',
       },
       {
-        id: 'zdr-privacy',
-        tag: '04 / Data Privacy',
-        title: 'Zero Data Retention (ZDR)',
-        description: 'Prompts are processed strictly in volatile RAM and purged instantly upon response completion. Zero disk logging, zero model training.',
-        badge: 'RAM-Only Volatile Execution',
+        id: 'account-data-policy',
+        tag: '04 / Data Controls',
+        title: 'Retention terms you can review',
+        description: 'Define the retention and training boundaries for your account, then keep the approved policy attached to the production contract.',
+        badge: 'Policy-first routing',
       },
       {
-        id: 'marine-sla',
-        tag: '05 / Reliability',
-        title: 'Sub-180ms SLA & Marine Optic',
-        description: 'Dedicated marine optical cables bypass public Internet hops with guaranteed 99.9% uptime SLA for mission-critical enterprise apps.',
-        ctaText: 'Get API Key ($5 Trial)',
+        id: 'route-health',
+        tag: '05 / Observability',
+        title: 'Choose from live route signals',
+        description: 'Use account telemetry, status information, and route health when selecting a model, keeping current evidence next to the route decision.',
+        ctaText: 'Open Developer Console',
       },
     ],
   },
 
   // 4. 滚动叙事 4 大章节 (Keynote Scroll Story)
   scrollStory: {
-    sectionTitle: 'One Gateway. Infinite Compute Potential.',
-    sectionSubtitle: 'Scroll or click through the 4 acts of Helstera’s cross-border infrastructure.',
+    sectionTitle: 'One route. A model catalog that keeps moving.',
+    sectionSubtitle: 'Explore the four operating decisions behind a current, governed AI gateway.',
     acts: [
       {
         id: 0,
         actNumber: 'ACT I',
-        badge: 'Regulatory Framework',
-        title: 'Shantou Pilot Zone Legal Framework',
-        subtitle: 'Government-sanctioned cross-border "Data Processing" (来数加工) pilot zone.',
-        description: 'Under Guangdong provincial policy, customer prompt data enters dedicated offshore compute nodes without legal ambiguity. Fully compliant with international data export laws.',
+        badge: 'Governance',
+        title: 'Make the route reviewable',
+        subtitle: 'Keep model access, data handling, and service obligations visible to the people who approve production systems.',
+        description: 'Helstera packages the gateway contract, route scope, and data-processing terms so engineering and procurement can evaluate the same operating picture.',
         stats: [
-          { value: '100%', label: 'Compliance Grade' },
-          { value: 'DPA & SLA', label: 'B2B Legal Papers' }
+          { value: 'DPA', label: 'Data terms' },
+          { value: 'SLA', label: 'Service terms' }
         ]
       },
       {
         id: 1,
         actNumber: 'ACT II',
-        badge: 'Cost Efficiency',
-        title: '80% Token Price Reduction',
-        subtitle: 'Run DeepSeek-V3 & R1 reasoning models at fraction of Western API costs.',
-        description: 'Leveraging green energy grid advantages and native open-weights optimizations in Shantou hubs to deliver top-tier inference at $0.14 - $0.55 per million input tokens.',
+        badge: 'Current model choice',
+        title: 'Choose by capability, not yesterday’s leaderboard',
+        subtitle: 'Route current general, reasoning, multimodal, and long-context models through the same API contract.',
+        description: 'The catalog highlights what each route is for and points teams to live rate and availability information when the request is made.',
         stats: [
-          { value: '$0.27', label: 'DeepSeek-V3 / 1M' },
-          { value: '80%', label: 'Average Savings' }
+          { value: 'LIVE', label: 'Rate card' },
+          { value: '6', label: 'Current routes' }
         ]
       },
       {
         id: 2,
         actNumber: 'ACT III',
-        badge: 'RAM Volatile Security',
-        title: 'Zero-Retention RAM Processing',
-        subtitle: 'Ephemeral volatile execution with zero disk logging or LLM retraining.',
-        description: 'Requests are buffered in encrypted volatile memory and erased the exact millisecond the last token streams to your app client.',
+        badge: 'Data controls',
+        title: 'Put retention terms next to the route',
+        subtitle: 'Make data handling part of the integration decision, not a footer added after launch.',
+        description: 'Document the approved retention, training, and access boundaries for each production account and review them with your compliance owners.',
         stats: [
-          { value: '0 Bytes', label: 'Disk Persistence' },
-          { value: '100%', label: 'Data Privacy' }
+          { value: 'POLICY', label: 'Account data terms' },
+          { value: 'DOCS', label: 'Evidence surface' }
         ]
       },
       {
         id: 3,
         actNumber: 'ACT IV',
-        badge: 'Instant Migration',
-        title: 'OpenAI SDK 1-Line Drop-in',
-        subtitle: 'No complex migration engineering or prompt modifications required.',
-        description: 'Works out-of-the-box with existing OpenAI client libraries across Python, TypeScript, Go, LangChain, and LlamaIndex.',
+        badge: 'Integration',
+        title: 'Migrate without a provider rewrite',
+        subtitle: 'Keep your request shape while changing the gateway base URL and model ID.',
+        description: 'Existing OpenAI-compatible clients can keep their message and response handling while teams validate the current route contract in a controlled environment.',
         stats: [
-          { value: '< 1 Min', label: 'Setup Time' },
-          { value: '100%', label: 'API Compatibility' }
+          { value: 'ONE', label: 'Base URL' },
+          { value: 'API', label: 'Compatibility layer' }
         ]
       }
     ]
@@ -145,105 +144,81 @@ const client = new OpenAI({
   // 5. 计算机模型列表 (AI Models Data)
   models: [
     {
-      id: 'deepseek-v3',
-      name: 'DeepSeek-V3',
+      id: 'deepseek-v4-pro',
+      name: 'DeepSeek V4 Pro',
       provider: 'DeepSeek',
-      badge: 'Most Popular',
-      description: '671B parameter Mixture-of-Experts model offering SOTA performance on code, math, and general reasoning at ultra-low cost.',
-      inputPrice: 0.14,
-      outputPrice: 0.28,
-      openAiEquiv: 'GPT-4o',
-      openAiInputPrice: 2.50,
-      openAiOutputPrice: 10.00,
-      contextWindow: '64K',
-      latencyMs: 380,
-      score: 92.8,
-      recommendedFor: ['General Chat', 'Code Generation', 'Instruction Following', 'Multilingual Translation'],
+      badge: 'Frontier reasoning',
+      description: 'A current reasoning route for complex analysis, coding, and multi-step work. Confirm live availability and account terms before production use.',
+      category: 'Reasoning',
+      rateLabel: 'Live rate card',
+      contextWindow: 'See provider model card',
+      healthLabel: 'Live route telemetry',
+      recommendedFor: ['Complex reasoning', 'Code generation', 'Planning', 'Technical analysis'],
       popular: true,
     },
     {
-      id: 'deepseek-r1',
-      name: 'DeepSeek-R1',
+      id: 'deepseek-v4-flash',
+      name: 'DeepSeek V4 Flash',
       provider: 'DeepSeek',
-      badge: 'SOTA Reasoning',
-      description: 'First-class open reasoning model rivaling OpenAI o1 in complex math, competitive coding, and multi-step logic chains.',
-      inputPrice: 0.55,
-      outputPrice: 2.19,
-      openAiEquiv: 'OpenAI o1',
-      openAiInputPrice: 15.00,
-      openAiOutputPrice: 60.00,
-      contextWindow: '128K',
-      latencyMs: 720,
-      score: 96.4,
-      recommendedFor: ['Complex Reasoning', 'Scientific Analysis', 'Reflective Math Proofs', 'Algorithm Design'],
+      badge: 'Fast general',
+      description: 'A current general-purpose route for assistants, extraction, and high-volume workflows that need a responsive default.',
+      category: 'General',
+      rateLabel: 'Live rate card',
+      contextWindow: 'See provider model card',
+      healthLabel: 'Live route telemetry',
+      recommendedFor: ['Assistants', 'Extraction', 'High-volume workflows', 'Multilingual tasks'],
       popular: true,
     },
     {
-      id: 'qwen-max',
-      name: 'Qwen-Max 2.5',
+      id: 'qwen3.7-max',
+      name: 'Qwen3.7-Max',
       provider: 'Alibaba Cloud',
-      badge: 'Enterprise Grade',
-      description: 'Alibaba flagship model with top-tier multilingual understanding, tool call reliability, and structured JSON output accuracy.',
-      inputPrice: 0.28,
-      outputPrice: 0.84,
-      openAiEquiv: 'GPT-4o',
-      openAiInputPrice: 2.50,
-      openAiOutputPrice: 10.00,
-      contextWindow: '128K',
-      latencyMs: 410,
-      score: 91.5,
-      recommendedFor: ['Enterprise Workflows', 'Agent Tool Calling', 'Multilingual Customer Service', 'Document QA'],
+      badge: 'Flagship general',
+      description: 'A current flagship general route for multilingual instruction following, tool use, and structured enterprise output.',
+      category: 'General',
+      rateLabel: 'Live rate card',
+      contextWindow: 'See provider model card',
+      healthLabel: 'Live route telemetry',
+      recommendedFor: ['Enterprise workflows', 'Tool use', 'Structured output', 'Customer operations'],
       popular: true,
     },
     {
-      id: 'qwen-coder-32b',
-      name: 'Qwen-2.5-Coder',
+      id: 'qwen3.5-omni-plus',
+      name: 'Qwen3.5-Omni-Plus',
       provider: 'Alibaba Cloud',
-      badge: 'Code Specialist',
-      description: 'Specialized 32B coding model outperforming many larger models on HumanEval, MBPP, and real-world repo refactoring.',
-      inputPrice: 0.12,
-      outputPrice: 0.36,
-      openAiEquiv: 'GPT-4o-mini',
-      openAiInputPrice: 0.15,
-      openAiOutputPrice: 0.60,
-      contextWindow: '128K',
-      latencyMs: 290,
-      score: 88.9,
-      recommendedFor: ['IDE Code Completion', 'Automated PR Code Review', 'Bug Fixing', 'SQL Generation'],
+      badge: 'Multimodal',
+      description: 'A multimodal route for text, image, and audio workflows where one context needs multiple input types.',
+      category: 'Multimodal',
+      rateLabel: 'Live rate card',
+      contextWindow: 'See provider model card',
+      healthLabel: 'Live route telemetry',
+      recommendedFor: ['Voice workflows', 'Image understanding', 'Multimodal agents', 'Content operations'],
       popular: false,
     },
     {
-      id: 'glm-4-plus',
-      name: 'GLM-4 Plus',
+      id: 'kimi-k3',
+      name: 'Kimi K3',
+      provider: 'Moonshot AI',
+      badge: 'Long context',
+      description: 'A current long-context route for large documents, research synthesis, and knowledge-heavy agent workflows.',
+      category: 'Long Context',
+      rateLabel: 'Live rate card',
+      contextWindow: 'See provider model card',
+      healthLabel: 'Live route telemetry',
+      recommendedFor: ['Large documents', 'Research synthesis', 'Knowledge agents', 'Long-form analysis'],
+      popular: false,
+    },
+    {
+      id: 'glm-5.2',
+      name: 'GLM-5.2',
       provider: 'Zhipu AI',
-      badge: 'Balanced Performance',
-      description: 'High-intelligence general model with exceptional long-context comprehension and nuanced Chinese/English reasoning.',
-      inputPrice: 0.70,
-      outputPrice: 0.70,
-      openAiEquiv: 'GPT-4o',
-      openAiInputPrice: 2.50,
-      openAiOutputPrice: 10.00,
-      contextWindow: '128K',
-      latencyMs: 450,
-      score: 90.2,
-      recommendedFor: ['Long-document Analysis', 'Creative Copywriting', 'Report Generation'],
-      popular: false,
-    },
-    {
-      id: 'minimax-abab6.5s',
-      name: 'MiniMax abab6.5s',
-      provider: 'MiniMax',
-      badge: 'High Speed',
-      description: 'Ultra-fast speech-and-text optimized model with 245,000 token context window for large payload processing.',
-      inputPrice: 0.14,
-      outputPrice: 0.28,
-      openAiEquiv: 'GPT-4o-mini',
-      openAiInputPrice: 0.15,
-      openAiOutputPrice: 0.60,
-      contextWindow: '245K',
-      latencyMs: 220,
-      score: 87.4,
-      recommendedFor: ['Ultra-fast Chatbots', 'Large PDF Processing', 'Audio Dialogue'],
+      badge: 'Reasoning and bilingual',
+      description: 'A current route for planning, analysis, bilingual work, and tool-enabled enterprise applications.',
+      category: 'Reasoning',
+      rateLabel: 'Live rate card',
+      contextWindow: 'See provider model card',
+      healthLabel: 'Live route telemetry',
+      recommendedFor: ['Planning', 'Bilingual analysis', 'Tool-enabled apps', 'Report generation'],
       popular: false,
     },
   ] as ModelInfo[],
@@ -253,50 +228,50 @@ const client = new OpenAI({
     {
       id: 'developer',
       name: 'Developer Plan',
-      tagline: 'Pay only for what you use. Perfect for testing, side projects, and early-stage products.',
-      price: 'Pay-as-you-go',
-      minDeposit: 'Minimum top-up: $5',
+      tagline: 'A clean path for prototyping, evaluation, and early production traffic.',
+      price: 'Usage-based',
+      minDeposit: 'Start with an account balance',
       ctaText: 'Get Started with Developer Plan',
       features: [
-        'Ideal for: Individual developers and startups',
-        'Access to all supported Chinese LLMs (DeepSeek, Qwen, GLM, etc.)',
-        'OpenAI SDK 100% drop-in compatibility',
-        'Pay only for the Tokens you actually use',
-        'Option to receive formal commercial contracts & DPA',
-        'Instant dashboard API key creation'
+        'For individual builders and small teams',
+        'Access the current supported route catalog',
+        'OpenAI-compatible request format',
+        'Account-level usage metering',
+        'Self-serve API key management',
+        'Rate terms shown before production use'
       ]
     },
     {
       id: 'pro',
       name: 'Pro Plan',
-      tagline: 'Higher rate limits, priority support, and better stability for production applications.',
-      price: '$49',
-      period: '/ month',
+      tagline: 'More routing control, operational support, and room for growing production workloads.',
+      price: 'Usage-based',
+      period: 'with reserved capacity options',
       highlight: true,
       ctaText: 'Get Started with Pro Plan',
       features: [
-        'Ideal for: Growing SaaS products and small teams',
+        'For SaaS teams moving into production',
         'Everything in Developer Plan included',
-        'Higher rate limits & priority routing',
-        'Priority customer support',
-        'Formal Commercial Contracts & DPA upon request',
-        'Enhanced SLA guarantees & lower latency'
+        'Higher limits and priority routing options',
+        'Operational support for rollout',
+        'Commercial contract and DPA review',
+        'Route-specific service terms'
       ]
     },
     {
       id: 'enterprise',
       name: 'Enterprise Plan',
-      tagline: 'Custom model routing, dedicated account management, formal contracts, DPA, and SLA guarantees.',
+      tagline: 'Custom model routing, dedicated account management, formal contracts, DPA, and negotiated service terms.',
       price: 'Custom',
       period: 'contract',
       ctaText: 'Talk to Sales for Enterprise',
       features: [
-        'Ideal for: Mid-to-large companies with compliance and volume requirements',
-        'Custom model routing & private instance hosting',
-        'Dedicated account management & 24/7 channel support',
-        'Formal commercial contracts & custom DPA legal review',
-        'Guaranteed 99.9%+ SLA & dedicated cross-border bandwidth',
-        'Invoicing, SWIFT wire transfers & custom payment terms'
+        'For teams with compliance and volume requirements',
+        'Custom model routing and private deployment review',
+        'Dedicated account and implementation support',
+        'Commercial contract and custom DPA review',
+        'Negotiated service, support, and data terms',
+        'Invoicing and custom payment workflows'
       ]
     }
   ] as PricingTier[],
@@ -304,83 +279,86 @@ const client = new OpenAI({
   // 7. 合规与法律文件 (Compliance Docs)
   complianceDocs: [
     {
-      title: 'Shantou Pilot Zone Cross-Border Data Policy Authorization',
-      category: 'Government Authorization',
-      description: 'Official legal authorization issued under the Shantou Overseas Chinese Economic Zone "Data Processing Zone" (来数加工) pilot policy.',
-      fileSize: '1.2 MB',
-      fileType: 'PDF Document',
+      id: 'data-processing-scope',
+      title: 'Account Data-Processing Scope Pack',
+      category: 'Governance Pack',
+      description: 'Reviewable documents for processing scope, access boundaries, retention choices, and account obligations.',
     },
     {
+      id: 'dpa-template',
       title: 'Standard International Data Processing Agreement (DPA)',
       category: 'Legal Contract',
-      description: 'B2B legally binding data protection agreement compliant with GDPR Article 28 and international data processing standards.',
-      fileSize: '840 KB',
-      fileType: 'PDF Document',
+      description: 'Contract template covering account data-processing scope, access responsibilities, and applicable privacy obligations.',
     },
     {
-      title: '99.9% Uptime & Latency Service Level Agreement (SLA)',
+      id: 'service-schedule',
+      title: 'Service Availability & Support Schedule',
       category: 'Service Level Agreement',
-      description: 'Contractual guarantee of 99.9% gateway availability and sub-180ms routing SLA with financial credit remedies.',
-      fileSize: '620 KB',
-      fileType: 'PDF Document',
+      description: 'Contract-specific availability, support, escalation, and service-credit terms for the selected route and account.',
     },
     {
-      title: 'Helstera Infrastructure Security & RAM Isolation Whitepaper',
-      category: 'Technical Whitepaper',
-      description: 'In-depth architectural review of hardware-level enclave isolation, TLS 1.3 transit encryption, and volatile RAM lifecycle management.',
-      fileSize: '2.4 MB',
-      fileType: 'PDF Document',
+      id: 'security-observability',
+      title: 'Helstera Security and Observability Notes',
+      category: 'Technical Notes',
+      description: 'Review route controls, TLS 1.3 transit encryption, telemetry fields, and evidence available to the account.',
     }
   ] as ComplianceDoc[],
 
   // 8. 常见问题 (FAQs)
   faqs: [
     {
+      id: 'enterprise-compliance',
       category: 'compliance',
-      question: 'Is Helstera fully compliant for overseas enterprise usage?',
-      answer: 'Yes. Helstera operates legally under Shantou Overseas Chinese Pilot Zone\'s "Data Processing Pilot Zone" (来数加工) cross-border data policy framework. We provide international developers and enterprise customers with legally binding commercial contracts, Data Processing Agreements (DPA), and standard enterprise compliance documentation.'
+      question: 'What does enterprise compliance review cover?',
+      answer: 'Helstera provides a contract and documentation path for enterprise review, including data-processing terms, service scope, and account-specific obligations. Ask our compliance team for the current package for your route and region.'
     },
     {
+      id: 'privacy-handling',
       category: 'security',
       question: 'How is data privacy handled? Is prompt data retained or used for training?',
-      answer: 'We strictly operate under a Zero Data Retention (ZDR) policy. Prompt and completion data are processed in volatile RAM only and purged immediately after output delivery. We never store prompt payloads on disk, nor do we or underlying model providers use customer data for model training.'
+      answer: 'Data handling is defined by the account policy and contract. Confirm retention, logging, training, and access scope with compliance before rollout.'
     },
     {
+      id: 'formal-contract',
       category: 'compliance',
       question: 'Can you provide a formal commercial contract and DPA?',
-      answer: 'Yes. We provide legally binding international Commercial Contracts, Data Processing Agreements (DPA), and Service Level Agreements (SLA 99.9%+). Our legal team can also work directly with your procurement department for custom enterprise paper agreements.'
+      answer: 'Yes. We can provide commercial contracts, Data Processing Agreements, and service schedules for procurement review. The final terms depend on the selected route, region, and account requirements.'
     },
     {
+      id: 'network-path',
       category: 'technical',
       question: 'Does the data pass through China’s public internet?',
-      answer: 'No. All cross-border API traffic is routed through dedicated, encrypted cross-border lines (IPLC/IEPL) directly to isolated compute infrastructure inside the Data Processing Pilot Zone. Your traffic bypasses public internet congestion and monitoring with sub-180ms global routing.'
+      answer: 'The route depends on your account and destination. Helstera documents the network path, encryption boundary, and processing location for the selected service so your team can review the actual deployment scope.'
     },
     {
+      id: 'supported-models',
       category: 'models',
       question: 'Which flagship models are supported through the unified gateway?',
-      answer: 'We aggregate leading Chinese open-weights and flagship LLMs through a unified OpenAI-compatible API gateway. Supported models include DeepSeek-V3, DeepSeek-R1 (reasoning), Qwen-Max 2.5, Qwen-2.5-Coder, GLM-4 Plus, MiniMax abab6.5s, Doubao Pro, and Kimi Moonshot-v1.'
+      answer: 'The current catalog includes DeepSeek V4 Pro, DeepSeek V4 Flash, Qwen3.7-Max, Qwen3.5-Omni-Plus, Kimi K3, and GLM-5.2. Availability and rate terms are account-specific, so use the live route card before sending production traffic.'
     },
     {
+      id: 'token-billing',
       category: 'billing',
       question: 'How does token billing work and what payment options are supported?',
-      answer: 'Billing is pay-as-you-go per 1,000,000 tokens with transparent real-time metering. We support credit cards (Stripe), SWIFT/ACH wire transfers, corporate PO invoicing (NET30 for enterprise), and crypto stablecoin payments (USDT/USDC).'
+      answer: 'Usage is metered against the current account rate card. Payment and invoicing options are agreed during onboarding and can include card, wire, or enterprise purchase-order workflows where available.'
     },
     {
+      id: 'sdk-migration',
       category: 'technical',
       question: 'How fast is migration if we currently use the OpenAI SDK?',
-      answer: 'Migration takes under 1 minute. Helstera is 100% API compatible with OpenAI SDKs (Python, Node.js, LangChain, LlamaIndex, cURL). Simply change `base_url="https://api.helstera.com/v1"` and update your `api_key`. Zero code refactoring required.'
+      answer: 'Start with a controlled migration: change `base_url="https://api.helstera.com/v1"`, update the key, and select one current model ID. Keep your existing request shape, then validate tool calls, streaming, and structured output before expanding traffic.'
     }
   ] as FAQItem[],
 
   // 9. 博客与技术文章 (Blog Posts)
   blogs: [
     {
-      id: 'deepseek-r1-benchmark-cost',
-      title: 'DeepSeek-R1 vs. OpenAI o1/o3-mini: Comprehensive Benchmark & 80% Cost Analysis',
-      summary: 'An empirical comparison of DeepSeek-R1 against top reasoning models across HumanEval, MATH, and code generation, detailing how teams save thousands monthly.',
+      id: 'deepseek-v4-routing-notes',
+      title: 'DeepSeek V4 Pro and Flash: Choosing a Current Production Route',
+      summary: 'A practical guide to selecting a reasoning or general-purpose route by workload, operational constraints, and the current account rate card.',
       date: '2026-07-20',
       readTime: '6 min read',
-      category: 'Benchmarks',
+      category: 'Route Intelligence',
       author: {
         name: 'Alex Chen',
         role: 'Head of Infrastructure, Helstera',
@@ -388,9 +366,9 @@ const client = new OpenAI({
       }
     },
     {
-      id: 'cross-border-data-compliance-guide',
-      title: 'Navigating Cross-Border AI Data Compliance: The "Data Processing" (来数加工) Framework',
-      summary: 'How international enterprises legally tap into Chinese high-performance AI compute through pilot zone regulatory protections, DPA contracts, and Zero Retention routing.',
+      id: 'cross-border-ai-data-controls',
+      title: 'Cross-Border AI Data Controls: From Route Review to Contract',
+      summary: 'How engineering, security, and procurement teams document processing scope, retention choices, network boundaries, and service terms before launch.',
       date: '2026-07-15',
       readTime: '8 min read',
       category: 'Legal & Compliance',
@@ -401,9 +379,9 @@ const client = new OpenAI({
       }
     },
     {
-      id: 'openai-to-helstera-migration-in-3-lines',
-      title: 'Migration Guide: How to Replace OpenAI with Helstera in 3 Lines of Code',
-      summary: 'A step-by-step tutorial on swapping base_url and API keys in Python, Node.js, and LangChain without modifying your existing prompt engineering or response handlers.',
+      id: 'openai-compatible-route-migration',
+      title: 'Migration Guide: Add a Current Model Route Without Rewriting Your Client',
+      summary: 'A practical walkthrough for changing the base URL, selecting a current model ID, and validating responses in Python, Node.js, and LangChain.',
       date: '2026-07-08',
       readTime: '4 min read',
       category: 'Developer Guide',
@@ -420,26 +398,26 @@ const client = new OpenAI({
     {
       number: '01',
       title: 'Create Free Account',
-      tagline: 'Instant $5 test balance',
-      description: 'Register with email or GitHub OAuth. Get instant access to dashboard API keys with no mandatory credit card upfront.',
+      tagline: 'Start with a controlled test account',
+      description: 'Register with email or GitHub OAuth, then create a scoped key for route evaluation before production onboarding.',
     },
     {
       number: '02',
       title: 'Generate API Key',
-      tagline: 'Under 10 seconds',
+      tagline: 'Create a scoped credential',
       description: 'Create production or test API keys with custom rate limits and usage alerts directly in the dashboard.',
     },
     {
       number: '03',
       title: 'Update 1 Line in SDK',
-      tagline: '100% OpenAI drop-in',
-      description: 'Point your existing OpenAI Python/Node client base URL to https://api.helstera.com/v1 and enter your Helstera key.',
+      tagline: 'Keep the request shape',
+      description: 'Point your existing OpenAI Python or Node client to https://api.helstera.com/v1, enter your Helstera key, and choose a current model ID.',
     },
     {
       number: '04',
-      title: 'Top Up & Formal DPA',
-      tagline: 'Credit card, Wire, PO',
-      description: 'Pay via Stripe, SWIFT wire, or request enterprise custom DPA & commercial contracts for corporate accounting.',
+      title: 'Confirm Rate Card & Terms',
+      tagline: 'Production readiness review',
+      description: 'Confirm the current rate card, route availability, data policy, and commercial terms with the people responsible for launch approval.',
     },
   ],
 };

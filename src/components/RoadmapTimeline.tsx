@@ -1,68 +1,27 @@
 import React from 'react';
 import { CheckCircle2, Clock, Sparkles, Milestone, ChevronRight, Layers, Rocket } from 'lucide-react';
 import { KineticText } from './KineticText';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export const RoadmapTimeline: React.FC = () => {
+  const { t } = useLanguage();
+  const roadmap = t.ui.roadmap;
   const phases = [
-    {
-      phase: 'Phase 1',
-      quarter: 'Q1 2025',
-      title: 'Foundation & Pilot Zone Setup',
-      status: 'completed',
-      items: [
-        'Shantou Overseas Chinese Pilot Zone "Data Processing" compliance framework authorization',
-        'Helstera OpenAI-compatible API Gateway engine MVP launch',
-        'DeepSeek-V3 & Qwen-Max 2.5 cross-border dedicated line integration',
-        'CertiK Smart Contract Audit for $HEL Token',
-      ],
-    },
-    {
-      phase: 'Phase 2',
-      quarter: 'Q2 2025',
-      title: 'Gateway Expansion & $HEL Token Launch',
-      status: 'active',
-      items: [
-        'Public $HEL Token Presale & Uniswap / Raydium DEX Liquidity Launch',
-        'Zero Data Retention (ZDR) RAM-Only instant memory purge implementation',
-        'DeepSeek-R1 reasoning model & MiniMax abab6.5s model onboarding',
-        'Institutional Data Processing Agreement (DPA) automated portal',
-      ],
-    },
-    {
-      phase: 'Phase 3',
-      quarter: 'Q3 2025',
-      title: 'Decentralized Staking & Node Network',
-      status: 'upcoming',
-      items: [
-        'Helstera Compute Staking Vaults launch with up to 24.8% APY real-yield rewards',
-        'Tier-1 Centralized Exchange (CEX) listings for $HEL Token',
-        'AI Agent SDK for LangChain, LlamaIndex, and AutoGPT integration',
-        'Multi-region failover nodes in Tokyo, Singapore, Hong Kong & Frankfurt',
-      ],
-    },
-    {
-      phase: 'Phase 4',
-      quarter: 'Q4 2025',
-      title: 'Global AI Agent Marketplace & Enterprise Rollout',
-      status: 'upcoming',
-      items: [
-        'DePIN AI Compute Node dispatching protocol rollout',
-        'Autonomous AI Agent Token payment rail & micro-settlement protocol',
-        'Global enterprise B2B compliance coverage (EU GDPR & US HIPAA mapping)',
-        '$HEL Token Governance DAO for model onboarding voting',
-      ],
-    },
-  ];
+    { id: 'current', status: 'completed' },
+    { id: 'next', status: 'active' },
+    { id: 'review', status: 'upcoming' },
+    { id: 'later', status: 'upcoming' },
+  ].map(({ id, status }) => ({ ...roadmap.phases[id], status }));
 
   return (
     <div className="space-y-12">
       {/* Section Header */}
       <div className="text-center space-y-3 max-w-3xl mx-auto">
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-semibold">
-          <Milestone className="w-3.5 h-3.5 text-blue-400" /> Strategic Product Execution
+          <Milestone className="w-3.5 h-3.5 text-blue-400" /> {roadmap.eyebrow}
         </span>
         <KineticText
-          text="Helstera Development Roadmap"
+          text={roadmap.title}
           type="words"
           direction="left"
           stagger={0.04}
@@ -70,7 +29,7 @@ export const RoadmapTimeline: React.FC = () => {
           className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight font-serif-title"
         />
         <KineticText
-          text="From compliant pilot zone infrastructure to a global decentralized AI agent compute economy."
+          text={roadmap.subtitle}
           type="words"
           direction="right"
           stagger={0.02}
@@ -99,7 +58,7 @@ export const RoadmapTimeline: React.FC = () => {
             >
               {isActive && (
                 <span className="absolute -top-3 left-6 px-3 py-0.5 rounded-full bg-blue-600 text-white text-[10px] font-bold uppercase tracking-wider shadow-sm flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" /> Current Phase
+                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" /> {roadmap.currentPhase}
                 </span>
               )}
 
@@ -108,15 +67,15 @@ export const RoadmapTimeline: React.FC = () => {
                   <span className="text-xs font-mono font-bold text-blue-400">{p.quarter}</span>
                   {isCompleted ? (
                     <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full">
-                      <CheckCircle2 className="w-3 h-3" /> Completed
+                      <CheckCircle2 className="w-3 h-3" /> {roadmap.completed}
                     </span>
                   ) : isActive ? (
                     <span className="inline-flex items-center gap-1 text-[10px] font-bold text-blue-400 bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 rounded-full">
-                      <Rocket className="w-3 h-3 animate-pulse" /> Live Execution
+                      <Rocket className="w-3 h-3 animate-pulse" /> {roadmap.liveExecution}
                     </span>
                   ) : (
                     <span className="inline-flex items-center gap-1 text-[10px] font-bold text-slate-400 bg-slate-800 px-2 py-0.5 rounded-full">
-                      <Clock className="w-3 h-3" /> Upcoming
+                      <Clock className="w-3 h-3" /> {roadmap.upcoming}
                     </span>
                   )}
                 </div>
@@ -127,7 +86,7 @@ export const RoadmapTimeline: React.FC = () => {
                 </div>
 
                 <ul className="space-y-2.5 text-xs text-slate-300 pt-2 border-t border-slate-800">
-                  {p.items.map((item, i) => (
+                  {Object.values(p.items).map((item, i) => (
                     <li key={i} className="flex items-start gap-2 leading-relaxed">
                       <span className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${isActive ? 'bg-blue-400' : isCompleted ? 'bg-emerald-400' : 'bg-slate-600'}`} />
                       <span className={isCompleted ? 'text-slate-300' : 'text-slate-300'}>{item}</span>

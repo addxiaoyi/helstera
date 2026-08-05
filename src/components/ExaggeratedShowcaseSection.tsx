@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'motion/react';
 import {
   Zap,
@@ -17,8 +17,8 @@ import {
   CheckCircle2,
   AlertTriangle
 } from 'lucide-react';
-import { NumberTicker } from './NumberTicker';
 import { KineticText } from './KineticText';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface ExaggeratedShowcaseSectionProps {
   openApiKeyModal: () => void;
@@ -29,8 +29,8 @@ export const ExaggeratedShowcaseSection: React.FC<ExaggeratedShowcaseSectionProp
   openApiKeyModal,
   openContractModal
 }) => {
-  const [activeHighlight, setActiveHighlight] = useState<'speed' | 'cost' | 'privacy'>('cost');
-
+  const { t } = useLanguage();
+  const showcase = t.ui.showcase;
   return (
     <div className="space-y-12 overflow-hidden py-8">
       {/* 1. Giant Kinetic Header with Sliding Badges & Text Stagger */}
@@ -43,22 +43,22 @@ export const ExaggeratedShowcaseSection: React.FC<ExaggeratedShowcaseSectionProp
           className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#C73E28] text-[#F8F7F4] font-mono-tag text-xs font-bold uppercase tracking-wider shadow-md"
         >
           <Flame className="w-4 h-4 fill-current" />
-          <span>PROMOTIONAL STANDALONE SHOWCASE • ULTRA HIGH IMPACT</span>
+          <span>{showcase.eyebrow}</span>
         </motion.div>
 
         <KineticText
-          text="REDEFINING CROSS-BORDER AI INFERENCE SPEED & ECONOMICS"
+          text={showcase.title}
           type="words"
           direction="left"
           stagger={0.05}
-          highlightWords={['AI', 'INFERENCE', 'SPEED', 'ECONOMICS']}
+          highlightWords={['AI', 'ROUTE', 'OPERATIONS']}
           highlightClass="text-[#C73E28] italic font-bold"
           as="h2"
           className="font-serif-title text-4xl sm:text-6xl lg:text-7xl font-bold text-[#1C1C1C] tracking-tight leading-[1.05]"
         />
 
         <KineticText
-          text="Direct optical marine cables bypass international firewall bottlenecks, giving enterprise developers 80% cheaper DeepSeek-V3 / R1 reasoning with sub-180ms latency."
+          text={showcase.subtitle}
           type="words"
           direction="right"
           stagger={0.02}
@@ -70,7 +70,7 @@ export const ExaggeratedShowcaseSection: React.FC<ExaggeratedShowcaseSectionProp
 
       {/* 2. Dual Horizontal Slide-In Impact Cards (Left vs Right Slide) */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-        {/* Left Sliding Card: Legacy Public Cloud Problems */}
+        {/* Left Sliding Card: Provider-managed route context */}
         <motion.div
           initial={{ opacity: 0, x: -160, rotate: -1 }}
           whileInView={{ opacity: 1, x: 0, rotate: 0 }}
@@ -85,42 +85,42 @@ export const ExaggeratedShowcaseSection: React.FC<ExaggeratedShowcaseSectionProp
             <div className="flex items-center justify-between">
               <span className="text-xs font-mono-tag px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 font-bold border border-rose-500/30 flex items-center gap-1.5">
                 <AlertTriangle className="w-3.5 h-3.5" />
-                LEGACY PUBLIC US ROUTE
+                {showcase.publicRoute}
               </span>
-              <span className="text-xs font-mono-tag text-stone-400">Public Internet Hops</span>
+              <span className="text-xs font-mono-tag text-stone-400">{showcase.publicHops}</span>
             </div>
 
             <div className="space-y-3">
-              <h3 className="font-serif-title text-3xl sm:text-4xl font-bold text-white leading-tight">
-                Slow, Expensive & Vulnerable to Packet Drops
+                <h3 className="font-serif-title text-3xl sm:text-4xl font-bold text-white leading-tight">
+                {showcase.publicTitle}
               </h3>
               <p className="text-xs sm:text-sm text-stone-300 leading-relaxed font-sans">
-                Standard public API calls travel across congested public ISP transit hubs with unpredictable multi-hundred-millisecond lag spikes, retail pricing ($2.50+/1M tokens), and mandatory 30-day prompt logging.
+                {showcase.publicDescription}
               </p>
             </div>
 
             {/* Negative Metrics */}
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-stone-800 font-mono-tag">
               <div className="bg-stone-900/80 p-4 rounded-2xl border border-stone-800">
-                <span className="text-[10px] text-stone-400 uppercase">Input Token Cost</span>
-                <div className="text-2xl font-bold text-rose-400">$2.50 / 1M</div>
-                <span className="text-[10px] text-rose-400">100% Full Retail Price</span>
+                <span className="text-[10px] text-stone-400 uppercase">{showcase.rateSource}</span>
+                <div className="text-2xl font-bold text-rose-400">{showcase.providerCard}</div>
+                <span className="text-[10px] text-rose-400">{showcase.termsChange}</span>
               </div>
               <div className="bg-stone-900/80 p-4 rounded-2xl border border-stone-800">
-                <span className="text-[10px] text-stone-400 uppercase">Average Latency</span>
-                <div className="text-2xl font-bold text-amber-400">420 - 680 ms</div>
-                <span className="text-[10px] text-amber-400">Public Hop Bottlenecks</span>
+                <span className="text-[10px] text-stone-400 uppercase">{showcase.routeSignal}</span>
+                <div className="text-2xl font-bold text-amber-400">{showcase.liveTelemetry}</div>
+                <span className="text-[10px] text-amber-400">{showcase.checkWorkload}</span>
               </div>
             </div>
           </div>
 
           <div className="pt-4 border-t border-stone-800 flex items-center justify-between text-xs font-mono-tag text-stone-400">
-            <span>Risk Profile: High Congestion</span>
-            <span className="text-rose-400 font-bold">Disk Logging Enabled</span>
+            <span>{showcase.reviewGap}</span>
+            <span className="text-rose-400 font-bold">{showcase.providerTerms}</span>
           </div>
         </motion.div>
 
-        {/* Right Sliding Card: Helstera Shantou Marine Optical Conduit */}
+        {/* Right Sliding Card: Helstera governed route */}
         <motion.div
           initial={{ opacity: 0, x: 160, rotate: 1 }}
           whileInView={{ opacity: 1, x: 0, rotate: 0 }}
@@ -135,35 +135,31 @@ export const ExaggeratedShowcaseSection: React.FC<ExaggeratedShowcaseSectionProp
             <div className="flex items-center justify-between">
               <span className="text-xs font-mono-tag px-3 py-1 rounded-full bg-[#C73E28] text-white font-bold border border-[#C73E28] flex items-center gap-1.5 shadow-sm">
                 <Zap className="w-3.5 h-3.5 fill-current" />
-                HELSTERA SHANTOU MARINE CONDUIT
+                {showcase.governedRoute}
               </span>
-              <span className="text-xs font-mono-tag text-[#C73E28] font-bold">Sub-180ms Optical SLA</span>
+              <span className="text-xs font-mono-tag text-[#C73E28] font-bold">{showcase.currentTerms}</span>
             </div>
 
             <div className="space-y-3">
               <h3 className="font-serif-title text-3xl sm:text-4xl font-bold text-[#1C1C1C] leading-tight">
-                80% Lower Rates with Sub-180ms Latency
+                {showcase.governedTitle}
               </h3>
               <p className="text-xs sm:text-sm text-[#1C1C1C]/80 leading-relaxed font-sans">
-                By routing requests through Shantou Pilot Zone’s dedicated optical submarine pipeline, AI developers get instant streaming response times, standard B2B paper contracts, and volatile RAM data destruction.
+                {showcase.governedDescription}
               </p>
             </div>
 
             {/* Positive Metrics */}
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[#1C1C1C]/10 font-mono-tag">
               <div className="bg-[#F8F7F4] p-4 rounded-2xl border border-[#1C1C1C]/15 shadow-2xs">
-                <span className="text-[10px] text-[#1C1C1C]/60 uppercase">Helstera DeepSeek Rate</span>
-                <div className="text-2xl font-bold text-[#C73E28]">
-                  $<NumberTicker value={0.27} decimalPlaces={2} /> / 1M
-                </div>
-                <span className="text-[10px] font-bold text-emerald-700">Save Up To 80%</span>
+                  <span className="text-[10px] text-[#1C1C1C]/60 uppercase">{showcase.routeCatalog}</span>
+                <div className="text-2xl font-bold text-[#C73E28]">{showcase.liveTelemetry}</div>
+                <span className="text-[10px] font-bold text-emerald-700">{showcase.confirmAccount}</span>
               </div>
               <div className="bg-[#F8F7F4] p-4 rounded-2xl border border-[#1C1C1C]/15 shadow-2xs">
-                <span className="text-[10px] text-[#1C1C1C]/60 uppercase">Optical Fiber Latency</span>
-                <div className="text-2xl font-bold text-emerald-700">
-                  <NumberTicker value={138} /> - 180 ms
-                </div>
-                <span className="text-[10px] font-bold text-[#C73E28]">3.5x Faster Delivery</span>
+                <span className="text-[10px] text-[#1C1C1C]/60 uppercase">{showcase.networkHealth}</span>
+                <div className="text-2xl font-bold text-emerald-700">{showcase.liveTelemetry}</div>
+                <span className="text-[10px] font-bold text-[#C73E28]">{showcase.validateAccount}</span>
               </div>
             </div>
           </div>
@@ -171,13 +167,13 @@ export const ExaggeratedShowcaseSection: React.FC<ExaggeratedShowcaseSectionProp
           <div className="pt-4 border-t border-[#1C1C1C]/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
             <div className="text-xs font-mono-tag text-[#1C1C1C]/70 flex items-center gap-1.5">
               <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              <span>Zero Data Retention (ZDR RAM)</span>
+              <span>{showcase.retentionAttached}</span>
             </div>
             <button
               onClick={openApiKeyModal}
               className="btn-editorial-primary px-5 py-2.5 text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md"
             >
-              <span>Get API Credentials</span>
+              <span>{showcase.getCredentials}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -198,10 +194,10 @@ export const ExaggeratedShowcaseSection: React.FC<ExaggeratedShowcaseSectionProp
             01
           </div>
           <h4 className="font-serif-title text-xl font-bold text-[#1C1C1C] group-hover:text-[#C73E28] transition-colors">
-            Shantou Pilot Zone Legal Framework
+            {showcase.blocks.policy.title}
           </h4>
           <p className="text-xs text-[#1C1C1C]/75 leading-relaxed font-sans">
-            Operates under the State-approved Overseas Chinese Data Processing Economic Zone regulations, ensuring 100% legal compliance for international business data flows.
+            {showcase.blocks.policy.description}
           </p>
         </motion.div>
 
@@ -217,10 +213,10 @@ export const ExaggeratedShowcaseSection: React.FC<ExaggeratedShowcaseSectionProp
             02
           </div>
           <h4 className="font-serif-title text-xl font-bold text-white group-hover:text-[#C73E28] transition-colors">
-            1-Line OpenAI API Drop-in Drop
+            {showcase.blocks.api.title}
           </h4>
           <p className="text-xs text-stone-300 leading-relaxed font-sans">
-            Replace your existing <code className="text-[#C73E28] font-mono-tag">baseURL</code> with <code className="text-white font-mono-tag">https://api.helstera.com/v1</code>. Keep your exact OpenAI Python or JS SDK code without rewriting a single line.
+            {showcase.blocks.api.description}
           </p>
         </motion.div>
 
@@ -236,10 +232,10 @@ export const ExaggeratedShowcaseSection: React.FC<ExaggeratedShowcaseSectionProp
             03
           </div>
           <h4 className="font-serif-title text-xl font-bold text-[#1C1C1C] group-hover:text-[#C73E28] transition-colors">
-            Formal B2B Commercial Contracts
+            {showcase.blocks.commercial.title}
           </h4>
           <p className="text-xs text-[#1C1C1C]/75 leading-relaxed font-sans">
-            Settlement options in HKD, USD, or Crypto with formal corporate invoicing, legal DPAs, and guaranteed enterprise SLAs backed by SLA penalty clauses.
+            {showcase.blocks.commercial.description}
           </p>
         </motion.div>
       </div>

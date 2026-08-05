@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../i18n/LanguageContext';
+import { DEFAULT_MODEL_ID, findModel, MODELS_DATA } from '../data/modelsData';
 import {
   Key,
   Copy,
@@ -32,12 +33,15 @@ interface ApiKeyItem {
   id: string;
   key: string;
   name: string;
+  nameKey?: 'production' | 'staging';
   created: string;
   lastUsed: string;
+  lastUsedKey?: 'justNow' | 'daysAgo' | 'never';
 }
 
 export const ApiKeysModal: React.FC<ApiKeysModalProps> = ({ isOpen, onClose, onNavigateToDocs }) => {
   const { t } = useLanguage();
+  const copy = t.ui.modals.apiKeys;
   const [activeTab, setActiveTab] = useState<'keys' | 'playground' | 'usage'>('keys');
 
   // Keys State
@@ -45,16 +49,20 @@ export const ApiKeysModal: React.FC<ApiKeysModalProps> = ({ isOpen, onClose, onN
     {
       id: '1',
       key: 'sk-helstera-live-982f1a7b629e4d01c8a5',
-      name: 'Production Gateway Key',
+      name: '',
+      nameKey: 'production',
       created: '2026-07-25',
-      lastUsed: 'Just now'
+      lastUsed: '',
+      lastUsedKey: 'justNow'
     },
     {
       id: '2',
       key: 'sk-helstera-test-412e8b031c90a12f5e3d',
-      name: 'Staging Sandbox Key',
+      name: '',
+      nameKey: 'staging',
       created: '2026-07-20',
-      lastUsed: '2 days ago'
+      lastUsed: '',
+      lastUsedKey: 'daysAgo'
     }
   ]);
 
@@ -63,12 +71,19 @@ export const ApiKeysModal: React.FC<ApiKeysModalProps> = ({ isOpen, onClose, onN
   const [showCreateForm, setShowCreateForm] = useState(false);
 
   // Playground State
-  const [selectedModel, setSelectedModel] = useState<'deepseek-v3' | 'deepseek-r1' | 'qwen-max-2.5' | 'glm-4-plus'>('deepseek-v3');
-  const [userPrompt, setUserPrompt] = useState('Write a high-performance Python script to query the Helstera OpenAI-compatible endpoint and stream reasoning tokens.');
+  const [selectedModel, setSelectedModel] = useState(DEFAULT_MODEL_ID);
+  const [promptMode, setPromptMode] = useState<'default' | 'presetA' | 'presetB' | 'custom'>('default');
+  const [userPrompt, setUserPrompt] = useState(copy.defaultPrompt);
   const [isLoading, setIsLoading] = useState(false);
   const [responseOutput, setResponseOutput] = useState<string | null>(null);
-  const [responseStats, setResponseStats] = useState<{ ttft: number; speed: number; tokens: number; cost: number } | null>(null);
+  const [responseStats, setResponseStats] = useState<{ tokens: number; routeId: string } | null>(null);
   const [codeLanguage, setCodeLanguage] = useState<'curl' | 'python' | 'node'>('python');
+
+  useEffect(() => {
+    if (promptMode === 'default') setUserPrompt(copy.defaultPrompt);
+    if (promptMode === 'presetA') setUserPrompt(copy.presetA);
+    if (promptMode === 'presetB') setUserPrompt(copy.presetB);
+  }, [copy.defaultPrompt, copy.presetA, copy.presetB, promptMode]);
 
   if (!isOpen) return null;
 
@@ -84,9 +99,10 @@ export const ApiKeysModal: React.FC<ApiKeysModalProps> = ({ isOpen, onClose, onN
     const newKey: ApiKeyItem = {
       id: Date.now().toString(),
       key: `sk-helstera-live-${randomHex}`,
-      name: newKeyName || 'New API Key',
+      name: newKeyName || copy.newKeyName,
       created: new Date().toISOString().split('T')[0],
-      lastUsed: 'Never'
+      lastUsed: '',
+      lastUsedKey: 'never'
     };
     setKeys([newKey, ...keys]);
     setNewKeyName('');
@@ -97,11 +113,14 @@ export const ApiKeysModal: React.FC<ApiKeysModalProps> = ({ isOpen, onClose, onN
     setKeys(keys.filter(k => k.id !== id));
   };
 
-  const modelPrices = {
-    'deepseek-v3': { name: 'DeepSeek-V3', rate: 0.27 },
-    'deepseek-r1': { name: 'DeepSeek-R1', rate: 0.55 },
-    'qwen-max-2.5': { name: 'Qwen-Max 2.5', rate: 1.60 },
-    'glm-4-plus': { name: 'GLM-4 Plus', rate: 1.40 }
+  const selectPrompt = (mode: 'presetA' | 'presetB') => {
+    setPromptMode(mode);
+    setUserPrompt(mode === 'presetA' ? copy.presetA : copy.presetB);
+  };
+
+  const handlePromptChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setPromptMode('custom');
+    setUserPrompt(event.target.value);
   };
 
   const runPlaygroundRequest = () => {
@@ -111,19 +130,23 @@ export const ApiKeysModal: React.FC<ApiKeysModalProps> = ({ isOpen, onClose, onN
 
     setTimeout(() => {
       let outputText = '';
-      if (selectedModel === 'deepseek-r1') {
-        outputText = `<think>\nAnalyzing the prompt for Python streaming implementation...\nConstructing OpenAI client configuration pointing to https://api.helstera.com/v1...\nVerified zero-data-retention RAM conduit.\n</think>\n\nfrom openai import OpenAI\n\nclient = OpenAI(\n    base_url="https://api.helstera.com/v1",\n    api_key="${keys[0]?.key || 'sk-helstera-xxx'}"\n)\n\nstream = client.chat.completions.create(\n    model="${selectedModel}",\n    messages=[{"role": "user", "content": "${userPrompt.replace(/"/g, '\\"')}"}],\n    stream=True\n)\n\nfor chunk in stream:\n    if chunk.choices[0].delta.content:\n        print(chunk.choices[0].delta.content, end="")`;
+      if (findModel(selectedModel).category === 'Reasoning') {
+        outputText = `<think>\nAnalyzing the prompt for Python streaming implementation...\nConstructing OpenAI client configuration pointing to https://api.helstera.com/v1...\nApplying the selected account data policy.\n</think>\n\nfrom openai import OpenAI\n\nclient = OpenAI(\n    base_url="https://api.helstera.com/v1",\n    api_key="${keys[0]?.key || 'sk-helstera-xxx'}"\n)\n\nstream = client.chat.completions.create(\n    model="${selectedModel}",\n    messages=[{"role": "user", "content": "${userPrompt.replace(/"/g, '\\"')}"}],\n    stream=True\n)\n\nfor chunk in stream:\n    if chunk.choices[0].delta.content:\n        print(chunk.choices[0].delta.content, end="")`;
       } else {
-        outputText = `HTTP/1.1 200 OK\nContent-Type: application/json\n\n{\n  "id": "chatcmpl-helstera-${Math.floor(Math.random() * 899999 + 100000)}",\n  "object": "chat.completion",\n  "created": ${Math.floor(Date.now() / 1000)},\n  "model": "${selectedModel}",\n  "choices": [{\n    "index": 0,\n    "message": {\n      "role": "assistant",\n      "content": "Request processed successfully via Shantou Pilot Zone encrypted marine line with zero prompt logging."\n    },\n    "finish_reason": "stop"\n  }],\n  "usage": {\n    "prompt_tokens": 42,\n    "completion_tokens": 128,\n    "total_tokens": 170\n  }\n}`;
+        outputText = `HTTP/1.1 200 OK\nContent-Type: application/json\n\n{\n  "id": "chatcmpl-helstera-${Math.floor(Math.random() * 899999 + 100000)}",\n  "object": "chat.completion",\n  "created": ${Math.floor(Date.now() / 1000)},\n  "model": "${selectedModel}",\n  "choices": [{\n    "index": 0,\n    "message": {\n      "role": "assistant",\n      "content": "Request processed through the selected route; retention and training behavior follow the account policy."\n    },\n    "finish_reason": "stop"\n  }],\n  "usage": {\n    "prompt_tokens": 42,\n    "completion_tokens": 128,\n    "total_tokens": 170\n  }\n}`;
       }
+
+      outputText = outputText
+        .replace('Analyzing the prompt for Python streaming implementation...', copy.reasoningAnalyzing)
+        .replace('Constructing OpenAI client configuration pointing to https://api.helstera.com/v1...', copy.reasoningConstructing)
+        .replace('Applying the selected account data policy.', copy.reasoningPolicy)
+        .replace('Request processed through the selected route; retention and training behavior follow the account policy.', copy.responseContent);
 
       setResponseOutput(outputText);
       setIsLoading(false);
       setResponseStats({
-        ttft: Math.floor(Math.random() * 40 + 110), // ms
-        speed: Math.floor(Math.random() * 25 + 85), // tokens/sec
         tokens: 170,
-        cost: (170 / 1000000) * modelPrices[selectedModel].rate
+        routeId: selectedModel
       });
     }, 900);
   };
@@ -179,8 +202,8 @@ console.log(completion.choices[0].message.content);`;
               <Key className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-serif-title font-semibold text-[#1C1C1C]">Developer Console & API Sandbox</h3>
-              <p className="text-xs text-[#1C1C1C]/60 font-sans">Manage credentials & test endpoints in real time</p>
+              <h3 className="text-base font-serif-title font-semibold text-[#1C1C1C]">{copy.title}</h3>
+              <p className="text-xs text-[#1C1C1C]/60 font-sans">{copy.description}</p>
             </div>
           </div>
 
@@ -203,7 +226,7 @@ console.log(completion.choices[0].message.content);`;
             }`}
           >
             <Key className="w-3.5 h-3.5" />
-            <span>API Keys</span>
+            <span>{copy.tabs.keys}</span>
           </button>
 
           <button
@@ -215,8 +238,8 @@ console.log(completion.choices[0].message.content);`;
             }`}
           >
             <Play className="w-3.5 h-3.5 text-[#C73E28]" />
-            <span>Live Playground</span>
-            <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-[#C73E28]/15 text-[#C73E28] font-bold">Interactive</span>
+            <span>{copy.tabs.playground}</span>
+            <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-[#C73E28]/15 text-[#C73E28] font-bold">{copy.interactive}</span>
           </button>
 
           <button
@@ -228,7 +251,7 @@ console.log(completion.choices[0].message.content);`;
             }`}
           >
             <Coins className="w-3.5 h-3.5" />
-            <span>Credits & Usage</span>
+            <span>{copy.tabs.usage}</span>
           </button>
         </div>
 
@@ -241,34 +264,34 @@ console.log(completion.choices[0].message.content);`;
               <div className="flex items-start gap-3 p-4 bg-white border border-[#1C1C1C]/15 rounded-xl text-xs">
                 <ShieldCheck className="w-5 h-5 text-[#C73E28] shrink-0 mt-0.5" />
                 <div className="space-y-0.5">
-                  <p className="font-semibold text-[#1C1C1C]">Zero Data Retention Security Guarantee</p>
+                  <p className="font-semibold text-[#1C1C1C]">{copy.policyTitle}</p>
                   <p className="text-[#1C1C1C]/75 leading-relaxed font-sans">
-                    Requests authenticated with your Helstera API keys are routed via encrypted cross-border channels with zero prompt logging or disk retention.
+                    {copy.policyDescription}
                   </p>
                 </div>
               </div>
 
               {/* Action Bar */}
               <div className="flex items-center justify-between gap-2">
-                <h4 className="text-xs font-mono-tag font-bold uppercase tracking-wider text-[#1C1C1C]/60">Your Active API Keys</h4>
+                <h4 className="text-xs font-mono-tag font-bold uppercase tracking-wider text-[#1C1C1C]/60">{copy.activeKeys}</h4>
                 <button
                   onClick={() => setShowCreateForm(true)}
                   className="btn-editorial-primary px-3 py-1.5 text-xs flex items-center gap-1.5 cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
-                  <span>Create New Key</span>
+                  <span>{copy.createKey}</span>
                 </button>
               </div>
 
               {/* New Key Form */}
               {showCreateForm && (
                 <form onSubmit={handleCreateKey} className="p-4 bg-white rounded-xl border border-[#1C1C1C]/15 space-y-3 text-xs animate-fadeIn shadow-2xs">
-                  <label className="block text-[#1C1C1C] font-mono-tag font-semibold">API Key Label / Purpose</label>
+                  <label className="block text-[#1C1C1C] font-mono-tag font-semibold">{copy.keyLabel}</label>
                   <div className="flex gap-2">
                     <input
                       type="text"
                       required
-                      placeholder="e.g. DeepSeek-R1 Agent Gateway"
+                      placeholder={copy.keyPlaceholder}
                       value={newKeyName}
                       onChange={(e) => setNewKeyName(e.target.value)}
                       className="flex-1 px-3 py-2 bg-[#F8F7F4] border border-[#1C1C1C]/20 rounded-lg text-[#1C1C1C] focus:outline-none focus:border-[#C73E28]"
@@ -277,14 +300,14 @@ console.log(completion.choices[0].message.content);`;
                       type="submit"
                       className="btn-editorial-primary px-4 py-2 text-xs cursor-pointer"
                     >
-                      Generate Key
+                      {copy.generateKey}
                     </button>
                     <button
                       type="button"
                       onClick={() => setShowCreateForm(false)}
                       className="px-3 py-2 bg-white border border-[#1C1C1C]/15 rounded-lg text-[#1C1C1C] hover:bg-[#1C1C1C]/5 transition cursor-pointer"
                     >
-                      Cancel
+                      {copy.cancel}
                     </button>
                   </div>
                 </form>
@@ -298,11 +321,13 @@ console.log(completion.choices[0].message.content);`;
                     className="p-4 rounded-xl bg-white border border-[#1C1C1C]/15 hover:border-[#1C1C1C]/30 transition space-y-2 shadow-2xs"
                   >
                     <div className="flex items-center justify-between text-xs">
-                      <span className="font-semibold text-[#1C1C1C]">{k.name}</span>
+                      <span className="font-semibold text-[#1C1C1C]">
+                        {k.nameKey ? copy.sampleKeyNames[k.nameKey] : k.name}
+                      </span>
                       <div className="flex items-center gap-2 text-[10px] text-[#1C1C1C]/60 font-mono-tag">
-                        <span>Created: {k.created}</span>
+                        <span>{copy.created} {k.created}</span>
                         <span>•</span>
-                        <span>Used: {k.lastUsed}</span>
+                        <span>{copy.used} {k.lastUsedKey ? copy.sampleLastUsed[k.lastUsedKey] : k.lastUsed}</span>
                       </div>
                     </div>
 
@@ -311,14 +336,14 @@ console.log(completion.choices[0].message.content);`;
                       <button
                         onClick={() => handleCopy(k.key, k.id)}
                         className="p-1 text-[#1C1C1C]/60 hover:text-[#C73E28] transition cursor-pointer"
-                        title="Copy Key"
+                        title={copy.copyKey}
                       >
                         {copiedId === k.id ? <Check className="w-4 h-4 text-[#C73E28]" /> : <Copy className="w-4 h-4" />}
                       </button>
                       <button
                         onClick={() => handleDeleteKey(k.id)}
                         className="p-1 text-[#1C1C1C]/40 hover:text-rose-600 transition cursor-pointer"
-                        title="Revoke Key"
+                        title={copy.revokeKey}
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -331,13 +356,13 @@ console.log(completion.choices[0].message.content);`;
               <div className="p-4 bg-white rounded-xl border border-[#1C1C1C]/15 space-y-3">
                 <div className="flex items-center justify-between text-xs font-mono-tag">
                   <span className="text-[#1C1C1C]/70 flex items-center gap-1.5 font-bold">
-                    <Terminal className="w-4 h-4 text-[#C73E28]" /> 1-Line Drop-in Quickstart
+                    <Terminal className="w-4 h-4 text-[#C73E28]" /> {copy.fullDocs}
                   </span>
                   <button
                     onClick={() => { onClose(); onNavigateToDocs(); }}
                     className="text-[#C73E28] hover:underline flex items-center gap-1 text-xs cursor-pointer font-semibold"
                   >
-                    <span>Full API Documentation</span>
+                    <span>{copy.fullDocs}</span>
                     <ExternalLink className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -346,7 +371,7 @@ console.log(completion.choices[0].message.content);`;
   -H "Authorization: Bearer ${keys[0]?.key || 'sk-helstera-xxx'}" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "deepseek-v3",
+    "model": "${DEFAULT_MODEL_ID}",
     "messages": [{"role": "user", "content": "Hello Helstera!"}]
   }'`}
                 </pre>
@@ -360,35 +385,34 @@ console.log(completion.choices[0].message.content);`;
               {/* Controls */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-4 rounded-xl border border-[#1C1C1C]/15">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-mono-tag font-bold text-[#1C1C1C]/70 uppercase">Select Target LLM</label>
+                  <label className="text-xs font-mono-tag font-bold text-[#1C1C1C]/70 uppercase">{copy.targetLlm}</label>
                   <select
                     value={selectedModel}
                     onChange={(e) => setSelectedModel(e.target.value as any)}
                     className="w-full px-3 py-2 bg-[#F8F7F4] border border-[#1C1C1C]/20 rounded-lg text-xs font-mono-tag text-[#1C1C1C] focus:outline-none focus:border-[#C73E28]"
                   >
-                    <option value="deepseek-v3">DeepSeek-V3 ($0.27 / 1M)</option>
-                    <option value="deepseek-r1">DeepSeek-R1 ($0.55 / 1M Reasoning)</option>
-                    <option value="qwen-max-2.5">Qwen-Max 2.5 ($1.60 / 1M)</option>
-                    <option value="glm-4-plus">GLM-4 Plus ($1.40 / 1M)</option>
+                    {MODELS_DATA.map((model) => (
+                      <option key={model.id} value={model.id}>{model.name} ({t.content.models[model.id].category})</option>
+                    ))}
                   </select>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-mono-tag font-bold text-[#1C1C1C]/70 uppercase">Prompt Preset</label>
+                  <label className="text-xs font-mono-tag font-bold text-[#1C1C1C]/70 uppercase">{copy.promptPreset}</label>
                   <div className="flex gap-1.5">
                     <button
                       type="button"
-                      onClick={() => setUserPrompt('Explain the architectural advantages of DeepSeek-V3 Multi-Head Latent Attention (MLA).')}
+                      onClick={() => selectPrompt('presetA')}
                       className="px-2.5 py-1.5 bg-[#F8F7F4] hover:bg-[#1C1C1C]/5 border border-[#1C1C1C]/10 rounded-lg text-[11px] text-[#1C1C1C] truncate cursor-pointer flex-1"
                     >
-                      MLA Arch
+                      {copy.promptPreset} A
                     </button>
                     <button
                       type="button"
-                      onClick={() => setUserPrompt('Write a Python async streaming client for OpenAI-compatible Helstera API.')}
+                      onClick={() => selectPrompt('presetB')}
                       className="px-2.5 py-1.5 bg-[#F8F7F4] hover:bg-[#1C1C1C]/5 border border-[#1C1C1C]/10 rounded-lg text-[11px] text-[#1C1C1C] truncate cursor-pointer flex-1"
                     >
-                      Python Client
+                      {copy.promptPreset} B
                     </button>
                   </div>
                 </div>
@@ -397,15 +421,15 @@ console.log(completion.choices[0].message.content);`;
               {/* Input Area */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-xs font-mono-tag">
-                  <span className="font-bold text-[#1C1C1C]">User Prompt</span>
-                  <span className="text-[#1C1C1C]/50">{userPrompt.length} chars</span>
+                  <span className="font-bold text-[#1C1C1C]">{copy.userPrompt}</span>
+                  <span className="text-[#1C1C1C]/50">{userPrompt.length} {copy.characters}</span>
                 </div>
                 <textarea
                   rows={3}
                   value={userPrompt}
-                  onChange={(e) => setUserPrompt(e.target.value)}
+                  onChange={handlePromptChange}
                   className="w-full p-3 bg-white border border-[#1C1C1C]/20 rounded-xl text-xs text-[#1C1C1C] font-sans focus:outline-none focus:border-[#C73E28] transition"
-                  placeholder="Enter prompt..."
+                  placeholder={copy.promptPlaceholder}
                 />
               </div>
 
@@ -419,18 +443,18 @@ console.log(completion.choices[0].message.content);`;
                   {isLoading ? (
                     <>
                       <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                      <span>Routing Via Marine Optical Line...</span>
+                      <span>{copy.routingSelected}</span>
                     </>
                   ) : (
                     <>
                       <Play className="w-3.5 h-3.5 fill-current" />
-                      <span>Run API Test Request</span>
+                      <span>{copy.runRequest}</span>
                     </>
                   )}
                 </button>
 
                 <div className="flex items-center gap-2 text-xs font-mono-tag">
-                  <span className="text-[#1C1C1C]/60">Code Export:</span>
+                  <span className="text-[#1C1C1C]/60">{copy.codeExport}</span>
                   {(['python', 'curl', 'node'] as const).map((lang) => (
                     <button
                       key={lang}
@@ -452,13 +476,13 @@ console.log(completion.choices[0].message.content);`;
                 {/* Code Box */}
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between text-[11px] font-mono-tag text-[#1C1C1C]/60">
-                    <span>Generated Code Snippet ({codeLanguage})</span>
+                    <span>{copy.generatedSnippet} ({codeLanguage})</span>
                     <button
                       onClick={() => navigator.clipboard.writeText(getCodeSnippet())}
                       className="hover:text-[#1C1C1C] flex items-center gap-1 cursor-pointer"
                     >
                       <Copy className="w-3 h-3" />
-                      <span>Copy</span>
+                      <span>{copy.copy}</span>
                     </button>
                   </div>
                   <pre className="p-3.5 bg-[#1C1C1C] text-[#F8F7F4] rounded-xl font-mono-tag text-[11px] leading-relaxed overflow-x-auto h-48 border border-[#1C1C1C]">
@@ -469,10 +493,10 @@ console.log(completion.choices[0].message.content);`;
                 {/* Output Box */}
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between text-[11px] font-mono-tag text-[#1C1C1C]/60">
-                    <span>Live Output Payload</span>
+                    <span>{copy.outputPayload}</span>
                     {responseStats && (
                       <span className="text-[#C73E28] font-bold">
-                        Cost: ${responseStats.cost.toFixed(6)}
+                        {copy.selectedRoute}: {responseStats.routeId}
                       </span>
                     )}
                   </div>
@@ -480,14 +504,14 @@ console.log(completion.choices[0].message.content);`;
                     {isLoading ? (
                       <div className="h-full flex items-center justify-center text-[#1C1C1C]/50 gap-2">
                         <RefreshCw className="w-4 h-4 animate-spin text-[#C73E28]" />
-                        <span>Awaiting volatile RAM response...</span>
+                        <span>{copy.awaitingResponse}</span>
                       </div>
                     ) : responseOutput ? (
                       <pre className="whitespace-pre-wrap">{responseOutput}</pre>
                     ) : (
                       <div className="h-full flex flex-col items-center justify-center text-[#1C1C1C]/40 text-center p-4 space-y-1">
                         <Terminal className="w-6 h-6 text-[#1C1C1C]/30" />
-                        <p>Click "Run API Test Request" to see real-time inference latency and response stats.</p>
+                        <p>{copy.clickRun}</p>
                       </div>
                     )}
                   </div>
@@ -496,22 +520,14 @@ console.log(completion.choices[0].message.content);`;
 
               {/* Response Stats Ribbon */}
               {responseStats && (
-                <div className="grid grid-cols-4 gap-3 bg-white p-3 rounded-xl border border-[#1C1C1C]/15 text-xs font-mono-tag">
+                <div className="grid grid-cols-2 gap-3 bg-white p-3 rounded-xl border border-[#1C1C1C]/15 text-xs font-mono-tag">
                   <div>
-                    <span className="text-[10px] text-[#1C1C1C]/50 uppercase">First Token (TTFT)</span>
-                    <div className="font-bold text-[#1C1C1C]">{responseStats.ttft} ms</div>
+                    <span className="text-[10px] text-[#1C1C1C]/50 uppercase">{copy.selectedRoute}</span>
+                    <div className="font-bold text-[#1C1C1C]">{responseStats.routeId}</div>
                   </div>
                   <div>
-                    <span className="text-[10px] text-[#1C1C1C]/50 uppercase">Speed</span>
-                    <div className="font-bold text-[#C73E28]">{responseStats.speed} tok/s</div>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-[#1C1C1C]/50 uppercase">Total Tokens</span>
+                    <span className="text-[10px] text-[#1C1C1C]/50 uppercase">{copy.totalTokens}</span>
                     <div className="font-bold text-[#1C1C1C]">{responseStats.tokens}</div>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-[#1C1C1C]/50 uppercase">Computed Cost</span>
-                    <div className="font-bold text-[#C73E28]">${responseStats.cost.toFixed(6)}</div>
                   </div>
                 </div>
               )}
@@ -523,38 +539,38 @@ console.log(completion.choices[0].message.content);`;
             <div className="space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="p-4 bg-white rounded-xl border border-[#1C1C1C]/15 space-y-1">
-                  <span className="text-[10px] font-mono-tag text-[#1C1C1C]/60 uppercase">Free Trial Credit</span>
-                  <div className="font-serif-title text-2xl font-bold text-[#1C1C1C]">$5.00</div>
-                  <div className="text-[10px] font-mono-tag text-emerald-600 font-semibold">Active & Valid</div>
+                  <span className="text-[10px] font-mono-tag text-[#1C1C1C]/60 uppercase">{copy.accountBalance}</span>
+                  <div className="font-serif-title text-2xl font-bold text-[#1C1C1C]">{copy.live}</div>
+                  <div className="text-[10px] font-mono-tag text-emerald-600 font-semibold">{copy.checkTerms}</div>
                 </div>
 
                 <div className="p-4 bg-white rounded-xl border border-[#1C1C1C]/15 space-y-1">
-                  <span className="text-[10px] font-mono-tag text-[#1C1C1C]/60 uppercase">Monthly API Calls</span>
-                  <div className="font-serif-title text-2xl font-bold text-[#1C1C1C]">1,280</div>
-                  <div className="text-[10px] font-mono-tag text-[#1C1C1C]/60">0% Error Rate</div>
+                  <span className="text-[10px] font-mono-tag text-[#1C1C1C]/60 uppercase">{copy.monthlyUsage}</span>
+                  <div className="font-serif-title text-2xl font-bold text-[#1C1C1C]">{copy.telemetry}</div>
+                  <div className="text-[10px] font-mono-tag text-[#1C1C1C]/60">{copy.dashboardSource}</div>
                 </div>
 
                 <div className="p-4 bg-white rounded-xl border border-[#1C1C1C]/15 space-y-1">
-                  <span className="text-[10px] font-mono-tag text-[#1C1C1C]/60 uppercase">Avg Gateway Latency</span>
-                  <div className="font-serif-title text-2xl font-bold text-[#C73E28]">138 ms</div>
-                  <div className="text-[10px] font-mono-tag text-[#C73E28] font-semibold">Sub-180ms SLA Verified</div>
+                  <span className="text-[10px] font-mono-tag text-[#1C1C1C]/60 uppercase">{copy.routeHealth}</span>
+                  <div className="font-serif-title text-2xl font-bold text-[#C73E28]">{copy.live}</div>
+                  <div className="text-[10px] font-mono-tag text-[#C73E28] font-semibold">{copy.verifyRelease}</div>
                 </div>
               </div>
 
               <div className="p-4 bg-white rounded-xl border border-[#1C1C1C]/15 space-y-3">
-                <h4 className="font-serif-title text-base font-semibold text-[#1C1C1C]">Tier & Quota Limits</h4>
+                <h4 className="font-serif-title text-base font-semibold text-[#1C1C1C]">{copy.quotaLimits}</h4>
                 <div className="space-y-2 text-xs font-mono-tag">
                   <div className="flex justify-between py-1.5 border-b border-[#1C1C1C]/10">
-                    <span className="text-[#1C1C1C]/70">Rate Limit (RPM)</span>
-                    <span className="font-bold text-[#1C1C1C]">10,000 requests / min</span>
+                    <span className="text-[#1C1C1C]/70">{copy.requestLimits}</span>
+                    <span className="font-bold text-[#1C1C1C]">{copy.accountConfigured}</span>
                   </div>
                   <div className="flex justify-between py-1.5 border-b border-[#1C1C1C]/10">
-                    <span className="text-[#1C1C1C]/70">Token Limit (TPM)</span>
-                    <span className="font-bold text-[#1C1C1C]">2,000,000 tokens / min</span>
+                    <span className="text-[#1C1C1C]/70">{copy.tokenLimits}</span>
+                    <span className="font-bold text-[#1C1C1C]">{copy.accountConfigured}</span>
                   </div>
                   <div className="flex justify-between py-1.5">
-                    <span className="text-[#1C1C1C]/70">Data Retention Policy</span>
-                    <span className="font-bold text-[#C73E28]">Zero Data Retention (ZDR RAM)</span>
+                    <span className="text-[#1C1C1C]/70">{copy.dataPolicy}</span>
+                    <span className="font-bold text-[#C73E28]">{copy.contractScoped}</span>
                   </div>
                 </div>
               </div>

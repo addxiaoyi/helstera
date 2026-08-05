@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../i18n/LanguageContext';
+import { DEFAULT_MODEL_ID, MODELS_DATA } from '../data/modelsData';
 import {
   X,
   Zap,
@@ -27,29 +28,23 @@ export const LiveGatewayPingModal: React.FC<LiveGatewayPingModalProps> = ({
   openApiKeyModal
 }) => {
   const { t } = useLanguage();
+  const copy = t.ui.modals.ping;
   const [selectedOrigin, setSelectedOrigin] = useState<'tokyo' | 'sg' | 'fra' | 'sf' | 'london'>('sg');
-  const [selectedModel, setSelectedModel] = useState<'v3' | 'r1' | 'qwen'>('v3');
+  const [selectedModel, setSelectedModel] = useState(DEFAULT_MODEL_ID);
   const [isRunning, setIsRunning] = useState(false);
   const [logs, setLogs] = useState<string[]>([]);
   const [pingResult, setPingResult] = useState<{
-    ttft: number;
-    totalLatency: number;
-    tps: number;
-    costPerReq: string;
+    routeId: string;
+    origin: string;
+    status: string;
   } | null>(null);
 
   const origins = {
-    sg: { name: 'Singapore (AWS ap-southeast-1)', distance: '1,850 km', basePing: 32 },
-    tokyo: { name: 'Tokyo (GCP asia-northeast1)', distance: '2,900 km', basePing: 45 },
-    fra: { name: 'Frankfurt (AWS eu-central-1)', distance: '8,700 km', basePing: 135 },
-    sf: { name: 'San Francisco (AWS us-west-1)', distance: '10,200 km', basePing: 148 },
-    london: { name: 'London (GCP europe-west2)', distance: '9,100 km', basePing: 140 }
-  };
-
-  const models = {
-    v3: { name: 'DeepSeek-V3 671B MoE', tps: 184, rate: '$0.27 / 1M' },
-    r1: { name: 'DeepSeek-R1 Reasoning', tps: 122, rate: '$0.55 / 1M' },
-    qwen: { name: 'Qwen-Max 2.5', tps: 156, rate: '$1.60 / 1M' }
+    sg: { name: copy.origins.sg },
+    tokyo: { name: copy.origins.tokyo },
+    fra: { name: copy.origins.fra },
+    sf: { name: copy.origins.sf },
+    london: { name: copy.origins.london }
   };
 
   const handleRunDiagnostic = () => {
@@ -57,17 +52,15 @@ export const LiveGatewayPingModal: React.FC<LiveGatewayPingModalProps> = ({
     setLogs([]);
     setPingResult(null);
 
-    const base = origins[selectedOrigin].basePing;
-    const modelInfo = models[selectedModel];
+    const origin = origins[selectedOrigin];
 
     const stepLogs = [
-      `[0.0ms] Resolving api.helstera.com via TLS 1.3...`,
-      `[${(base * 0.2).toFixed(1)}ms] Handshake OK. Connecting via Shantou Optical Fiber Route...`,
-      `[${(base * 0.6).toFixed(1)}ms] Pilot Zone RAM Volatile Memory sandbox provisioned (ZDR verified).`,
-      `[${(base * 0.9).toFixed(1)}ms] Request received at DeepSeek H800 MoE Cluster in RAM.`,
-      `[${(base + 65).toFixed(1)}ms] First token generated (TTFT: ${(base + 65).toFixed(1)}ms).`,
-      `[${(base + 115).toFixed(1)}ms] Streaming token payload at ${modelInfo.tps} tok/s...`,
-      `[${(base + 128).toFixed(1)}ms] Complete. Status 200 OK. 0 bytes retained to disk.`
+      copy.logs.resolving,
+      `${copy.logs.accepted} ${origin.name}`,
+      copy.logs.tls,
+      `${copy.logs.model} ${selectedModel}.`,
+      copy.logs.prepared,
+      copy.logs.complete
     ];
 
     stepLogs.forEach((log, index) => {
@@ -75,12 +68,7 @@ export const LiveGatewayPingModal: React.FC<LiveGatewayPingModalProps> = ({
         setLogs(prev => [...prev, log]);
         if (index === stepLogs.length - 1) {
           setIsRunning(false);
-          setPingResult({
-            ttft: Math.round(base + 65),
-            totalLatency: Math.round(base + 128),
-            tps: modelInfo.tps,
-            costPerReq: '$0.000081'
-          });
+          setPingResult({ routeId: selectedModel, origin: origin.name, status: copy.simulationComplete });
         }
       }, (index + 1) * 220);
     });
@@ -134,7 +122,7 @@ export const LiveGatewayPingModal: React.FC<LiveGatewayPingModalProps> = ({
               >
                 {Object.entries(origins).map(([key, item]) => (
                   <option key={key} value={key}>
-                    {item.name} ({item.distance})
+                    {item.name}
                   </option>
                 ))}
               </select>
@@ -149,9 +137,9 @@ export const LiveGatewayPingModal: React.FC<LiveGatewayPingModalProps> = ({
                 onChange={(e) => setSelectedModel(e.target.value as any)}
                 className="w-full bg-[#F8F7F4] border border-[#1C1C1C]/15 rounded-xl p-2.5 font-mono-tag text-xs text-[#1C1C1C] focus:outline-none cursor-pointer"
               >
-                {Object.entries(models).map(([key, item]) => (
-                  <option key={key} value={key}>
-                    {item.name} ({item.rate})
+                {MODELS_DATA.map((model) => (
+                  <option key={model.id} value={model.id}>
+                    {model.name} ({t.content.models[model.id].category})
                   </option>
                 ))}
               </select>
@@ -167,7 +155,7 @@ export const LiveGatewayPingModal: React.FC<LiveGatewayPingModalProps> = ({
             {isRunning ? (
               <>
                 <RefreshCw className="w-4 h-4 animate-spin text-white" />
-                <span>Pinging Shantou Optical Node...</span>
+                <span>{copy.tracing}</span>
               </>
             ) : (
               <>
@@ -180,11 +168,11 @@ export const LiveGatewayPingModal: React.FC<LiveGatewayPingModalProps> = ({
           {/* Real-time Hop Terminal Log */}
           <div className="p-4 bg-[#F8F7F4] rounded-xl border border-[#1C1C1C]/15 font-mono-tag text-xs leading-relaxed space-y-1 max-h-48 overflow-y-auto text-[#1C1C1C]">
             <div className="text-[#1C1C1C]/50 border-b border-[#1C1C1C]/10 pb-1 text-[11px] flex items-center justify-between">
-              <span>ROUTE TERMINAL TRACE</span>
-              <span>GATEWAY: api.helstera.com</span>
+              <span>{copy.terminalTitle}</span>
+              <span>{copy.gateway}</span>
             </div>
             {logs.length === 0 ? (
-              <p className="text-[#1C1C1C]/40 italic py-2">Click "Run Real-Time Route Ping Diagnostic" to initiate route trace...</p>
+              <p className="text-[#1C1C1C]/40 italic py-2">{copy.emptyLog}</p>
             ) : (
               logs.map((line, idx) => (
                 <div key={idx} className="text-[#1C1C1C] flex items-center gap-2">
@@ -195,24 +183,20 @@ export const LiveGatewayPingModal: React.FC<LiveGatewayPingModalProps> = ({
             )}
           </div>
 
-          {/* Result Card metrics */}
+          {/* Result Card */}
           {pingResult && (
-            <div className="p-4 bg-white border border-[#1C1C1C]/20 rounded-xl grid grid-cols-2 sm:grid-cols-4 gap-4 text-center font-mono-tag text-xs">
+            <div className="p-4 bg-white border border-[#1C1C1C]/20 rounded-xl grid grid-cols-1 sm:grid-cols-3 gap-4 text-center font-mono-tag text-xs">
               <div>
-                <span className="text-[#1C1C1C]/60 text-[10px] block uppercase">Total Latency</span>
-                <span className="text-base font-bold text-[#C73E28]">{pingResult.totalLatency}ms</span>
+                <span className="text-[#1C1C1C]/60 text-[10px] block uppercase">{copy.selectedRoute}</span>
+                <span className="text-base font-bold text-[#C73E28]">{pingResult.routeId}</span>
               </div>
               <div>
-                <span className="text-[#1C1C1C]/60 text-[10px] block uppercase">Time to First Token</span>
-                <span className="text-base font-bold text-[#1C1C1C]">{pingResult.ttft}ms</span>
+                <span className="text-[#1C1C1C]/60 text-[10px] block uppercase">{copy.origin}</span>
+                <span className="text-base font-bold text-[#1C1C1C]">{pingResult.origin}</span>
               </div>
               <div>
-                <span className="text-[#1C1C1C]/60 text-[10px] block uppercase">Throughput Speed</span>
-                <span className="text-base font-bold text-[#1C1C1C]">{pingResult.tps} tok/s</span>
-              </div>
-              <div>
-                <span className="text-[#1C1C1C]/60 text-[10px] block uppercase">Est. Cost/Req</span>
-                <span className="text-base font-bold text-[#C73E28]">{pingResult.costPerReq}</span>
+                <span className="text-[#1C1C1C]/60 text-[10px] block uppercase">{copy.status}</span>
+                <span className="text-base font-bold text-[#1C1C1C]">{pingResult.status}</span>
               </div>
             </div>
           )}
@@ -221,7 +205,7 @@ export const LiveGatewayPingModal: React.FC<LiveGatewayPingModalProps> = ({
           <div className="pt-2 flex items-center justify-between border-t border-[#1C1C1C]/15 text-xs font-mono-tag text-[#1C1C1C]/60">
             <span className="flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 text-[#C73E28]" />
-              ZDR Volatile Memory Compliant
+              {copy.policyAttached}
             </span>
 
             <button
@@ -231,7 +215,7 @@ export const LiveGatewayPingModal: React.FC<LiveGatewayPingModalProps> = ({
               }}
               className="text-[#C73E28] font-bold hover:underline flex items-center gap-1 cursor-pointer"
             >
-              <span>Get API Key</span>
+              <span>{copy.getApiKey}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>

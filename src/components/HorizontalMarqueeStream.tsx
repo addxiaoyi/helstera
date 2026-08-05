@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, ArrowRight, Zap, Shield, Check, Cpu, Globe, Key } from 'lucide-react';
 import { MODELS_DATA } from '../data/modelsData';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface HorizontalMarqueeStreamProps {
   openApiKeyModal: () => void;
@@ -9,26 +10,16 @@ interface HorizontalMarqueeStreamProps {
 }
 
 export const HorizontalMarqueeStream: React.FC<HorizontalMarqueeStreamProps> = ({ openApiKeyModal, currency }) => {
-  const currencySymbol = currency === 'CNY' ? '¥' : '$';
-
-  // Row 1 Items: Flagship LLM Stream
+  const { t } = useLanguage();
+  const marquee = t.ui.marquee;
+  // The marquee keeps the route catalog visible without inventing static rate data.
   const row1Items = [
     ...MODELS_DATA,
     ...MODELS_DATA // Duplicated for seamless infinite loop
   ];
 
-  // Row 2 Items: Key Metrics & Infrastructure Nodes Stream
-  const row2Metrics = [
-    { label: 'DeepSeek-V3 Rate', value: '$0.27 / 1M', highlight: '90% vs GPT-4o' },
-    { label: 'Sub-180ms SLA', value: 'Dedicated Optical Marine Fiber', highlight: '99.9% Uptime' },
-    { label: 'Shantou Pilot Zone DPA', value: 'Formal B2B Legal Paper Contract', highlight: 'Compliance' },
-    { label: 'Zero Data Retention (ZDR)', value: 'RAM Volatile Execution', highlight: 'Zero Disk Logs' },
-    { label: 'DeepSeek-R1 Reasoning', value: '$0.55 / 1M Tokens', highlight: '90% vs OpenAI o1' },
-    { label: '1-Line OpenAI Drop-in', value: 'baseURL="https://api.helstera.com/v1"', highlight: '0 Code Change' },
-    { label: 'Qwen-Max 2.5', value: '$1.60 / 1M Tokens', highlight: '68% vs Claude 3.5' },
-    { label: 'Volatile RAM Purge', value: 'Instant RAM Memory Erasure', highlight: 'SOC2 & GDPR' },
-  ];
-  const row2Items = [...row2Metrics, ...row2Metrics]; // Duplicated for infinite loop
+  const row2Metrics = Object.values(marquee.metrics);
+  const row2Items = [...row2Metrics, ...row2Metrics];
 
   return (
     <div className="space-y-6 overflow-hidden py-4 border-t border-b border-[#1C1C1C]/15 bg-white/40 backdrop-blur-xs relative">
@@ -36,9 +27,9 @@ export const HorizontalMarqueeStream: React.FC<HorizontalMarqueeStreamProps> = (
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between text-xs font-mono-tag text-[#1C1C1C]/70">
         <div className="flex items-center gap-2 font-bold">
           <span className="w-2 h-2 rounded-full bg-[#C73E28] animate-pulse" />
-          <span>LIVE HORIZONTAL STREAM • FLAGSHIP OPEN-WEIGHTS & INFRASTRUCTURE</span>
+          <span>{marquee.label}</span>
         </div>
-        <span className="hidden sm:inline text-[#1C1C1C]/50">Hover to pause continuous horizontal scroll</span>
+        <span className="hidden sm:inline text-[#1C1C1C]/50">{marquee.pauseHint}</span>
       </div>
 
       {/* Row 1: Leftward Horizontal Floating Stream */}
@@ -63,21 +54,28 @@ export const HorizontalMarqueeStream: React.FC<HorizontalMarqueeStreamProps> = (
                 <Cpu className="w-4 h-4" />
               </div>
               <div>
+                {(() => {
+                  const copy = t.content.models[m.id];
+                  return (
+                    <>
                 <div className="flex items-center gap-1.5">
                   <span className="font-serif-title font-semibold text-sm text-[#1C1C1C] group-hover:text-[#C73E28] transition-colors">
                     {m.name}
                   </span>
                   {m.badge && (
                     <span className="text-[9px] font-mono-tag px-1.5 py-0.2 rounded bg-[#C73E28]/10 text-[#C73E28] font-bold">
-                      {m.badge}
+                    {copy.badge}
                     </span>
                   )}
                 </div>
                 <div className="text-[10px] font-mono-tag text-[#1C1C1C]/60 flex items-center gap-2">
-                  <span>In: {currencySymbol}{m.inputPrice}</span>
+                  <span>{copy.category}</span>
                   <span>•</span>
-                  <span className="text-[#C73E28] font-bold">Save 80%</span>
+                  <span className="text-[#C73E28] font-bold">{copy.rateLabel}</span>
                 </div>
+                    </>
+                  );
+                })()}
               </div>
             </div>
           ))}

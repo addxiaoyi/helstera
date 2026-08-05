@@ -26,105 +26,53 @@ export const EnterpriseComplianceSection: React.FC<EnterpriseComplianceSectionPr
   openContractModal
 }) => {
   const { t } = useLanguage();
+  const enterprise = t.ui.enterprise;
   const [selectedNode, setSelectedNode] = useState<number>(2); // Default to Gateway node
 
   const architectureNodes = [
     {
       id: 0,
-      title: '1. Global Client / SDK',
-      tag: 'TLS 1.3 / AES-256',
       icon: <Globe className="w-5 h-5 text-[#C73E28]" />,
-      summary: 'Global apps & AI agents initiate requests via OpenAI-compatible endpoints.',
-      details: {
-        latency: '< 5ms Edge',
-        security: 'End-to-End TLS 1.3 256-bit encryption',
-        compliance: 'Strict CORS & Token Auth Validation',
-        policy: 'Client Payload Sanitization',
-        specs: 'OpenAI Python, Node.js, LangChain, AutoGPT SDK support'
-      }
+      ...enterprise.nodes.client,
     },
     {
       id: 1,
-      title: '2. Marine Optical Fiber',
-      tag: 'IPLC / IEPL Marine Line',
       icon: <Zap className="w-5 h-5 text-[#C73E28]" />,
-      summary: 'Dedicated optical marine cables bypass public Internet bottlenecks.',
-      details: {
-        latency: 'Sub-180ms Cross-Border',
-        security: 'Physical Optical Strand Encryption',
-        compliance: 'Guaranteed 99.9% Latency SLA',
-        policy: 'No Public Transit Hop Inspection',
-        specs: 'Direct Hong Kong / Shantou Optical Transit Conduit'
-      }
+      ...enterprise.nodes.network,
     },
     {
       id: 2,
-      title: '3. Shantou Pilot Zone Gateway',
-      tag: 'Data Processing Zone (来数加工)',
       icon: <ShieldCheck className="w-5 h-5 text-[#C73E28]" />,
-      summary: 'Regulated special economic policy framework for legal cross-border processing.',
-      details: {
-        latency: '< 2ms Gate Processing',
-        security: 'RAM-Only Buffer Allocation',
-        compliance: 'Overseas Chinese Pilot Zone Data Regulation Policy',
-        policy: 'Custom B2B Paper Data Processing Agreement (DPA)',
-        specs: 'Formal Government-Backed Data Processing Zone Status'
-      }
+      ...enterprise.nodes.governance,
     },
     {
       id: 3,
-      title: '4. MoE Inference Cluster',
-      tag: 'DeepSeek / Qwen / GLM GPUs',
       icon: <Cpu className="w-5 h-5 text-[#C73E28]" />,
-      summary: 'High-density H800 / H20 GPU nodes running flagship open-weights models.',
-      details: {
-        latency: '85+ Tokens / Sec',
-        security: 'Isolated Micro-VM Sandboxes',
-        compliance: 'Multi-Tenant RAM Segregation',
-        policy: 'Zero Model Retraining Guarantee',
-        specs: 'FP8 MoE Acceleration with FlashAttention-3'
-      }
+      ...enterprise.nodes.routes,
     },
     {
       id: 4,
-      title: '5. Volatile RAM Purge',
-      tag: 'Zero Data Retention (ZDR)',
       icon: <Trash2 className="w-5 h-5 text-[#C73E28]" />,
-      summary: 'Prompts & completions are completely destroyed in RAM upon completion.',
-      details: {
-        latency: '0ms Post-Response',
-        security: 'Immediate Volatile Memory Overwrite',
-        compliance: 'Zero Disk Persistence Audit Logged',
-        policy: 'No Prompt Storage on File Systems',
-        specs: 'SOC 2 Type II & GDPR Compliant Lifecycle'
-      }
+      ...enterprise.nodes.retention,
     }
   ];
 
   const securityPillars = [
     {
-      title: 'Pilot Zone Legal Framework',
-      desc: 'Authorized under Overseas Chinese Pilot Zone\'s "Data Processing Zone" (来数加工) policy, ensuring full cross-border legal compliance.',
       icon: <ShieldCheck className="w-5 h-5 text-[#C73E28]" />,
-      badge: 'Regulated Route'
+      ...enterprise.pillars.governance,
     },
     {
-      title: 'Zero Data Retention (ZDR)',
-      desc: 'Prompt and response payloads are executed strictly in volatile RAM memory and destroyed immediately post-completion. Zero persistent storage.',
       icon: <Lock className="w-5 h-5 text-[#C73E28]" />,
-      badge: 'RAM Purge'
+      ...enterprise.pillars.retention,
     },
     {
-      title: 'Commercial Paper DPA & Contract',
-      desc: 'Custom enterprise legal paper with Data Processing Agreements (DPA), standard contractual clauses (SCC), and custom SLA guarantees.',
       icon: <FileText className="w-5 h-5 text-[#C73E28]" />,
-      badge: 'DPA Ready'
+      ...enterprise.pillars.contract,
     },
     {
-      title: 'Dedicated IPLC/IEPL Cross-Border Lines',
-      desc: 'Direct optical dedicated lines bypass public internet congestions with sub-180ms latency and 99.9% uptime SLA.',
       icon: <Server className="w-5 h-5 text-[#C73E28]" />,
-      badge: 'Sub-180ms'
+      ...enterprise.pillars.network,
     }
   ];
 
@@ -135,7 +83,7 @@ export const EnterpriseComplianceSection: React.FC<EnterpriseComplianceSectionPr
       {/* Direct Kinetic Section Header */}
       <div className="text-center space-y-3 max-w-3xl mx-auto">
         <KineticText
-          text="Regulated Cross-Border AI Infrastructure"
+          text={enterprise.title}
           type="words"
           direction="left"
           stagger={0.04}
@@ -143,7 +91,7 @@ export const EnterpriseComplianceSection: React.FC<EnterpriseComplianceSectionPr
           className="font-serif-title text-3xl sm:text-5xl font-semibold text-[#1C1C1C] tracking-tight"
         />
         <KineticText
-          text="Helstera provides international enterprises and tech teams with standard commercial contracts, legal DPAs, and zero-data-retention security guarantees."
+          text={enterprise.subtitle}
           type="words"
           direction="right"
           stagger={0.02}
@@ -159,11 +107,11 @@ export const EnterpriseComplianceSection: React.FC<EnterpriseComplianceSectionPr
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#C73E28] animate-pulse" />
             <span className="text-xs font-bold uppercase text-[#1C1C1C]">
-              End-to-End Compliant Data Transit Flow
+              {enterprise.pathTitle}
             </span>
           </div>
           <span className="text-xs text-[#1C1C1C]/60">
-            Click any node in the pipeline to inspect technical & legal specs
+            {enterprise.pathHint}
           </span>
         </div>
 
@@ -196,7 +144,7 @@ export const EnterpriseComplianceSection: React.FC<EnterpriseComplianceSectionPr
                   <span className={`text-[10px] font-mono-tag px-2 py-0.5 font-bold ${
                     isSelected ? 'bg-[#C73E28] text-white' : 'bg-[#C73E28]/10 text-[#C73E28]'
                   }`}>
-                    Step 0{node.id + 1}
+                    {enterprise.stepPrefix} 0{node.id + 1}
                   </span>
                 </div>
 
@@ -246,22 +194,22 @@ export const EnterpriseComplianceSection: React.FC<EnterpriseComplianceSectionPr
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2 text-xs font-mono-tag">
               <div className="p-3 border-l-2 border-[#1C1C1C]/20 space-y-1">
-                <span className="text-[10px] text-[#1C1C1C]/50 uppercase">Latency Benchmark</span>
-                <div className="font-bold text-[#C73E28]">{active.details.latency}</div>
+                <span className="text-[10px] text-[#1C1C1C]/50 uppercase">{enterprise.detailLabels.routeSignal}</span>
+                <div className="font-bold text-[#C73E28]">{active.details.routeSignal}</div>
               </div>
 
               <div className="p-3 border-l-2 border-[#1C1C1C]/20 space-y-1">
-                <span className="text-[10px] text-[#1C1C1C]/50 uppercase">Security Spec</span>
+                <span className="text-[10px] text-[#1C1C1C]/50 uppercase">{enterprise.detailLabels.security}</span>
                 <div className="font-bold text-[#1C1C1C]">{active.details.security}</div>
               </div>
 
               <div className="p-3 border-l-2 border-[#1C1C1C]/20 space-y-1">
-                <span className="text-[10px] text-[#1C1C1C]/50 uppercase">Regulatory Policy</span>
+                <span className="text-[10px] text-[#1C1C1C]/50 uppercase">{enterprise.detailLabels.compliance}</span>
                 <div className="font-bold text-[#1C1C1C]">{active.details.compliance}</div>
               </div>
 
               <div className="p-3 border-l-2 border-[#1C1C1C]/20 space-y-1">
-                <span className="text-[10px] text-[#1C1C1C]/50 uppercase">Technical Specs</span>
+                <span className="text-[10px] text-[#1C1C1C]/50 uppercase">{enterprise.detailLabels.specs}</span>
                 <div className="font-bold text-[#1C1C1C]">{active.details.specs}</div>
               </div>
             </div>
@@ -278,12 +226,12 @@ export const EnterpriseComplianceSection: React.FC<EnterpriseComplianceSectionPr
           >
             <div className="space-y-3">
               <h3 className="font-serif-title text-xl font-semibold text-[#1C1C1C]">{p.title}</h3>
-              <p className="text-xs text-[#1C1C1C]/75 leading-relaxed font-sans">{p.desc}</p>
+              <p className="text-xs text-[#1C1C1C]/75 leading-relaxed font-sans">{p.description}</p>
             </div>
 
             <div className="pt-2 flex items-center gap-1.5 text-xs text-[#C73E28] font-mono-tag font-semibold">
               <CheckCircle2 className="w-3.5 h-3.5 shrink-0 text-[#C73E28]" />
-              <span>Verified & Compliant</span>
+              <span>{enterprise.evidence}</span>
             </div>
           </div>
         ))}
@@ -292,9 +240,9 @@ export const EnterpriseComplianceSection: React.FC<EnterpriseComplianceSectionPr
       {/* Enterprise DPA Banner */}
       <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-6">
         <div className="space-y-1 text-center sm:text-left">
-          <h3 className="font-serif-title text-2xl font-semibold text-[#1C1C1C]">Need a Formal Paper DPA or Procurement Review?</h3>
+          <h3 className="font-serif-title text-2xl font-semibold text-[#1C1C1C]">{enterprise.dpaTitle}</h3>
           <p className="text-xs text-[#1C1C1C]/75 font-sans">
-            Our legal compliance team can issue custom Data Processing Agreements and work with your procurement department within 24 hours.
+            {enterprise.dpaDescription}
           </p>
         </div>
 
@@ -302,7 +250,7 @@ export const EnterpriseComplianceSection: React.FC<EnterpriseComplianceSectionPr
           onClick={openContractModal}
           className="btn-editorial-primary px-6 py-3 text-xs flex items-center gap-2 cursor-pointer shrink-0"
         >
-          <span>Request Commercial DPA</span>
+          <span>{enterprise.requestPack}</span>
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>

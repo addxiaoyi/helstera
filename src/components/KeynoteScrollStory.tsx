@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent } from 'motion/react';
 import { KineticText } from './KineticText';
-import { NumberTicker } from './NumberTicker';
 import { useLanguage } from '../i18n/LanguageContext';
 import {
   ShieldCheck,
@@ -46,84 +45,35 @@ export const KeynoteScrollStory: React.FC<KeynoteScrollStoryProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeChapterIndex, setActiveChapterIndex] = useState(0);
   const { t } = useLanguage();
+  const story = t.ui.story;
 
   const chapters: Chapter[] = [
     {
       id: 'dilemma',
-      actNumber: 'ACT I',
-      title: 'The Cross-Border Wall',
-      subtitle: 'Global AI developers faced a choice: high API prices or regulatory risk.',
-      quote: '"Connecting international software with China’s premier LLM models required navigating data privacy, network latency, and legal compliance."',
-      badge: 'The Challenge',
-      highlightStat: '$15 / 1M',
-      numVal: 15,
-      numPrefix: '$',
-      numSuffix: ' / 1M',
-      statLabel: 'Legacy OpenAI GPT-4o Cost',
+      ...story.chapters.dilemma,
+      detailPoints: Object.values(story.chapters.dilemma.detailPoints),
       icon: <Globe className="w-6 h-6 text-amber-500" />,
-      detailPoints: [
-        'Geographical IP blocks and unstable proxy routes',
-        'Unclear enterprise data protection standards',
-        'Restrictive API access for non-local software teams'
-      ],
       gradient: 'from-amber-500/20 via-orange-500/10 to-transparent'
     },
     {
       id: 'breakthrough',
-      actNumber: 'ACT II',
-      title: 'The Shantou Pilot Bridge',
-      subtitle: 'A legally compliant gateway engineered inside China’s Special Pilot Zone.',
-      quote: '"We built direct optical submarine cable lines with Zero Data Retention (ZDR) — RAM-only volatile processing with enterprise DPA legal backing."',
-      badge: 'The Innovation',
-      highlightStat: '< 180ms',
-      numVal: 180,
-      numPrefix: '< ',
-      numSuffix: 'ms',
-      statLabel: 'IPLC Direct Optical Latency',
+      ...story.chapters.breakthrough,
+      detailPoints: Object.values(story.chapters.breakthrough.detailPoints),
       icon: <ShieldCheck className="w-6 h-6 text-blue-500" />,
-      detailPoints: [
-        'Direct connection via Shantou Data Pilot Zone',
-        'Zero Data Retention (ZDR) RAM volatile isolation',
-        'Enforceable Commercial Paper & DPA Contracts'
-      ],
       gradient: 'from-blue-500/20 via-cyan-500/10 to-transparent'
     },
     {
       id: 'engine',
-      actNumber: 'ACT III',
-      title: 'Native MoE Compute Power',
-      subtitle: 'DeepSeek-V3, R1, Qwen-Max, and GLM-4 — all in one drop-in endpoint.',
-      quote: '"Change one line of code. Use your existing OpenAI SDK. Access China’s most powerful Mixture-of-Experts (MoE) reasoning models instantly."',
-      badge: 'The Engine',
-      highlightStat: '184 tok/s',
-      numVal: 184,
-      numSuffix: ' tok/s',
-      statLabel: 'DeepSeek-V3 Inference Speed',
+      ...story.chapters.engine,
+      detailPoints: Object.values(story.chapters.engine.detailPoints),
       icon: <Cpu className="w-6 h-6 text-purple-500" />,
-      detailPoints: [
-        'DeepSeek-V3 671B MoE architecture',
-        'DeepSeek-R1 reasoning chain-of-thought engine',
-        '100% OpenAI Python & Node.js drop-in compatibility'
-      ],
       gradient: 'from-purple-500/20 via-indigo-500/10 to-transparent'
     },
     {
       id: 'trust',
-      actNumber: 'ACT IV',
-      title: 'Unbeatable Unit Economics',
-      subtitle: '80% cost reduction with guaranteed 99.9% enterprise uptime SLA.',
-      quote: '"Enterprise AI compute shouldn’t cost a fortune. Scale your production workload with total peace of mind and transparent pay-as-you-go pricing."',
-      badge: 'The Result',
-      highlightStat: '80% Off',
-      numVal: 80,
-      numSuffix: '% Off',
-      statLabel: 'Compared to Western Benchmarks',
+      ...story.chapters.trust,
+      detailPoints: Object.values(story.chapters.trust.detailPoints),
       icon: <Zap className="w-6 h-6 text-emerald-500" />,
-      detailPoints: [
-        'DeepSeek-V3 at just $0.27 / 1M input tokens',
-        'Pre-loaded free trial credits for developer testing',
-        '24/7 dedicated enterprise response SLA'
-      ],
       gradient: 'from-emerald-500/20 via-teal-500/10 to-transparent'
     }
   ];
@@ -267,16 +217,7 @@ export const KeynoteScrollStory: React.FC<KeynoteScrollStoryProps> = ({
                     <div className="p-4 rounded-xl bg-[#F8F7F4] border border-[#1C1C1C]/10 flex items-center justify-between gap-4">
                       <div>
                         <div className="text-2xl sm:text-4xl font-semibold text-[#1C1C1C] font-mono-tag tracking-tight">
-                          {current.numVal !== undefined ? (
-                            <NumberTicker
-                              value={current.numVal}
-                              prefix={current.numPrefix || ''}
-                              suffix={current.numSuffix || ''}
-                              duration={1.2}
-                            />
-                          ) : (
-                            current.highlightStat
-                          )}
+                          {current.highlightStat}
                         </div>
                         <div className="text-xs font-semibold text-[#1C1C1C]/70">
                           {current.statLabel}
@@ -287,7 +228,7 @@ export const KeynoteScrollStory: React.FC<KeynoteScrollStoryProps> = ({
                     {/* Key Bullet Highlights */}
                     <div className="space-y-1.5 pt-1">
                       <div className="text-[11px] font-mono-tag uppercase tracking-wider text-[#1C1C1C]/50 font-semibold">
-                        Key Architecture Details
+                        {story.keyDetails}
                       </div>
                       <div className="space-y-1.5">
                         {current.detailPoints.map((point, pIdx) => (
@@ -304,7 +245,7 @@ export const KeynoteScrollStory: React.FC<KeynoteScrollStoryProps> = ({
                   <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-[#1C1C1C]/10 relative z-10 mt-4">
                     <div className="flex items-center gap-2 text-xs text-[#1C1C1C]/60 font-mono-tag">
                       <Lock className="w-3.5 h-3.5 text-[#C73E28]" />
-                      <span>Zero Data Retention SLA</span>
+                        <span>{story.retentionAttached}</span>
                     </div>
 
                     <div className="flex items-center gap-2.5 w-full sm:w-auto">
@@ -313,14 +254,14 @@ export const KeynoteScrollStory: React.FC<KeynoteScrollStoryProps> = ({
                         className="btn-editorial-primary flex-1 sm:flex-none py-2 px-3.5 text-xs flex items-center justify-center gap-1.5 cursor-pointer"
                       >
                         <Key className="w-3.5 h-3.5" />
-                        <span>Request Key</span>
+                        <span>{story.requestKey}</span>
                       </button>
 
                       <button
                         onClick={openContractModal}
                         className="btn-editorial-outline flex-1 sm:flex-none py-2 px-3.5 text-xs flex items-center justify-center gap-1.5 cursor-pointer"
                       >
-                        <span>DPA Contract</span>
+                        <span>{story.dpaContract}</span>
                       </button>
                     </div>
                   </div>

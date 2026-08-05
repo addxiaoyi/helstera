@@ -13,12 +13,15 @@ import {
   Clock,
   ArrowRight
 } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface ContactViewProps {
   openContractModal: () => void;
 }
 
 export const ContactView: React.FC<ContactViewProps> = ({ openContractModal }) => {
+  const { t } = useLanguage();
+  const contact = t.ui.contact;
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -40,10 +43,10 @@ export const ContactView: React.FC<ContactViewProps> = ({ openContractModal }) =
       <div className="text-center space-y-4 max-w-3xl mx-auto">
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-[#1C1C1C]/15 text-[#C73E28] font-mono-tag text-xs font-semibold">
           <Mail className="w-3.5 h-3.5 text-[#C73E28]" />
-          Enterprise Support & Sales [06]
+          {contact.eyebrow}
         </span>
         <KineticText
-          text="Talk to Our Enterprise Team"
+          text={contact.heroTitle}
           type="words"
           direction="left"
           stagger={0.04}
@@ -51,7 +54,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ openContractModal }) =
           className="font-serif-title text-4xl sm:text-6xl font-semibold text-[#1C1C1C] tracking-tight"
         />
         <KineticText
-          text="Whether you need an enterprise custom quote, legal DPA review, or dedicated high-QPS route allocation, our engineering and compliance leads are ready to assist."
+          text={contact.heroSubtitle}
           type="words"
           direction="right"
           stagger={0.02}
@@ -69,41 +72,41 @@ export const ContactView: React.FC<ContactViewProps> = ({ openContractModal }) =
               <div className="w-14 h-14 rounded-full bg-[#F8F7F4] border border-[#1C1C1C]/15 text-[#C73E28] flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
-              <h3 className="font-serif-title text-2xl font-semibold text-[#1C1C1C]">Inquiry Received</h3>
+              <h3 className="font-serif-title text-2xl font-semibold text-[#1C1C1C]">{contact.inquiryReceived}</h3>
               <p className="text-xs text-[#1C1C1C]/75 max-w-md mx-auto leading-relaxed">
-                Thank you, <span className="text-[#C73E28] font-semibold">{formData.name}</span>. An enterprise executive and legal specialist will respond to <span className="text-[#C73E28] font-semibold">{formData.email}</span> within 2 business hours.
+                {contact.receivedPrefix} <span className="text-[#C73E28] font-semibold">{formData.name}</span>. {contact.receivedMiddle} <span className="text-[#C73E28] font-semibold">{formData.email}</span> {contact.receivedSuffix}
               </p>
               <button
                 onClick={() => setSubmitted(false)}
                 className="btn-editorial-outline text-xs mt-4 cursor-pointer"
               >
-                Send Another Message
+                {contact.sendAnother}
               </button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4 text-xs font-sans">
-              <h3 className="font-serif-title text-2xl font-semibold text-[#1C1C1C] mb-2">Send an Enterprise Inquiry</h3>
+              <h3 className="font-serif-title text-2xl font-semibold text-[#1C1C1C] mb-2">{contact.formTitle}</h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[#1C1C1C] font-medium mb-1">Your Full Name *</label>
+                  <label className="block text-[#1C1C1C] font-medium mb-1">{contact.fullName}</label>
                   <input
                     type="text"
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="e.g. Alex Rivera"
+                    placeholder={contact.namePlaceholder}
                     className="w-full px-3.5 py-2.5 bg-[#F8F7F4] border border-[#1C1C1C]/15 rounded-xl text-[#1C1C1C] font-mono-tag focus:outline-none focus:border-[#C73E28]"
                   />
                 </div>
                 <div>
-                  <label className="block text-[#1C1C1C] font-medium mb-1">Work Email *</label>
+                  <label className="block text-[#1C1C1C] font-medium mb-1">{contact.workEmail}</label>
                   <input
                     type="email"
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="alex@company.com"
+                    placeholder={contact.emailPlaceholder}
                     className="w-full px-3.5 py-2.5 bg-[#F8F7F4] border border-[#1C1C1C]/15 rounded-xl text-[#1C1C1C] font-mono-tag focus:outline-none focus:border-[#C73E28]"
                   />
                 </div>
@@ -111,52 +114,46 @@ export const ContactView: React.FC<ContactViewProps> = ({ openContractModal }) =
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[#1C1C1C] font-medium mb-1">Company / Project Name *</label>
+                  <label className="block text-[#1C1C1C] font-medium mb-1">{contact.company}</label>
                   <input
                     type="text"
                     required
                     value={formData.company}
                     onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                    placeholder="Nexus AI Inc."
+                    placeholder={contact.companyPlaceholder}
                     className="w-full px-3.5 py-2.5 bg-[#F8F7F4] border border-[#1C1C1C]/15 rounded-xl text-[#1C1C1C] font-mono-tag focus:outline-none focus:border-[#C73E28]"
                   />
                 </div>
                 <div>
-                  <label className="block text-[#1C1C1C] font-medium mb-1">Topic / Inquiry Area</label>
+                  <label className="block text-[#1C1C1C] font-medium mb-1">{contact.topic}</label>
                   <select
                     value={formData.topic}
                     onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
                     className="w-full px-3.5 py-2.5 bg-[#F8F7F4] border border-[#1C1C1C]/15 rounded-xl text-[#1C1C1C] font-mono-tag focus:outline-none cursor-pointer"
                   >
-                    <option value="sales">Enterprise Volume Pricing</option>
-                    <option value="dpa">Legal DPA & Compliance Contract</option>
-                    <option value="qps">Dedicated High-QPS Route Allocation</option>
-                    <option value="custom">Custom Invoicing / NET30 PO</option>
+                    {Object.entries(contact.topicOptions).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
                   </select>
                 </div>
               </div>
 
               <div>
-                <label className="block text-[#1C1C1C] font-medium mb-1">Estimated Monthly Token Volume</label>
+                <label className="block text-[#1C1C1C] font-medium mb-1">{contact.volumeLabel}</label>
                 <select
                   value={formData.estimatedMonthlyVolume}
                   onChange={(e) => setFormData({ ...formData, estimatedMonthlyVolume: e.target.value })}
                   className="w-full px-3.5 py-2.5 bg-[#F8F7F4] border border-[#1C1C1C]/15 rounded-xl text-[#1C1C1C] font-mono-tag focus:outline-none cursor-pointer"
                 >
-                  <option value="10M">10 Million - 50 Million Tokens</option>
-                  <option value="50M">50 Million - 250 Million Tokens</option>
-                  <option value="1B">250 Million - 1 Billion Tokens</option>
-                  <option value="1B+">1 Billion+ Tokens (Custom Compute Hub)</option>
+                  {Object.entries(contact.volumeOptions).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
                 </select>
               </div>
 
               <div>
-                <label className="block text-[#1C1C1C] font-medium mb-1">Message or Specific Requirements</label>
+                <label className="block text-[#1C1C1C] font-medium mb-1">{contact.messageLabel}</label>
                 <textarea
                   rows={4}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  placeholder="Describe your current setup, target models, latency requirements, or legal compliance needs..."
+                  placeholder={contact.messagePlaceholder}
                   className="w-full p-3 bg-[#F8F7F4] border border-[#1C1C1C]/15 rounded-xl text-[#1C1C1C] font-mono-tag focus:outline-none resize-none"
                 />
               </div>
@@ -166,7 +163,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ openContractModal }) =
                 className="w-full btn-editorial-primary text-xs py-3 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Send className="w-4 h-4" />
-                <span>Submit Enterprise Inquiry</span>
+                <span>{contact.submit}</span>
               </button>
             </form>
           )}
@@ -175,22 +172,22 @@ export const ContactView: React.FC<ContactViewProps> = ({ openContractModal }) =
         {/* Right Info Details */}
         <div className="lg:col-span-5 space-y-6 font-sans">
           <div className="bg-white border border-[#1C1C1C]/20 rounded-2xl p-6 space-y-4">
-            <span className="font-mono-tag text-xs text-[#C73E28] font-bold uppercase tracking-wider">[DIRECT CHANNELS]</span>
-            <h3 className="font-serif-title text-xl font-semibold text-[#1C1C1C]">Official Response SLA</h3>
+            <span className="font-mono-tag text-xs text-[#C73E28] font-bold uppercase tracking-wider">{contact.directChannels}</span>
+            <h3 className="font-serif-title text-xl font-semibold text-[#1C1C1C]">{contact.responseChannel}</h3>
 
             <div className="space-y-3 text-xs text-[#1C1C1C]/80">
               <div className="flex items-start gap-3">
                 <Clock className="w-4 h-4 text-[#C73E28] shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-semibold text-[#1C1C1C]">2-Hour SLA for Enterprise</p>
-                  <p className="text-[#1C1C1C]/60 text-[11px]">Business hours: 09:00 - 21:00 UTC+8 (Mon-Sun)</p>
+                  <p className="font-semibold text-[#1C1C1C]">{contact.responseWindow}</p>
+                  <p className="text-[#1C1C1C]/60 text-[11px]">{contact.businessHours}</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
                 <Mail className="w-4 h-4 text-[#C73E28] shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-semibold text-[#1C1C1C]">Direct Email</p>
+                  <p className="font-semibold text-[#1C1C1C]">{contact.directEmail}</p>
                   <p className="font-mono-tag text-[#C73E28]">enterprise@helstera.com</p>
                 </div>
               </div>
@@ -198,8 +195,8 @@ export const ContactView: React.FC<ContactViewProps> = ({ openContractModal }) =
               <div className="flex items-start gap-3">
                 <Building className="w-4 h-4 text-[#C73E28] shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-semibold text-[#1C1C1C]">Shantou Experimental Zone Hub</p>
-                  <p className="text-[#1C1C1C]/60 text-[11px]">Overseas Chinese Digital Economy Headquarters, Shantou Pilot Zone, Guangdong</p>
+                  <p className="font-semibold text-[#1C1C1C]">{contact.regionalOperations}</p>
+                  <p className="text-[#1C1C1C]/60 text-[11px]">{contact.regionalDescription}</p>
                 </div>
               </div>
             </div>
@@ -210,7 +207,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ openContractModal }) =
                 className="w-full btn-editorial-outline text-xs py-2.5 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <ShieldCheck className="w-4 h-4 text-[#C73E28]" />
-                <span>Request B2B DPA Contract</span>
+                <span>{contact.requestDpa}</span>
               </button>
             </div>
           </div>

@@ -14,15 +14,13 @@ export const TokenBuyModal: React.FC<TokenBuyModalProps> = ({
   openApiKeyModal
 }) => {
   const { t } = useLanguage();
+  const copy = t.ui.modals.tokenBuy;
   const [paymentMethod, setPaymentMethod] = useState<'CARD' | 'WIRE' | 'CRYPTO'>('CARD');
   const [depositAmount, setDepositAmount] = useState<number>(100);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
   if (!isOpen) return null;
-
-  // $100 deposit = ~370 Million DeepSeek-V3 tokens or $100 API credits
-  const estimatedTokensM = Math.round((depositAmount / 0.27) * 100) / 100;
 
   const handleSimulateTopup = () => {
     setIsProcessing(true);
@@ -49,8 +47,8 @@ export const TokenBuyModal: React.FC<TokenBuyModalProps> = ({
               <CreditCard className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white">Top Up API Gateway Credits</h3>
-              <p className="text-[11px] text-slate-400">Instant Pay-as-you-go API balance top-up</p>
+              <h3 className="text-lg font-bold text-white">{copy.title}</h3>
+              <p className="text-[11px] text-slate-400">{copy.description}</p>
             </div>
           </div>
 
@@ -70,14 +68,14 @@ export const TokenBuyModal: React.FC<TokenBuyModalProps> = ({
             </div>
 
             <div className="space-y-1">
-              <h4 className="text-xl font-extrabold text-white">Top Up Successful!</h4>
+              <h4 className="text-xl font-extrabold text-white">{copy.successTitle}</h4>
               <p className="text-xs text-slate-300">
-                Added <span className="text-blue-400 font-bold">${depositAmount} USD</span> in API gateway credits to your balance.
+                {copy.addedCredits} <span className="text-blue-400 font-bold">${depositAmount} USD</span>.
               </p>
             </div>
 
             <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs font-mono text-emerald-400">
-              Est. ~{estimatedTokensM} Million DeepSeek-V3 Tokens Ready
+              {copy.liveRateNotice}
             </div>
 
             <div className="flex items-center gap-3 pt-2">
@@ -85,7 +83,7 @@ export const TokenBuyModal: React.FC<TokenBuyModalProps> = ({
                 onClick={handleReset}
                 className="w-1/2 py-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs transition cursor-pointer"
               >
-                Close
+                {copy.close}
               </button>
               {openApiKeyModal && (
                 <button
@@ -93,7 +91,7 @@ export const TokenBuyModal: React.FC<TokenBuyModalProps> = ({
                   className="w-1/2 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
                 >
                   <Sparkles className="w-4 h-4" />
-                  <span>Get API Key</span>
+                  <span>{copy.getApiKey}</span>
                 </button>
               )}
             </div>
@@ -103,7 +101,7 @@ export const TokenBuyModal: React.FC<TokenBuyModalProps> = ({
           <div className="space-y-5 relative z-10">
             {/* Payment Method Tabs */}
             <div className="space-y-2">
-              <label className="text-xs font-semibold text-slate-400 block">Select Payment Method</label>
+              <label className="text-xs font-semibold text-slate-400 block">{copy.paymentMethod}</label>
               <div className="grid grid-cols-3 gap-2">
                 <button
                   onClick={() => setPaymentMethod('CARD')}
@@ -113,7 +111,7 @@ export const TokenBuyModal: React.FC<TokenBuyModalProps> = ({
                       : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-white'
                   }`}
                 >
-                  Credit Card (Stripe)
+                  {copy.creditCard}
                 </button>
                 <button
                   onClick={() => setPaymentMethod('WIRE')}
@@ -123,7 +121,7 @@ export const TokenBuyModal: React.FC<TokenBuyModalProps> = ({
                       : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-white'
                   }`}
                 >
-                  SWIFT Wire / PO
+                  {copy.wire}
                 </button>
                 <button
                   onClick={() => setPaymentMethod('CRYPTO')}
@@ -133,7 +131,7 @@ export const TokenBuyModal: React.FC<TokenBuyModalProps> = ({
                       : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-white'
                   }`}
                 >
-                  USDT / USDC
+                  {copy.crypto}
                 </button>
               </div>
             </div>
@@ -141,8 +139,8 @@ export const TokenBuyModal: React.FC<TokenBuyModalProps> = ({
             {/* Deposit presets */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs text-slate-400">
-                <span>Deposit Amount (USD)</span>
-                <span>Includes $5 Free Trial Bonus</span>
+                <span>{copy.depositAmount}</span>
+                <span>{copy.onboardingTerms}</span>
               </div>
               <div className="grid grid-cols-4 gap-2">
                 {[50, 100, 250, 500].map((amt) => (
@@ -161,17 +159,15 @@ export const TokenBuyModal: React.FC<TokenBuyModalProps> = ({
               </div>
             </div>
 
-            {/* Token Yield Estimate */}
+            {/* Account credit terms */}
             <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
               <div className="flex items-center justify-between text-xs">
-                <span className="text-slate-400">Estimated Tokens (DeepSeek-V3)</span>
-                <span className="text-blue-400 font-mono font-extrabold text-base">
-                  ~{estimatedTokensM} Million Tokens
-                </span>
+                <span className="text-slate-400">{copy.currentRate}</span>
+                <span className="text-blue-400 font-mono font-extrabold text-base">{copy.liveRateNotice}</span>
               </div>
               <div className="flex items-center justify-between text-[10px] text-slate-500">
-                <span>Billing Period: Never Expires</span>
-                <span className="text-emerald-400 font-semibold">99.9% SLA & Legal DPA</span>
+                <span>{copy.balanceTerms}</span>
+                <span className="text-emerald-400 font-semibold">{copy.serviceTerms}</span>
               </div>
             </div>
 
@@ -183,11 +179,11 @@ export const TokenBuyModal: React.FC<TokenBuyModalProps> = ({
               {isProcessing ? (
                 <>
                   <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>Processing Payment...</span>
+                  <span>{copy.processing}</span>
                 </>
               ) : (
                 <>
-                  <span>Top Up ${depositAmount} API Credits</span>
+                  <span>{copy.requestCredit} · ${depositAmount}</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}

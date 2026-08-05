@@ -15,6 +15,7 @@ export const Footer: React.FC<FooterProps> = ({
   openApiKeyModal
 }) => {
   const { t } = useLanguage();
+  const footer = t.ui.footer;
 
   return (
     <footer className="bg-[#F8F7F4] border-t border-[#1C1C1C]/15 text-[#1C1C1C]/70 pt-16 pb-12 text-xs font-sans">
@@ -40,12 +41,12 @@ export const Footer: React.FC<FooterProps> = ({
             <div className="p-3 bg-white rounded-lg border border-[#1C1C1C]/10 space-y-1 max-w-sm shadow-2xs">
               <div className="flex items-center justify-between text-[11px]">
                 <span className="text-[#C73E28] font-mono-tag font-semibold flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#C73E28]" /> Pilot Zone Authorized
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#C73E28]" /> {footer.governanceScope}
                 </span>
-                <span className="text-[#1C1C1C] font-mono-tag font-semibold">99.9% SLA</span>
+                <span className="text-[#1C1C1C] font-mono-tag font-semibold">{footer.currentTerms}</span>
               </div>
               <p className="text-[10px] text-[#1C1C1C]/60">
-                Formal Commercial Paper Contracts & DPA Available for Global Enterprises
+                {footer.governanceDescription}
               </p>
             </div>
 
@@ -107,10 +108,10 @@ export const Footer: React.FC<FooterProps> = ({
                 </button>
               </li>
               <li>
-                <span className="text-[#1C1C1C]/50 cursor-default">Zero Data Retention (ZDR)</span>
+                <span className="text-[#1C1C1C]/50 cursor-default">{footer.retentionPolicy}</span>
               </li>
               <li>
-                <span className="text-[#1C1C1C]/50 cursor-default">99.9% Uptime Guarantee</span>
+                <span className="text-[#1C1C1C]/50 cursor-default">{footer.serviceSchedule}</span>
               </li>
             </ul>
           </div>
@@ -145,11 +146,11 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="hover:text-[#1C1C1C] cursor-pointer" onClick={() => setCurrentView('compliance')}>Privacy Policy</span>
+            <span className="hover:text-[#1C1C1C] cursor-pointer" onClick={() => setCurrentView('compliance')}>{footer.privacy}</span>
             <span>•</span>
-            <span className="hover:text-[#1C1C1C] cursor-pointer" onClick={() => setCurrentView('compliance')}>Terms of Service</span>
+            <span className="hover:text-[#1C1C1C] cursor-pointer" onClick={() => setCurrentView('compliance')}>{footer.terms}</span>
             <span>•</span>
-            <span className="hover:text-[#1C1C1C] cursor-pointer" onClick={openContractModal}>Data Processing Agreement (DPA)</span>
+            <span className="hover:text-[#1C1C1C] cursor-pointer" onClick={openContractModal}>{footer.dpa}</span>
           </div>
         </div>
       </div>

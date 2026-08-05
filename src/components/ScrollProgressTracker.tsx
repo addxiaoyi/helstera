@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface ChapterItem {
   id: string;
@@ -7,17 +8,17 @@ interface ChapterItem {
   number: string;
 }
 
-const CHAPTERS: ChapterItem[] = [
-  { id: 'hero-section', label: 'Gateway', number: '01' },
-  { id: 'story-section', label: 'Story', number: '02' },
-  { id: 'features-section', label: 'Why Us', number: '03' },
-  { id: 'models-section', label: 'Models', number: '04' },
-  { id: 'calculator-section', label: 'Savings', number: '05' },
-  { id: 'compliance-section', label: 'DPA Legal', number: '06' },
-  { id: 'faq-section', label: 'FAQ', number: '07' }
-];
-
 export const ScrollProgressTracker: React.FC = () => {
+  const { t } = useLanguage();
+  const chapters: ChapterItem[] = [
+    { id: 'hero-section', label: t.routeVisualizer.gatewayTitle, number: '01' },
+    { id: 'story-section', label: t.story.title, number: '02' },
+    { id: 'features-section', label: t.bento.title, number: '03' },
+    { id: 'models-section', label: t.models.title, number: '04' },
+    { id: 'usage-planner-section', label: t.calculator.title, number: '05' },
+    { id: 'compliance-section', label: t.ui.compliance.heroTitle, number: '06' },
+    { id: 'faq-section', label: t.ui.faq.title, number: '07' },
+  ];
   const [activeChapter, setActiveChapter] = useState('hero-section');
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -29,7 +30,7 @@ export const ScrollProgressTracker: React.FC = () => {
       }
 
       // Detect active section
-      for (const chap of CHAPTERS) {
+      for (const chap of chapters) {
         const el = document.getElementById(chap.id);
         if (el) {
           const rect = el.getBoundingClientRect();
@@ -64,7 +65,7 @@ export const ScrollProgressTracker: React.FC = () => {
 
       {/* Chapters Navigation */}
       <div className="flex flex-col gap-2 items-end">
-        {CHAPTERS.map((chap) => {
+        {chapters.map((chap) => {
           const isActive = activeChapter === chap.id;
           return (
             <button

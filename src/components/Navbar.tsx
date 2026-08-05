@@ -139,7 +139,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 rounded-xl border border-[#1C1C1C]/20 text-[#1C1C1C] hover:bg-[#1C1C1C]/5 transition cursor-pointer"
-            aria-label="Toggle navigation menu"
+            aria-label={t.common.toggleNavigation}
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -199,7 +199,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => { openContractModal(); setMobileMenuOpen(false); }}
                 className="btn-editorial-outline flex-1 text-center justify-center py-2 text-xs"
               >
-                DPA & SLA
+                {t.common.requestDpa} & {t.ui.footer.serviceSchedule}
               </button>
               <button
                 onClick={() => { openApiKeyModal(); setMobileMenuOpen(false); }}

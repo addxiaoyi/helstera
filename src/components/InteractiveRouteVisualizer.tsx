@@ -1,67 +1,37 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../i18n/LanguageContext';
-import {
-  Check,
-  Copy,
-  Terminal,
-  ShieldCheck,
-  Zap,
-  ArrowRight,
-  Sparkles
-} from 'lucide-react';
+import { DEFAULT_MODEL_ID, findModel, MODELS_DATA } from '../data/modelsData';
+import { Check, Copy, ShieldCheck, ArrowRight } from 'lucide-react';
 
 interface InteractiveRouteVisualizerProps {
   openApiKeyModal: () => void;
 }
 
 export const InteractiveRouteVisualizer: React.FC<InteractiveRouteVisualizerProps> = ({
-  openApiKeyModal
+  openApiKeyModal,
 }) => {
   const { t } = useLanguage();
-  const [selectedModel, setSelectedModel] = useState<'v3' | 'r1' | 'qwen'>('v3');
+  const [selectedModelId, setSelectedModelId] = useState(DEFAULT_MODEL_ID);
   const [isCopied, setIsCopied] = useState(false);
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
+  const routeOptions = MODELS_DATA.slice(0, 3);
+  const current = findModel(selectedModelId);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const card = e.currentTarget.getBoundingClientRect();
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    const card = event.currentTarget.getBoundingClientRect();
     const centerX = card.left + card.width / 2;
     const centerY = card.top + card.height / 2;
-    const rotateX = ((e.clientY - centerY) / card.height) * -10;
-    const rotateY = ((e.clientX - centerX) / card.width) * 10;
+    const rotateX = ((event.clientY - centerY) / card.height) * -10;
+    const rotateY = ((event.clientX - centerX) / card.width) * 10;
     setRotate({ x: rotateX, y: rotateY });
   };
 
-  const handleMouseLeave = () => {
-    setRotate({ x: 0, y: 0 });
-  };
-
-  const modelData = {
-    v3: {
-      id: 'deepseek-v3',
-      name: 'DeepSeek-V3',
-      rate: '$0.27 / 1M',
-      latency: '138ms'
-    },
-    r1: {
-      id: 'deepseek-r1',
-      name: 'DeepSeek-R1',
-      rate: '$0.55 / 1M',
-      latency: '162ms'
-    },
-    qwen: {
-      id: 'qwen-max-2.5',
-      name: 'Qwen-Max 2.5',
-      rate: '$1.60 / 1M',
-      latency: '155ms'
-    }
-  };
-
-  const current = modelData[selectedModel];
+  const handleMouseLeave = () => setRotate({ x: 0, y: 0 });
 
   const codeSnippet = `from openai import OpenAI
 
-# 100% OpenAI SDK Compatible
+# OpenAI-compatible gateway client
 client = OpenAI(
     api_key="hel_sk_live_...",
     base_url="https://api.helstera.com/v1"
@@ -85,91 +55,70 @@ res = client.chat.completions.create(
       style={{ perspective: 1000 }}
       className="relative py-4 sm:py-6"
     >
-      {/* Background Layer (Offset Backing Card for Asymmetric Layering) */}
       <div className="absolute inset-0 transform translate-x-3 translate-y-3 sm:translate-x-4 sm:translate-y-4 rounded-2xl bg-[#EFECE6] border border-[#1C1C1C]/15 pointer-events-none" />
 
-      {/* Main Front Card (Jobsian Minimalist Pristine Code Frame with 3D Tilt) */}
       <motion.div
         animate={{ rotateX: rotate.x, rotateY: rotate.y }}
         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
         className="relative bg-white border border-[#1C1C1C]/20 rounded-2xl p-6 shadow-xl text-[#1C1C1C] space-y-5"
       >
-        {/* Minimal Header */}
         <div className="flex items-center justify-between pb-3 border-b border-[#1C1C1C]/10 font-mono-tag">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#C73E28]" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#1C1C1C]">
-              Helstera Gateway
-            </span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#1C1C1C]">{t.routeVisualizer.gatewayTitle}</span>
           </div>
 
-          <div className="flex items-center gap-[1.5] text-[11px] text-[#1C1C1C]/60">
+          <div className="flex items-center gap-1.5 text-[11px] text-[#1C1C1C]/60">
             <ShieldCheck className="w-3.5 h-3.5 text-[#C73E28]" />
-            <span>{t.routeVisualizer.zeroDataRetention}</span>
+            <span>{t.routeVisualizer.dataPolicyLabel}</span>
           </div>
         </div>
 
-        {/* Model Switcher Pills */}
         <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-1.5 bg-[#F8F7F4] p-1 rounded-full border border-[#1C1C1C]/10 text-xs font-mono-tag">
-            <button
-              onClick={() => setSelectedModel('v3')}
-              className={`px-3 py-1 rounded-full transition cursor-pointer ${
-                selectedModel === 'v3'
-                  ? 'bg-[#1C1C1C] text-[#F8F7F4] font-semibold'
-                  : 'text-[#1C1C1C]/60 hover:text-[#1C1C1C]'
-              }`}
-            >
-              DeepSeek-V3
-            </button>
-            <button
-              onClick={() => setSelectedModel('r1')}
-              className={`px-3 py-1 rounded-full transition cursor-pointer ${
-                selectedModel === 'r1'
-                  ? 'bg-[#1C1C1C] text-[#F8F7F4] font-semibold'
-                  : 'text-[#1C1C1C]/60 hover:text-[#1C1C1C]'
-              }`}
-            >
-              DeepSeek-R1
-            </button>
-            <button
-              onClick={() => setSelectedModel('qwen')}
-              className={`px-3 py-1 rounded-full transition cursor-pointer ${
-                selectedModel === 'qwen'
-                  ? 'bg-[#1C1C1C] text-[#F8F7F4] font-semibold'
-                  : 'text-[#1C1C1C]/60 hover:text-[#1C1C1C]'
-              }`}
-            >
-              Qwen-Max
-            </button>
+          <div className="flex items-center gap-1.5 bg-[#F8F7F4] p-1 rounded-full border border-[#1C1C1C]/10 text-xs font-mono-tag overflow-x-auto">
+            {routeOptions.map((route) => (
+              <button
+                type="button"
+                key={route.id}
+                onClick={() => setSelectedModelId(route.id)}
+                className={`px-3 py-1 rounded-full transition cursor-pointer whitespace-nowrap ${
+                  selectedModelId === route.id
+                    ? 'bg-[#1C1C1C] text-[#F8F7F4] font-semibold'
+                    : 'text-[#1C1C1C]/60 hover:text-[#1C1C1C]'
+                }`}
+              >
+                {route.name}
+              </button>
+            ))}
           </div>
 
           <button
+            type="button"
             onClick={handleCopy}
-            className="p-2 rounded-full bg-[#F8F7F4] hover:bg-[#1C1C1C]/5 border border-[#1C1C1C]/15 text-[#1C1C1C] text-xs transition cursor-pointer"
+            className="p-2 rounded-full bg-[#F8F7F4] hover:bg-[#1C1C1C]/5 border border-[#1C1C1C]/15 text-[#1C1C1C] text-xs transition cursor-pointer shrink-0"
             title={t.routeVisualizer.copySnippet}
+            aria-label={t.routeVisualizer.copySnippet}
           >
             {isCopied ? <Check className="w-3.5 h-3.5 text-[#C73E28]" /> : <Copy className="w-3.5 h-3.5 text-[#1C1C1C]/60" />}
           </button>
         </div>
 
-        {/* Pure Code Display Frame */}
         <div className="p-4 bg-[#F8F7F4] rounded-xl border border-[#1C1C1C]/10 font-mono-tag text-[12px] leading-relaxed text-[#1C1C1C] relative overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.pre
-              key={selectedModel}
+              key={selectedModelId}
               initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.15 }}
               className="font-mono-tag text-xs leading-relaxed whitespace-pre"
             >
-              <span className="text-[#C73E28]">from</span> openai <span className="text-[#C73E28]">import</span> OpenAI{'\n\n'}
-              <span className="text-[#1C1C1C]/40 italic">{t.routeVisualizer.snippetComment}</span>{'\n'}
+              <span className="text-[#C73E28]">from</span> openai <span className="text-[#C73E28]">import</span> OpenAI{ '\n\n' }
+              <span className="text-[#1C1C1C]/40 italic">{t.routeVisualizer.snippetComment}</span>{ '\n' }
               client = OpenAI({'\n'}
               {'    '}api_key=<span className="text-[#1C1C1C]/70">"hel_sk_live_..."</span>,{'\n'}
               {'    '}base_url=<span className="text-[#C73E28] font-semibold">"https://api.helstera.com/v1"</span>{'\n'}
-              ){'\n\n'}
+              ){ '\n\n' }
               res = client.chat.completions.create({'\n'}
               {'    '}model=<span className="text-[#C73E28] font-bold">"{current.id}"</span>,{'\n'}
               {'    '}messages=[&#123;<span className="text-[#1C1C1C]/70">"role"</span>: <span className="text-[#1C1C1C]/70">"user"</span>, <span className="text-[#1C1C1C]/70">"content"</span>: <span className="text-[#1C1C1C]/70">"Cross-border query"</span>&#125;]{'\n'}
@@ -178,15 +127,15 @@ res = client.chat.completions.create(
           </AnimatePresence>
         </div>
 
-        {/* Minimal Specs Footer */}
-        <div className="pt-2 flex items-center justify-between text-xs font-mono-tag text-[#1C1C1C]/70">
-          <div className="flex items-center gap-3">
-            <span>{t.routeVisualizer.rateLabel} <strong className="text-[#C73E28]">{current.rate}</strong></span>
-            <span>•</span>
-            <span>{t.routeVisualizer.latencyLabel} <strong>{current.latency}</strong></span>
+        <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono-tag text-[#1C1C1C]/70">
+          <div className="flex flex-wrap items-center gap-3">
+            <span>{t.routeVisualizer.rateLabel} <strong className="text-[#C73E28]">{current.rateLabel}</strong></span>
+            <span className="hidden sm:inline">•</span>
+            <span>{t.routeVisualizer.healthLabel} <strong>{current.healthLabel}</strong></span>
           </div>
 
           <button
+            type="button"
             onClick={openApiKeyModal}
             className="text-[#C73E28] font-semibold hover:underline flex items-center gap-1 cursor-pointer"
           >

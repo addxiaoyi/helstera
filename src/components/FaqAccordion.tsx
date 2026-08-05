@@ -2,13 +2,17 @@ import React, { useState } from 'react';
 import { FAQS_DATA } from '../data/faqsData';
 import { ChevronDown, HelpCircle, Search, Sparkles } from 'lucide-react';
 import { KineticText } from './KineticText';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export const FaqAccordion: React.FC = () => {
+  const { t } = useLanguage();
+  const faqCopy = t.ui.faq;
+  const faqs = FAQS_DATA.map((faq) => ({ ...faq, ...t.content.faq[faq.id] }));
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const [activeTab, setActiveTab] = useState<'all' | 'compliance' | 'billing' | 'technical' | 'models'>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredFaqs = FAQS_DATA.filter((faq) => {
+  const filteredFaqs = faqs.filter((faq) => {
     const matchesCategory = activeTab === 'all' || faq.category === activeTab;
     const matchesSearch =
       searchQuery.trim() === '' ||
@@ -22,10 +26,10 @@ export const FaqAccordion: React.FC = () => {
       {/* Editorial Section Header */}
       <div className="text-center space-y-3 max-w-2xl mx-auto">
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-[#1C1C1C]/15 text-[#C73E28] font-mono-tag text-xs font-semibold">
-          <HelpCircle className="w-3.5 h-3.5 text-[#C73E28]" /> Frequently Asked Questions [09]
+          <HelpCircle className="w-3.5 h-3.5 text-[#C73E28]" /> {faqCopy.eyebrow}
         </span>
         <KineticText
-          text="Everything You Need to Know"
+          text={faqCopy.title}
           type="words"
           direction="left"
           stagger={0.04}
@@ -33,7 +37,7 @@ export const FaqAccordion: React.FC = () => {
           className="font-serif-title text-3xl sm:text-5xl font-semibold text-[#1C1C1C] tracking-tight"
         />
         <KineticText
-          text="Common questions about cross-border compliance, token pricing, latency SLA, and legal DPAs."
+          text={faqCopy.subtitle}
           type="words"
           direction="right"
           stagger={0.02}
@@ -55,7 +59,7 @@ export const FaqAccordion: React.FC = () => {
                 : 'text-[#1C1C1C]/60 hover:text-[#1C1C1C]'
             }`}
           >
-            All Questions
+            {faqCopy.categories.all}
           </button>
           <button
             onClick={() => setActiveTab('compliance')}
@@ -65,7 +69,7 @@ export const FaqAccordion: React.FC = () => {
                 : 'text-[#1C1C1C]/60 hover:text-[#1C1C1C]'
             }`}
           >
-            Compliance & DPA
+            {faqCopy.categories.compliance}
           </button>
           <button
             onClick={() => setActiveTab('billing')}
@@ -75,7 +79,7 @@ export const FaqAccordion: React.FC = () => {
                 : 'text-[#1C1C1C]/60 hover:text-[#1C1C1C]'
             }`}
           >
-            Pricing & Billing
+            {faqCopy.categories.billing}
           </button>
           <button
             onClick={() => setActiveTab('technical')}
@@ -85,7 +89,7 @@ export const FaqAccordion: React.FC = () => {
                 : 'text-[#1C1C1C]/60 hover:text-[#1C1C1C]'
             }`}
           >
-            SDK Integration
+            {faqCopy.categories.technical}
           </button>
           <button
             onClick={() => setActiveTab('models')}
@@ -95,7 +99,7 @@ export const FaqAccordion: React.FC = () => {
                 : 'text-[#1C1C1C]/60 hover:text-[#1C1C1C]'
             }`}
           >
-            Supported Models
+            {faqCopy.categories.models}
           </button>
         </div>
 
@@ -106,7 +110,7 @@ export const FaqAccordion: React.FC = () => {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search FAQs..."
+            placeholder={faqCopy.searchPlaceholder}
             className="w-full pl-9 pr-3 py-1.5 bg-white border border-[#1C1C1C]/15 rounded-full text-xs text-[#1C1C1C] focus:outline-none focus:border-[#C73E28] transition font-mono-tag"
           />
         </div>
@@ -116,7 +120,7 @@ export const FaqAccordion: React.FC = () => {
       <div className="border-t border-b border-[#1C1C1C]/15 divide-y divide-[#1C1C1C]/15">
         {filteredFaqs.length === 0 ? (
           <div className="py-8 text-center text-xs text-[#1C1C1C]/60 font-mono-tag">
-            No matching questions found for "{searchQuery}".
+            {faqCopy.noResults} "{searchQuery}".
           </div>
         ) : (
           filteredFaqs.map((faq, idx) => {

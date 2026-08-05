@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { KineticText } from './KineticText';
-import { NumberTicker } from './NumberTicker';
-import { SITE_CONFIG } from '../config/siteConfig';
+import { MODELS_DATA } from '../data/modelsData';
 import { useLanguage } from '../i18n/LanguageContext';
 import {
   ArrowRight,
@@ -106,7 +105,7 @@ export const BentoFeatures: React.FC<BentoFeaturesProps> = ({
       <div className="border-t border-b border-[#1C1C1C]/15 pt-8 pb-12">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
           
-          {/* Bento 1: Up to 80% Cost Advantage (Span 7) - Slide from LEFT */}
+          {/* Bento 1: current route catalog */}
           <motion.div
             variants={leftSlideVariants}
             className="md:col-span-7 space-y-6 md:pr-6 md:border-r border-[#1C1C1C]/15 flex flex-col justify-between"
@@ -115,7 +114,7 @@ export const BentoFeatures: React.FC<BentoFeaturesProps> = ({
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#C73E28]" />
                 <span className="text-xs font-mono-tag font-bold text-[#C73E28] uppercase tracking-wider">
-                  01 / Unit Economics
+                  01 / {t.bento.unitEconomicsTitle}
                 </span>
               </div>
               <h3 className="font-serif-title text-2xl sm:text-4xl font-semibold text-[#1C1C1C] tracking-tight">
@@ -127,39 +126,17 @@ export const BentoFeatures: React.FC<BentoFeaturesProps> = ({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-              <div className="p-3 border-l-2 border-[#C73E28] space-y-1">
-                <span className="text-[10px] font-mono-tag text-[#1C1C1C]/60 uppercase">DeepSeek-V3</span>
-                <div className="font-serif-title text-xl font-semibold text-[#1C1C1C]">
-                  <NumberTicker value={0.27} prefix="$" decimals={2} /> <span className="text-[10px] font-sans text-[#1C1C1C]/60">/ 1M</span>
+              {MODELS_DATA.slice(0, 3).map((model, index) => (
+                <div key={model.id} className={`p-3 border-l-2 ${index === 0 ? 'border-[#C73E28]' : 'border-[#1C1C1C]/30'} space-y-1`}>
+                  <span className="text-[10px] font-mono-tag text-[#1C1C1C]/60 uppercase">{model.name}</span>
+                  <div className="font-serif-title text-xl font-semibold text-[#1C1C1C]">{t.content.models[model.id].category}</div>
+                  <div className="text-[10px] font-mono-tag text-[#C73E28] font-bold">{t.content.models[model.id].rateLabel}</div>
                 </div>
-                <div className="text-[10px] font-mono-tag text-[#C73E28] font-bold">
-                  <NumberTicker value={90} suffix="%" /> vs GPT-4o
-                </div>
-              </div>
-
-              <div className="p-3 border-l-2 border-[#1C1C1C]/30 space-y-1">
-                <span className="text-[10px] font-mono-tag text-[#1C1C1C]/60 uppercase">DeepSeek-R1</span>
-                <div className="font-serif-title text-xl font-semibold text-[#1C1C1C]">
-                  <NumberTicker value={0.55} prefix="$" decimals={2} /> <span className="text-[10px] font-sans text-[#1C1C1C]/60">/ 1M</span>
-                </div>
-                <div className="text-[10px] font-mono-tag text-[#C73E28] font-bold">
-                  <NumberTicker value={90} suffix="%" /> vs OpenAI o1
-                </div>
-              </div>
-
-              <div className="p-3 border-l-2 border-[#1C1C1C]/30 space-y-1">
-                <span className="text-[10px] font-mono-tag text-[#1C1C1C]/60 uppercase">Qwen-Max 2.5</span>
-                <div className="font-serif-title text-xl font-semibold text-[#1C1C1C]">
-                  <NumberTicker value={1.60} prefix="$" decimals={2} /> <span className="text-[10px] font-sans text-[#1C1C1C]/60">/ 1M</span>
-                </div>
-                <div className="text-[10px] font-mono-tag text-[#C73E28] font-bold">
-                  <NumberTicker value={68} suffix="%" /> vs Claude 3.5
-                </div>
-              </div>
+              ))}
             </div>
           </motion.div>
 
-          {/* Bento 2: 1-Line Drop-in (Span 5) - Staggered Offset Down */}
+          {/* Bento 2: SDK compatibility */}
           <motion.div
             variants={rightSlideVariants}
             className="md:col-span-5 space-y-6 md:translate-y-6 flex flex-col justify-between"
@@ -169,7 +146,7 @@ export const BentoFeatures: React.FC<BentoFeaturesProps> = ({
                 <div className="flex items-center gap-2">
                   <Terminal className="w-4 h-4 text-[#C73E28]" />
                   <span className="text-xs font-mono-tag font-bold text-[#C73E28] uppercase tracking-wider">
-                    02 / SDK Compatibility
+                    02 / {t.bento.sdkCompatTitle}
                   </span>
                 </div>
                 <button
@@ -211,7 +188,7 @@ export const BentoFeatures: React.FC<BentoFeaturesProps> = ({
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-[#C73E28]" />
                 <span className="text-xs font-mono-tag font-bold text-[#C73E28] uppercase tracking-wider">
-                  03 / Legal Compliance
+                  03 / {t.bento.dpaTitle}
                 </span>
               </div>
               <h3 className="font-serif-title text-xl font-semibold text-[#1C1C1C]">
@@ -243,20 +220,20 @@ export const BentoFeatures: React.FC<BentoFeaturesProps> = ({
               <div className="flex items-center gap-2">
                 <Lock className="w-4 h-4 text-[#C73E28]" />
                 <span className="text-xs font-mono-tag font-bold text-[#C73E28] uppercase tracking-wider">
-                  04 / Data Privacy
+                  04 / {t.bento.dataPolicyTitle}
                 </span>
               </div>
               <h3 className="font-serif-title text-xl font-semibold text-[#1C1C1C]">
-                {t.bento.zdrTitle}
+                {t.bento.dataPolicyTitle}
               </h3>
               <p className="text-xs text-[#1C1C1C]/75 leading-relaxed font-sans">
-                {t.bento.zdrDesc}
+                {t.bento.dataPolicyDesc}
               </p>
             </div>
 
             <div className="text-xs font-mono-tag text-[#1C1C1C]/80 flex items-center gap-1.5 pt-2">
               <CheckCircle2 className="w-4 h-4 text-[#C73E28]" />
-              <span>{t.bento.zdrBadge}</span>
+              <span>{t.bento.dataPolicyBadge}</span>
             </div>
           </motion.div>
 
@@ -269,7 +246,7 @@ export const BentoFeatures: React.FC<BentoFeaturesProps> = ({
               <div className="flex items-center gap-2">
                 <Zap className="w-4 h-4 text-[#C73E28]" />
                 <span className="text-xs font-mono-tag font-bold text-[#C73E28] uppercase tracking-wider">
-                  05 / Reliability
+                  05 / {t.bento.slaTitle}
                 </span>
               </div>
               <h3 className="font-serif-title text-xl font-semibold text-[#1C1C1C]">

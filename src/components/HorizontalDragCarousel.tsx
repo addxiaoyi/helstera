@@ -13,6 +13,7 @@ import {
   ArrowRight,
   Sparkles
 } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface HorizontalDragCarouselProps {
   openApiKeyModal: () => void;
@@ -23,6 +24,8 @@ export const HorizontalDragCarousel: React.FC<HorizontalDragCarouselProps> = ({
   openApiKeyModal,
   openContractModal
 }) => {
+  const { t } = useLanguage();
+  const carousel = t.ui.carousel;
   const carouselRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -33,8 +36,8 @@ export const HorizontalDragCarousel: React.FC<HorizontalDragCarouselProps> = ({
       title: 'High-Frequency Algorithmic Trading Agents',
       category: 'Financial Engineering',
       icon: <TrendingUp className="w-5 h-5 text-[#C73E28]" />,
-      stats: 'Sub-150ms TTFT • 0% Disk Logging',
-      description: 'Run automated market analysis, financial report processing, and sentiment models over dedicated optical lines with strict zero data retention.',
+      stats: 'Reasoning routes • Account policy review',
+      description: 'Run automated market analysis, financial report processing, and sentiment workflows with a current route and a documented account data policy.',
       cta: 'Deploy Finance Agent'
     },
     {
@@ -42,8 +45,8 @@ export const HorizontalDragCarousel: React.FC<HorizontalDragCarouselProps> = ({
       title: 'Autonomous Code Review & Refactoring Pipelines',
       category: 'Developer Operations',
       icon: <Code2 className="w-5 h-5 text-[#C73E28]" />,
-      stats: '85+ Tok/Sec • DeepSeek-R1 & V3',
-      description: 'Plug OpenAI SDK drop-in endpoint into your CI/CD pipelines to auto-generate unit tests, audit security vulnerabilities, and optimize code bases.',
+      stats: 'Current reasoning routes • OpenAI-compatible API',
+      description: 'Plug the OpenAI-compatible endpoint into CI/CD pipelines to generate tests, review changes, and improve code with a route ID your team can govern.',
       cta: 'Setup CI/CD Pipeline'
     },
     {
@@ -51,8 +54,8 @@ export const HorizontalDragCarousel: React.FC<HorizontalDragCarouselProps> = ({
       title: 'Real-Time Voice & Multimodal Customer Agents',
       category: 'Customer Experience',
       icon: <Headphones className="w-5 h-5 text-[#C73E28]" />,
-      stats: 'Sub-180ms Latency • Guaranteed SLA',
-      description: 'Power real-time interactive voice agents and multimodal image analysis workflows with low-latency streaming completions.',
+      stats: 'Multimodal routes • Live route health',
+      description: 'Power voice agents and image analysis workflows with current multimodal routes, then validate streaming behavior against your own traffic.',
       cta: 'Build Voice Agent'
     },
     {
@@ -60,8 +63,8 @@ export const HorizontalDragCarousel: React.FC<HorizontalDragCarouselProps> = ({
       title: 'Enterprise Legal Contract & DPA Audit Engine',
       category: 'Compliance & Legal Tech',
       icon: <ShieldCheck className="w-5 h-5 text-[#C73E28]" />,
-      stats: 'Shantou Pilot Zone DPA • RAM Enclave',
-      description: 'Analyze sensitive cross-border legal agreements, compliance reports, and patent filings with complete peace of mind under formal B2B paper contracts.',
+      stats: 'DPA and service schedule • Policy review',
+      description: 'Analyze sensitive cross-border legal agreements, compliance reports, and patent filings with a documented processing scope and contract review path.',
       cta: 'Request Legal DPA'
     },
     {
@@ -69,8 +72,8 @@ export const HorizontalDragCarousel: React.FC<HorizontalDragCarouselProps> = ({
       title: 'Medical Research & Biomedical Literature Summarization',
       category: 'Healthcare & Biotech',
       icon: <Stethoscope className="w-5 h-5 text-[#C73E28]" />,
-      stats: '128K Context Window • Qwen-Max 2.5',
-      description: 'Process multi-thousand page medical journals, clinical trials, and research papers with high context accuracy and zero model training risk.',
+      stats: 'Long-context route • Kimi K3',
+      description: 'Process medical journals, clinical trials, and research papers with a current long-context route and a documented data policy.',
       cta: 'Access Medical LLMs'
     }
   ];
@@ -104,10 +107,10 @@ export const HorizontalDragCarousel: React.FC<HorizontalDragCarouselProps> = ({
         <div className="space-y-2 max-w-2xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C73E28]/10 text-[#C73E28] text-xs font-mono-tag font-bold">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Interactive Horizontal Swipe Showcase</span>
+            <span>{carousel.eyebrow}</span>
           </div>
           <KineticText
-            text="Proven Enterprise Deployment Scenarios"
+            text={carousel.title}
             type="words"
             direction="left"
             stagger={0.04}
@@ -115,7 +118,7 @@ export const HorizontalDragCarousel: React.FC<HorizontalDragCarouselProps> = ({
             className="font-serif-title text-3xl sm:text-5xl font-semibold text-[#1C1C1C] tracking-tight"
           />
           <KineticText
-            text="Swipe or drag horizontally to explore how global engineering teams utilize Helstera's low-latency cross-border gateway."
+            text={carousel.subtitle}
             type="words"
             direction="right"
             stagger={0.02}
@@ -131,7 +134,7 @@ export const HorizontalDragCarousel: React.FC<HorizontalDragCarouselProps> = ({
             onClick={() => scroll('left')}
             disabled={!canScrollLeft}
             className="p-2.5 rounded-full border border-[#1C1C1C]/20 bg-white text-[#1C1C1C] hover:bg-[#1C1C1C] hover:text-[#F8F7F4] transition disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
-            aria-label="Scroll left"
+            aria-label={carousel.scrollLeft}
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -139,7 +142,7 @@ export const HorizontalDragCarousel: React.FC<HorizontalDragCarouselProps> = ({
             onClick={() => scroll('right')}
             disabled={!canScrollRight}
             className="p-2.5 rounded-full border border-[#1C1C1C]/20 bg-white text-[#1C1C1C] hover:bg-[#1C1C1C] hover:text-[#F8F7F4] transition disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
-            aria-label="Scroll right"
+            aria-label={carousel.scrollRight}
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -164,19 +167,19 @@ export const HorizontalDragCarousel: React.FC<HorizontalDragCarouselProps> = ({
                   {item.icon}
                 </div>
                 <span className="text-[10px] font-mono-tag font-bold text-[#1C1C1C]/50 uppercase tracking-wider">
-                  {item.category}
+                  {carousel.useCases[item.id].category}
                 </span>
               </div>
 
               <div className="space-y-2">
                 <h3 className="font-serif-title text-xl sm:text-2xl font-semibold text-[#1C1C1C] group-hover:text-[#C73E28] transition-colors leading-snug">
-                  {item.title}
+                  {carousel.useCases[item.id].title}
                 </h3>
                 <p className="text-xs font-mono-tag text-[#C73E28] font-semibold">
-                  {item.stats}
+                  {carousel.useCases[item.id].stats}
                 </p>
                 <p className="text-xs text-[#1C1C1C]/75 leading-relaxed font-sans pt-1">
-                  {item.description}
+                  {carousel.useCases[item.id].description}
                 </p>
               </div>
             </div>
@@ -185,7 +188,7 @@ export const HorizontalDragCarousel: React.FC<HorizontalDragCarouselProps> = ({
               onClick={item.id === 'legal' ? openContractModal : openApiKeyModal}
               className="btn-editorial-outline py-2 px-3 text-xs flex items-center justify-between group-hover:border-[#C73E28] group-hover:bg-[#C73E28] group-hover:text-white transition cursor-pointer"
             >
-              <span>{item.cta}</span>
+              <span>{carousel.useCases[item.id].cta}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </motion.div>
