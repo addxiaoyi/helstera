@@ -13,5 +13,8 @@ assert.match(appSource, /openApiKeyModal=\{navigateToAiSite\}/);
 assert.match(appSource, /openContractModal=\{navigateToAiSite\}/);
 assert.match(nginxSource, /return 301 https:\/\/\$host\$request_uri;/);
 assert.doesNotMatch(nginxSource, /return 301 https:\/\/ai\.0st\.top/);
+assert.match(nginxSource, /location = \/index\.html/);
+assert.match(nginxSource, /Cache-Control "no-store, no-cache, must-revalidate"/);
+assert.doesNotMatch(nginxSource, /\.html\|\.htm\|\.css/);
 
 console.log(`Navigation validation passed for ${projectRoot}`);
