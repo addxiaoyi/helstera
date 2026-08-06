@@ -91,12 +91,12 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
                   key={option.value}
                   type="button"
                   onClick={() => handleSelect(option.value)}
-                  className={`w-full text-left px-3.5 py-2.5 transition-colors flex items-center justify-between gap-3 cursor-pointer whitespace-nowrap ${
+                  className={`w-full min-w-0 text-left px-3.5 py-2.5 transition-colors flex items-start justify-between gap-3 cursor-pointer whitespace-normal break-words ${
                     isSelected ? 'bg-[#F8F7F4] text-[#C73E28] font-bold' : 'hover:bg-[#F8F7F4]/80 text-[#1C1C1C]'
                   }`}
                 >
                   <div className="min-w-0 flex items-center gap-2 truncate">
-                    <span className="text-xs font-mono-tag truncate">{option.label}</span>
+                    <span className="min-w-0 text-xs font-mono-tag break-words">{option.label}</span>
                     {option.badge && (
                       <span className="px-1.5 py-0.2 rounded-full text-[9px] bg-[#C73E28]/10 text-[#C73E28] font-mono-tag font-bold shrink-0">
                         {option.badge}
@@ -106,7 +106,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
 
                   <div className="flex items-center gap-2 shrink-0">
                     {option.sublabel && (
-                      <span className="text-[11px] text-[#1C1C1C]/50 font-mono-tag truncate">{option.sublabel}</span>
+                      <span className="hidden sm:inline text-[11px] text-[#1C1C1C]/50 font-mono-tag truncate">{option.sublabel}</span>
                     )}
                     {isSelected && <Check className="w-4 h-4 text-[#C73E28] shrink-0" />}
                   </div>

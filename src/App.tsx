@@ -62,7 +62,7 @@ export default function App() {
         />
 
         {/* Main View Router */}
-        <main className="flex-1 relative z-0">
+        <main className="flex-1 relative z-0 min-w-0">
           {currentView === 'home' && (
             <HomeView
               setCurrentView={(view) => {

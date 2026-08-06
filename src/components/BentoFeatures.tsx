@@ -78,7 +78,7 @@ export const BentoFeatures: React.FC<BentoFeaturesProps> = ({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-60px' }}
-      className="space-y-10"
+      className="min-w-0 space-y-10"
     >
       {/* Section Header */}
       <div className="text-center space-y-3 max-w-3xl mx-auto">
@@ -88,7 +88,7 @@ export const BentoFeatures: React.FC<BentoFeaturesProps> = ({
           direction="left"
           stagger={0.04}
           as="h2"
-          className="font-serif-title text-4xl sm:text-6xl font-semibold text-[#1C1C1C] tracking-tight"
+          className="font-serif-title text-3xl sm:text-6xl font-semibold text-[#1C1C1C] tracking-tight break-words"
         />
         <KineticText
           text={t.bento.subtitle}
@@ -108,7 +108,7 @@ export const BentoFeatures: React.FC<BentoFeaturesProps> = ({
           {/* Bento 1: current route catalog */}
           <motion.div
             variants={leftSlideVariants}
-            className="md:col-span-7 space-y-6 md:pr-6 md:border-r border-[#1C1C1C]/15 flex flex-col justify-between"
+            className="md:col-span-7 min-w-0 space-y-6 md:pr-6 md:border-r border-[#1C1C1C]/15 flex flex-col justify-between"
           >
             <div className="space-y-3">
               <div className="flex items-center gap-2">
@@ -139,10 +139,10 @@ export const BentoFeatures: React.FC<BentoFeaturesProps> = ({
           {/* Bento 2: SDK compatibility */}
           <motion.div
             variants={rightSlideVariants}
-            className="md:col-span-5 space-y-6 md:translate-y-6 flex flex-col justify-between"
+            className="md:col-span-5 min-w-0 space-y-6 md:translate-y-6 flex flex-col justify-between"
           >
             <div className="space-y-3">
-              <div className="flex items-center justify-between">
+              <div className="flex min-w-0 items-start justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <Terminal className="w-4 h-4 text-[#C73E28]" />
                   <span className="text-xs font-mono-tag font-bold text-[#C73E28] uppercase tracking-wider">
@@ -165,7 +165,7 @@ export const BentoFeatures: React.FC<BentoFeaturesProps> = ({
               </p>
             </div>
 
-            <div className="p-4 bg-[#1C1C1C] text-[#F8F7F4] font-mono-tag text-[11px] space-y-1.5 overflow-x-auto border-l-2 border-[#C73E28]">
+            <div className="max-w-full p-4 bg-[#1C1C1C] text-[#F8F7F4] font-mono-tag text-[11px] space-y-1.5 overflow-x-auto border-l-2 border-[#C73E28] touch-pan-x">
               <div className="text-emerald-400">// Change 1 line of code</div>
               <div><span className="text-purple-300">import</span> OpenAI <span className="text-purple-300">from</span> <span className="text-amber-200">"openai"</span>;</div>
               <div><span className="text-purple-300">const</span> client = <span className="text-blue-300">new</span> OpenAI(&#123;</div>

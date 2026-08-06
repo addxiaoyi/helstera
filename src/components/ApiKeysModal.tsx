@@ -193,17 +193,17 @@ console.log(completion.choices[0].message.content);`;
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1C1C1C]/75 backdrop-blur-md animate-fadeIn">
-      <div className="bg-[#F8F7F4] border border-[#1C1C1C]/20 rounded-2xl max-w-3xl w-full overflow-hidden shadow-2xl relative text-[#1C1C1C] flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-[#1C1C1C]/75 backdrop-blur-md animate-fadeIn">
+      <div className="bg-[#F8F7F4] border border-[#1C1C1C]/20 rounded-2xl max-w-3xl max-w-[calc(100vw-2rem)] w-full overflow-hidden shadow-2xl relative text-[#1C1C1C] flex flex-col max-h-[calc(100dvh-1.5rem)] sm:max-h-[90vh] min-w-0">
         {/* Header */}
-        <div className="bg-white px-6 py-4 border-b border-[#1C1C1C]/15 flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-2.5">
+        <div className="bg-white px-4 sm:px-6 py-4 border-b border-[#1C1C1C]/15 flex items-center justify-between gap-3 shrink-0">
+          <div className="min-w-0 flex items-center gap-2.5">
             <div className="p-2 rounded-xl bg-[#C73E28]/10 text-[#C73E28]">
               <Key className="w-5 h-5" />
             </div>
-            <div>
+            <div className="min-w-0">
               <h3 className="text-base font-serif-title font-semibold text-[#1C1C1C]">{copy.title}</h3>
-              <p className="text-xs text-[#1C1C1C]/60 font-sans">{copy.description}</p>
+              <p className="text-xs text-[#1C1C1C]/60 font-sans break-words">{copy.description}</p>
             </div>
           </div>
 
@@ -216,10 +216,10 @@ console.log(completion.choices[0].message.content);`;
         </div>
 
         {/* Tab Switcher */}
-        <div className="bg-white/80 px-6 py-2 border-b border-[#1C1C1C]/10 flex items-center gap-2 font-mono-tag text-xs shrink-0">
+        <div className="bg-white/80 px-4 sm:px-6 py-2 border-b border-[#1C1C1C]/10 flex items-center gap-2 overflow-x-auto font-mono-tag text-xs shrink-0 overscroll-x-contain">
           <button
             onClick={() => setActiveTab('keys')}
-            className={`px-3 py-1.5 rounded-full transition cursor-pointer flex items-center gap-1.5 ${
+            className={`shrink-0 px-3 py-1.5 rounded-full transition cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'keys'
                 ? 'bg-[#1C1C1C] text-[#F8F7F4] font-bold'
                 : 'text-[#1C1C1C]/60 hover:text-[#1C1C1C]'
@@ -231,7 +231,7 @@ console.log(completion.choices[0].message.content);`;
 
           <button
             onClick={() => setActiveTab('playground')}
-            className={`px-3 py-1.5 rounded-full transition cursor-pointer flex items-center gap-1.5 ${
+            className={`shrink-0 px-3 py-1.5 rounded-full transition cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'playground'
                 ? 'bg-[#1C1C1C] text-[#F8F7F4] font-bold'
                 : 'text-[#1C1C1C]/60 hover:text-[#1C1C1C]'
@@ -244,7 +244,7 @@ console.log(completion.choices[0].message.content);`;
 
           <button
             onClick={() => setActiveTab('usage')}
-            className={`px-3 py-1.5 rounded-full transition cursor-pointer flex items-center gap-1.5 ${
+            className={`shrink-0 px-3 py-1.5 rounded-full transition cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'usage'
                 ? 'bg-[#1C1C1C] text-[#F8F7F4] font-bold'
                 : 'text-[#1C1C1C]/60 hover:text-[#1C1C1C]'
@@ -256,7 +256,7 @@ console.log(completion.choices[0].message.content);`;
         </div>
 
         {/* Content Body */}
-        <div className="p-6 space-y-5 overflow-y-auto flex-1">
+        <div className="min-w-0 p-4 sm:p-6 space-y-5 overflow-y-auto flex-1">
           {/* TAB 1: API KEYS */}
           {activeTab === 'keys' && (
             <div className="space-y-5">
@@ -272,11 +272,11 @@ console.log(completion.choices[0].message.content);`;
               </div>
 
               {/* Action Bar */}
-              <div className="flex items-center justify-between gap-2">
+              <div className="flex flex-col min-[420px]:flex-row min-[420px]:items-center justify-between gap-2">
                 <h4 className="text-xs font-mono-tag font-bold uppercase tracking-wider text-[#1C1C1C]/60">{copy.activeKeys}</h4>
                 <button
                   onClick={() => setShowCreateForm(true)}
-                  className="btn-editorial-primary px-3 py-1.5 text-xs flex items-center gap-1.5 cursor-pointer"
+                  className="btn-editorial-primary w-full min-[420px]:w-auto px-3 py-1.5 text-xs flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>{copy.createKey}</span>
@@ -287,14 +287,14 @@ console.log(completion.choices[0].message.content);`;
               {showCreateForm && (
                 <form onSubmit={handleCreateKey} className="p-4 bg-white rounded-xl border border-[#1C1C1C]/15 space-y-3 text-xs animate-fadeIn shadow-2xs">
                   <label className="block text-[#1C1C1C] font-mono-tag font-semibold">{copy.keyLabel}</label>
-                  <div className="flex gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <input
                       type="text"
                       required
                       placeholder={copy.keyPlaceholder}
                       value={newKeyName}
                       onChange={(e) => setNewKeyName(e.target.value)}
-                      className="flex-1 px-3 py-2 bg-[#F8F7F4] border border-[#1C1C1C]/20 rounded-lg text-[#1C1C1C] focus:outline-none focus:border-[#C73E28]"
+                      className="min-w-0 flex-1 px-3 py-2 bg-[#F8F7F4] border border-[#1C1C1C]/20 rounded-lg text-[#1C1C1C] focus:outline-none focus:border-[#C73E28]"
                     />
                     <button
                       type="submit"
@@ -320,7 +320,7 @@ console.log(completion.choices[0].message.content);`;
                     key={k.id}
                     className="p-4 rounded-xl bg-white border border-[#1C1C1C]/15 hover:border-[#1C1C1C]/30 transition space-y-2 shadow-2xs"
                   >
-                    <div className="flex items-center justify-between text-xs">
+                    <div className="flex flex-col min-[420px]:flex-row min-[420px]:items-center justify-between gap-2 text-xs">
                       <span className="font-semibold text-[#1C1C1C]">
                         {k.nameKey ? copy.sampleKeyNames[k.nameKey] : k.name}
                       </span>

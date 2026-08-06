@@ -78,24 +78,24 @@ export const LiveGatewayPingModal: React.FC<LiveGatewayPingModalProps> = ({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1C1C1C]/60 backdrop-blur-xs animate-fadeIn">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-[#1C1C1C]/60 backdrop-blur-xs animate-fadeIn">
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 12 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 12 }}
-          className="bg-white border border-[#1C1C1C]/20 rounded-2xl max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative text-[#1C1C1C]"
+          className="bg-white border border-[#1C1C1C]/20 rounded-2xl max-w-2xl max-w-[calc(100vw-1.5rem)] w-full p-4 sm:p-8 space-y-6 shadow-2xl relative text-[#1C1C1C] max-h-[calc(100dvh-1.5rem)] overflow-y-auto min-w-0"
         >
           {/* Header */}
-          <div className="flex items-center justify-between pb-4 border-b border-[#1C1C1C]/15">
-            <div className="flex items-center gap-2">
+          <div className="flex min-w-0 items-start justify-between gap-3 pb-4 border-b border-[#1C1C1C]/15">
+            <div className="min-w-0 flex items-center gap-2">
               <span className="p-2 rounded-xl bg-[#F8F7F4] border border-[#1C1C1C]/15 text-[#C73E28]">
                 <Activity className="w-5 h-5" />
               </span>
               <div>
-                <h3 className="font-serif-title text-xl font-semibold text-[#1C1C1C]">
+                <h3 className="font-serif-title text-xl font-semibold text-[#1C1C1C] break-words">
                   {t.modals.pingTitle}
                 </h3>
-                <p className="text-xs text-[#1C1C1C]/60 font-sans">
+                <p className="text-xs text-[#1C1C1C]/60 font-sans break-words">
                   {t.modals.pingDesc}
                 </p>
               </div>
@@ -202,8 +202,8 @@ export const LiveGatewayPingModal: React.FC<LiveGatewayPingModalProps> = ({
           )}
 
           {/* Modal Footer */}
-          <div className="pt-2 flex items-center justify-between border-t border-[#1C1C1C]/15 text-xs font-mono-tag text-[#1C1C1C]/60">
-            <span className="flex items-center gap-1.5">
+          <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-[#1C1C1C]/15 text-xs font-mono-tag text-[#1C1C1C]/60">
+            <span className="flex items-center gap-1.5 break-words">
               <ShieldCheck className="w-3.5 h-3.5 text-[#C73E28]" />
               {copy.policyAttached}
             </span>

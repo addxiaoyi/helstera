@@ -100,10 +100,10 @@ export const KeynoteScrollStory: React.FC<KeynoteScrollStoryProps> = ({
   const current = chapters[activeChapterIndex];
 
   return (
-    <div ref={containerRef} className="relative h-[220vh] sm:h-[260vh]">
+    <div ref={containerRef} className="relative min-w-0 h-[220vh] sm:h-[260vh]">
       {/* Sticky Frame that stays pinned while wheel scrolling through acts */}
       <div className="sticky top-16 sm:top-20 py-6 min-h-[80vh] flex flex-col justify-center">
-        <div className="space-y-8">
+        <div className="min-w-0 space-y-8">
           {/* Editorial Keynote Header */}
           <div className="text-center space-y-3 max-w-3xl mx-auto px-4">
             <KineticText
@@ -174,7 +174,7 @@ export const KeynoteScrollStory: React.FC<KeynoteScrollStoryProps> = ({
             </div>
 
             {/* Right Column: Keynote Stage Driven by Wheel Progress */}
-            <div className="lg:col-span-7">
+            <div className="lg:col-span-7 min-w-0">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={current.id}
@@ -182,7 +182,7 @@ export const KeynoteScrollStory: React.FC<KeynoteScrollStoryProps> = ({
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: -20, scale: 0.97 }}
                   transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                  className="h-full py-6 px-6 sm:px-8 border-l-2 border-[#C73E28] border-y border-r border-[#1C1C1C]/15 flex flex-col justify-between relative overflow-hidden bg-white/50"
+                  className="h-full min-w-0 py-5 px-4 sm:py-6 sm:px-8 border-l-2 border-[#C73E28] border-y border-r border-[#1C1C1C]/15 flex flex-col justify-between relative overflow-hidden bg-white/50"
                 >
                   {/* Top Chapter Header */}
                   <div className="space-y-5 relative z-10">
@@ -205,7 +205,7 @@ export const KeynoteScrollStory: React.FC<KeynoteScrollStoryProps> = ({
 
                     {/* Main Quote Statement */}
                     <div className="space-y-2">
-                      <h3 className="font-serif-title text-2xl sm:text-4xl font-semibold text-[#1C1C1C] tracking-tight leading-tight">
+                      <h3 className="font-serif-title text-2xl sm:text-4xl font-semibold text-[#1C1C1C] tracking-tight leading-tight break-words">
                         {current.title}
                       </h3>
                       <p className="text-xs sm:text-sm text-[#1C1C1C]/80 italic leading-relaxed border-l-2 border-[#C73E28] pl-3 py-0.5 font-serif-title">
@@ -216,7 +216,7 @@ export const KeynoteScrollStory: React.FC<KeynoteScrollStoryProps> = ({
                     {/* Highlight Stat Counter Block */}
                     <div className="p-4 rounded-xl bg-[#F8F7F4] border border-[#1C1C1C]/10 flex items-center justify-between gap-4">
                       <div>
-                        <div className="text-2xl sm:text-4xl font-semibold text-[#1C1C1C] font-mono-tag tracking-tight">
+                        <div className="text-2xl sm:text-4xl font-semibold text-[#1C1C1C] font-mono-tag tracking-tight break-words">
                           {current.highlightStat}
                         </div>
                         <div className="text-xs font-semibold text-[#1C1C1C]/70">
@@ -232,9 +232,9 @@ export const KeynoteScrollStory: React.FC<KeynoteScrollStoryProps> = ({
                       </div>
                       <div className="space-y-1.5">
                         {current.detailPoints.map((point, pIdx) => (
-                          <div key={pIdx} className="flex items-center gap-2 text-xs sm:text-sm text-[#1C1C1C]/80">
+                          <div key={pIdx} className="flex items-start gap-2 text-xs sm:text-sm text-[#1C1C1C]/80">
                             <CheckCircle2 className="w-3.5 h-3.5 text-[#C73E28] shrink-0" />
-                            <span>{point}</span>
+                            <span className="min-w-0 break-words">{point}</span>
                           </div>
                         ))}
                       </div>
@@ -242,13 +242,13 @@ export const KeynoteScrollStory: React.FC<KeynoteScrollStoryProps> = ({
                   </div>
 
                   {/* Bottom Interactive CTA Action Bar */}
-                  <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-[#1C1C1C]/10 relative z-10 mt-4">
-                    <div className="flex items-center gap-2 text-xs text-[#1C1C1C]/60 font-mono-tag">
+                  <div className="pt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 border-t border-[#1C1C1C]/10 relative z-10 mt-4">
+                    <div className="flex items-start gap-2 text-xs text-[#1C1C1C]/60 font-mono-tag">
                       <Lock className="w-3.5 h-3.5 text-[#C73E28]" />
                         <span>{story.retentionAttached}</span>
                     </div>
 
-                    <div className="flex items-center gap-2.5 w-full sm:w-auto">
+                    <div className="flex items-stretch gap-2.5 w-full sm:w-auto">
                       <button
                         onClick={openApiKeyModal}
                         className="btn-editorial-primary flex-1 sm:flex-none py-2 px-3.5 text-xs flex items-center justify-center gap-1.5 cursor-pointer"

@@ -30,7 +30,7 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
   const outputTokens = monthlyTokensMillions * 0.2;
 
   return (
-    <div className="border-t border-b border-[#1C1C1C]/15 py-8 text-[#1C1C1C]">
+    <div className="min-w-0 border-t border-b border-[#1C1C1C]/15 py-8 text-[#1C1C1C]">
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1C1C1C]/10 pb-5">
           <div className="space-y-1">
@@ -94,8 +94,8 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#1C1C1C]/15 border-t border-b border-[#1C1C1C]/15 py-6">
           <div className="py-4 md:px-4 text-center space-y-1">
             <div className="text-[#1C1C1C]/60 text-xs font-mono-tag">{t.calculator.helsteraCost}</div>
-            <div className="text-2xl font-semibold text-[#1C1C1C] font-serif-title">{selectedModel.name}</div>
-            <div className="text-[10px] text-[#1C1C1C]/50 font-mono-tag">{selectedModel.id}</div>
+            <div className="text-2xl font-semibold text-[#1C1C1C] font-serif-title break-words">{selectedModel.name}</div>
+            <div className="text-[10px] text-[#1C1C1C]/50 font-mono-tag break-all">{selectedModel.id}</div>
           </div>
 
           <div className="py-4 md:px-4 text-center space-y-1 border-l-2 border-[#C73E28] md:translate-y-2">
@@ -133,12 +133,12 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
           <div className="text-xs text-[#1C1C1C]/80 font-sans">
             {t.calculator.quotePrompt}
           </div>
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex w-full sm:w-auto flex-col sm:flex-row items-stretch gap-2 shrink-0">
             {openApiKeyModal && (
               <button
                 type="button"
                 onClick={openApiKeyModal}
-                className="btn-editorial-primary px-4 py-2 text-xs flex items-center gap-1.5 cursor-pointer"
+                className="btn-editorial-primary w-full sm:w-auto px-4 py-2 text-xs flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 {t.bento.slaCta}
               </button>
@@ -146,7 +146,7 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
             <button
               type="button"
               onClick={onNavigateToPricing}
-              className="btn-editorial-outline px-4 py-2 text-xs flex items-center gap-1.5 cursor-pointer"
+              className="btn-editorial-outline w-full sm:w-auto px-4 py-2 text-xs flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <span>{t.calculator.viewRateMatrix}</span>
               <ArrowRight className="w-3.5 h-3.5" />

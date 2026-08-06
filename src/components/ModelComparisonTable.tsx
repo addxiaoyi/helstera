@@ -72,10 +72,10 @@ export const ModelComparisonTable: React.FC<ModelComparisonTableProps> = ({
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, margin: '-60px' }}
-      className="space-y-8"
+      className="min-w-0 space-y-8"
     >
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div className="space-y-2 max-w-2xl">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 min-w-0">
+        <div className="min-w-0 space-y-2 max-w-2xl">
           <KineticText
             text={t.models.title}
             type="words"
@@ -95,8 +95,8 @@ export const ModelComparisonTable: React.FC<ModelComparisonTableProps> = ({
           />
         </div>
 
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
-          <div className="flex items-center bg-white p-1 rounded-full border border-[#1C1C1C]/15 text-xs font-mono-tag">
+          <div className="flex min-w-0 flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+          <div className="flex w-full sm:w-auto items-center justify-center bg-white p-1 rounded-full border border-[#1C1C1C]/15 text-xs font-mono-tag">
             <button
               type="button"
               onClick={() => setViewMode('bento')}
@@ -134,7 +134,7 @@ export const ModelComparisonTable: React.FC<ModelComparisonTableProps> = ({
             />
           </div>
 
-          <div className="flex items-center gap-1 overflow-x-auto bg-white p-1 rounded-full border border-[#1C1C1C]/15 text-xs font-mono-tag">
+          <div className="max-w-full flex items-center gap-1 overflow-x-auto bg-white p-1 rounded-full border border-[#1C1C1C]/15 text-xs font-mono-tag overscroll-x-contain">
             {filters.map((filter) => (
               <button
                 type="button"
@@ -165,7 +165,7 @@ export const ModelComparisonTable: React.FC<ModelComparisonTableProps> = ({
               return (
             <div
               key={model.id}
-              className={`px-4 lg:px-6 py-2 flex flex-col justify-between space-y-5 group ${
+                className={`min-w-0 px-4 lg:px-6 py-2 flex flex-col justify-between space-y-5 group ${
                 index % 3 === 1 ? 'lg:translate-y-4' : index % 3 === 2 ? 'lg:translate-y-8' : ''
               }`}
             >
@@ -184,7 +184,7 @@ export const ModelComparisonTable: React.FC<ModelComparisonTableProps> = ({
                     {model.name}
                   </h3>
                   <div className="flex items-center gap-2 font-mono-tag text-[11px] text-[#1C1C1C]/60">
-                    <code className="bg-[#1C1C1C]/5 px-1.5 py-0.5">{model.id}</code>
+                    <code className="max-w-full break-all bg-[#1C1C1C]/5 px-1.5 py-0.5">{model.id}</code>
                     <button
                       type="button"
                       onClick={() => handleCopyModelId(model.id)}
@@ -245,8 +245,8 @@ export const ModelComparisonTable: React.FC<ModelComparisonTableProps> = ({
           ))}
         </div>
       ) : (
-        <div className="border-t border-b border-[#1C1C1C]/15 overflow-x-auto bg-white/70 rounded-2xl p-2">
-          <table className="w-full text-left border-collapse">
+        <div className="max-w-full border-t border-b border-[#1C1C1C]/15 overflow-x-auto overscroll-x-contain bg-white/70 rounded-2xl p-2">
+          <table className="min-w-[720px] w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-[#1C1C1C]/15 font-mono-tag text-[11px] text-[#1C1C1C]/60 uppercase tracking-wider">
                 <th className="py-3 px-4 font-normal">{t.models.title} & ID</th>

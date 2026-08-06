@@ -56,19 +56,19 @@ export const Navbar: React.FC<NavbarProps> = ({
           : 'bg-[#F8F7F4]/80 backdrop-blur-sm border-b border-[#1C1C1C]/10'
       } text-[#1C1C1C]`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-18 flex items-center justify-between gap-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-18 flex items-center justify-between gap-3 sm:gap-6 min-w-0">
         {/* Brand Identity */}
         <div
           onClick={() => { setCurrentView('home'); setMobileMenuOpen(false); }}
-          className="flex items-center gap-2 cursor-pointer group shrink-0"
+          className="flex min-w-0 items-center gap-2 cursor-pointer group shrink-0"
         >
-          <span className="font-serif-title text-2xl sm:text-3xl italic font-semibold text-[#1C1C1C] tracking-tight group-hover:text-[#C73E28] transition-colors">
+          <span className="font-serif-title text-2xl sm:text-3xl italic font-semibold text-[#1C1C1C] tracking-tight group-hover:text-[#C73E28] transition-colors truncate">
             Helstera
           </span>
         </div>
 
         {/* Desktop Nav Items */}
-        <nav className="hidden md:flex items-center gap-5 lg:gap-7 font-mono-tag text-[0.72rem] uppercase tracking-wider whitespace-nowrap">
+        <nav className="hidden lg:flex items-center gap-5 lg:gap-7 font-mono-tag text-[0.72rem] uppercase tracking-wider whitespace-nowrap">
           {navItems.map((item) => {
             const isActive = currentView === item.id;
             return (
@@ -93,7 +93,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </nav>
 
         {/* Right Controls */}
-        <div className="hidden sm:flex items-center gap-2.5 shrink-0 font-mono-tag text-[0.7rem]">
+        <div className="hidden lg:flex items-center gap-2.5 shrink-0 font-mono-tag text-[0.7rem]">
           {/* Language Selector */}
           <div className="w-32">
             <CustomSelect
@@ -127,8 +127,8 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Mobile Hamburger Controls */}
-        <div className="flex items-center gap-2 sm:hidden">
-          <div className="w-28">
+        <div className="flex min-w-0 items-center justify-end gap-2 lg:hidden">
+          <div className="w-28 shrink-0">
             <CustomSelect
               size="sm"
               value={language}
@@ -154,12 +154,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2, ease: 'easeInOut' }}
-            className="sm:hidden bg-[#F8F7F4] border-b border-[#1C1C1C]/20 px-4 pt-3 pb-6 space-y-4 overflow-hidden"
+            className="lg:hidden min-w-0 bg-[#F8F7F4] border-b border-[#1C1C1C]/20 px-4 pt-3 pb-6 space-y-4 overflow-hidden"
           >
-            <div className="flex items-center justify-between pb-2 border-b border-[#1C1C1C]/10">
-              <span className="text-[10px] font-mono-tag font-semibold text-[#1C1C1C]/60 flex items-center gap-1">
+            <div className="flex items-start justify-between gap-3 pb-2 border-b border-[#1C1C1C]/10">
+              <span className="min-w-0 text-[10px] font-mono-tag font-semibold text-[#1C1C1C]/60 flex items-center gap-1">
                 <Globe className="w-3 h-3 text-[#C73E28]" />
-                <span>{t.common.language} / {t.nav.currency}</span>
+                <span className="break-words">{t.common.language} / {t.nav.currency}</span>
               </span>
               <div className="flex items-center gap-2">
                 <div className="w-28">
@@ -177,33 +177,33 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 min-[360px]:grid-cols-2 gap-2">
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => { setCurrentView(item.id); setMobileMenuOpen(false); }}
-                  className={`p-3 rounded-xl text-xs font-mono-tag uppercase tracking-wider text-left transition flex items-center justify-between cursor-pointer whitespace-nowrap ${
+                  className={`min-w-0 p-3 rounded-xl text-xs font-mono-tag uppercase tracking-wider text-left transition flex items-center justify-between gap-2 cursor-pointer ${
                     currentView === item.id
                       ? 'bg-[#1C1C1C] text-[#F8F7F4] font-bold shadow-sm'
                       : 'bg-white text-[#1C1C1C] border border-[#1C1C1C]/10 hover:border-[#1C1C1C]/30'
                   }`}
                 >
-                  <span className="whitespace-nowrap truncate">{item.label}</span>
+                  <span className="min-w-0 break-words">{item.label}</span>
                   <ChevronRight className="w-3.5 h-3.5 opacity-60 shrink-0" />
                 </button>
               ))}
             </div>
 
-            <div className="pt-2 flex items-center gap-2">
+            <div className="pt-2 flex flex-col min-[360px]:flex-row items-stretch gap-2">
               <button
                 onClick={() => { openContractModal(); setMobileMenuOpen(false); }}
-                className="btn-editorial-outline flex-1 text-center justify-center py-2 text-xs"
+                className="btn-editorial-outline w-full min-w-0 flex-1 text-center justify-center py-2 text-xs"
               >
                 {t.common.requestDpa} & {t.ui.footer.serviceSchedule}
               </button>
               <button
                 onClick={() => { openApiKeyModal(); setMobileMenuOpen(false); }}
-                className="btn-editorial-primary flex-1 text-center justify-center py-2 text-xs flex items-center gap-1.5"
+                className="btn-editorial-primary w-full min-w-0 flex-1 text-center justify-center py-2 text-xs flex items-center gap-1.5"
               >
                 <Key className="w-3.5 h-3.5" />
                 <span>{t.nav.getApiKey}</span>

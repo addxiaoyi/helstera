@@ -46,7 +46,7 @@ export const HowToBuySection: React.FC<HowItWorksSectionProps> = ({
   ];
 
   return (
-    <div className="space-y-12">
+    <div className="min-w-0 space-y-12">
       {/* Direct Kinetic Section Header */}
       <div className="text-center space-y-3 max-w-3xl mx-auto">
         <KineticText
@@ -73,7 +73,7 @@ export const HowToBuySection: React.FC<HowItWorksSectionProps> = ({
         {stepsData.map((s, idx) => (
           <div
             key={idx}
-            className={`py-6 md:px-6 first:pl-0 last:pr-0 space-y-4 flex flex-col justify-between group ${
+            className={`min-w-0 py-6 md:px-6 first:pl-0 last:pr-0 space-y-4 flex flex-col justify-between group ${
               idx % 2 === 1 ? 'md:translate-y-4' : ''
             }`}
           >
@@ -103,7 +103,7 @@ export const HowToBuySection: React.FC<HowItWorksSectionProps> = ({
 
             <button
               onClick={s.onClick}
-              className="text-xs font-mono-tag font-semibold text-[#C73E28] hover:underline flex items-center gap-1 cursor-pointer pt-2"
+              className="text-xs font-mono-tag font-semibold text-[#C73E28] hover:underline flex items-start gap-1 cursor-pointer pt-2"
             >
               <span>{s.actionLabel}</span>
               <ArrowRight className="w-3.5 h-3.5" />

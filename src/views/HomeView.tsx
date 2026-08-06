@@ -80,21 +80,21 @@ export const HomeView: React.FC<HomeViewProps> = ({
   };
 
   return (
-    <div className="space-y-24 pb-28 text-[#1C1C1C] bg-[#F8F7F4] selection:bg-[#C73E28] selection:text-white relative">
+    <div className="min-w-0 overflow-x-clip space-y-24 pb-28 text-[#1C1C1C] bg-[#F8F7F4] selection:bg-[#C73E28] selection:text-white relative">
       {/* Scroll Progress Indicator for Desktop */}
       <ScrollProgressTracker />
 
       {/* 1. Hero Section (Editorial Luxury & Grid System) */}
       <section id="hero-section" className="relative pt-8 sm:pt-12 lg:pt-16 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end pb-12 border-b border-[#1C1C1C]/15">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end pb-12 border-b border-[#1C1C1C]/15 min-w-0">
 
             {/* Left Hero Content - Editorial Layout */}
             <motion.div
               variants={heroContainerVariants}
               initial="hidden"
               animate="visible"
-              className="lg:col-span-6 space-y-6"
+              className="lg:col-span-6 min-w-0 space-y-6"
             >
               {/* Serif Display Heading with Kinetic Character Depth Hierarchy */}
               <div className="space-y-4">
@@ -120,7 +120,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                   ]}
                   highlightClass="italic font-normal text-[#C73E28]"
                   as="h1"
-                  className="font-serif-title text-5xl sm:text-7xl lg:text-8xl font-semibold tracking-tight leading-[0.92] text-[#1C1C1C]"
+                  className="font-serif-title text-4xl sm:text-7xl lg:text-8xl font-semibold tracking-tight leading-[0.98] text-[#1C1C1C] break-words"
                 />
                 <KineticText
                   text={t.hero.subtitle}
@@ -134,20 +134,20 @@ export const HomeView: React.FC<HomeViewProps> = ({
               </div>
 
               {/* Editorial Stat Items Row */}
-              <motion.div variants={heroChildVariants} className="grid grid-cols-3 gap-4 py-4 border-t border-b border-[#1C1C1C]/10 my-4">
-                <div className="space-y-0.5">
+              <motion.div variants={heroChildVariants} className="grid grid-cols-1 min-[360px]:grid-cols-3 gap-3 py-4 border-t border-b border-[#1C1C1C]/10 my-4">
+                <div className="min-w-0 space-y-0.5">
                   <span className="font-mono-tag text-[0.65rem] text-[#1C1C1C]/50 block">{t.hero.statRoutes}</span>
                   <div className="font-mono-tag text-2xl font-semibold text-[#1C1C1C]">
                     <NumberTicker value={MODEL_ROUTE_COUNT} suffix={` ${t.hero.routeUnit}`} />
                   </div>
                 </div>
-                <div className="space-y-0.5">
+                <div className="min-w-0 space-y-0.5">
                   <span className="font-mono-tag text-[0.65rem] text-[#1C1C1C]/50 block">{t.hero.statRateCard}</span>
                   <div className="font-mono-tag text-2xl font-semibold text-[#1C1C1C]">
                     {t.hero.liveValue}
                   </div>
                 </div>
-                <div className="space-y-0.5">
+                <div className="min-w-0 space-y-0.5">
                   <span className="font-mono-tag text-[0.65rem] text-[#1C1C1C]/50 block">{t.hero.statTerms}</span>
                   <div className="font-mono-tag text-lg font-semibold text-[#1C1C1C] pt-0.5">
                     {t.hero.contractValue}
@@ -159,7 +159,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               <motion.div variants={heroChildVariants} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
                 <button
                   onClick={openApiKeyModal}
-                  className="btn-editorial-primary flex items-center justify-center gap-2 cursor-pointer"
+                  className="btn-editorial-primary w-full sm:w-auto flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Key className="w-3.5 h-3.5" />
                   <span>{t.hero.primaryCta}</span>
@@ -167,7 +167,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
                 <button
                   onClick={() => setIsPingModalOpen(true)}
-                  className="btn-editorial-outline flex items-center justify-center gap-2 cursor-pointer border-[#C73E28]/40 text-[#C73E28] hover:bg-[#C73E28]/10"
+                  className="btn-editorial-outline w-full sm:w-auto flex items-center justify-center gap-2 cursor-pointer border-[#C73E28]/40 text-[#C73E28] hover:bg-[#C73E28]/10"
                 >
                   <Activity className="w-3.5 h-3.5 text-[#C73E28]" />
                   <span>{t.hero.testPing}</span>
@@ -175,7 +175,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
                 <button
                   onClick={() => setCurrentView('pricing')}
-                  className="btn-editorial-outline flex items-center justify-center gap-2 cursor-pointer"
+                  className="btn-editorial-outline w-full sm:w-auto flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <span>{t.hero.modelsRates}</span>
                   <ArrowRight className="w-3.5 h-3.5 text-[#1C1C1C]/60" />
@@ -188,7 +188,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               variants={heroContainerVariants}
               initial="hidden"
               animate="visible"
-              className="lg:col-span-6"
+              className="lg:col-span-6 min-w-0"
             >
               <motion.div variants={heroChildVariants}>
                 <InteractiveRouteVisualizer openApiKeyModal={openApiKeyModal} />
@@ -215,20 +215,20 @@ export const HomeView: React.FC<HomeViewProps> = ({
               }
             }
           }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-6 py-8 border-t border-b border-[#1C1C1C]/15 divide-y lg:divide-y-0 lg:divide-x divide-[#1C1C1C]/15"
+          className="grid grid-cols-1 min-[420px]:grid-cols-2 lg:grid-cols-4 gap-6 py-8 border-t border-b border-[#1C1C1C]/15 divide-y lg:divide-y-0 lg:divide-x divide-[#1C1C1C]/15"
         >
           <motion.div
             variants={{
               hidden: { opacity: 0, y: 16 },
               visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } }
             }}
-            className="space-y-1 text-center lg:text-left lg:px-4"
+            className="min-w-0 space-y-1 text-center lg:text-left lg:px-4"
           >
             <div className="text-3xl sm:text-4xl font-semibold text-[#1C1C1C] font-mono-tag tracking-tight">
               <NumberTicker value={MODEL_ROUTE_COUNT} suffix={` ${t.hero.routeUnit}`} duration={1.2} />
             </div>
             <div className="text-xs font-semibold text-[#1C1C1C]">{t.hero.statRoutes}</div>
-            <div className="text-[10px] text-[#1C1C1C]/60 font-mono-tag">{MODEL_FAMILY_LABEL}</div>
+            <div className="text-[10px] text-[#1C1C1C]/60 font-mono-tag break-words">{MODEL_FAMILY_LABEL}</div>
           </motion.div>
 
           <motion.div
@@ -236,7 +236,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               hidden: { opacity: 0, y: 16 },
               visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } }
             }}
-            className="space-y-1 text-center lg:text-left lg:px-4 pt-4 lg:pt-0"
+            className="min-w-0 space-y-1 text-center lg:text-left lg:px-4 pt-4 lg:pt-0"
           >
             <div className="text-3xl sm:text-4xl font-semibold text-[#1C1C1C] font-mono-tag tracking-tight">
               {t.hero.liveValue}
@@ -250,13 +250,13 @@ export const HomeView: React.FC<HomeViewProps> = ({
               hidden: { opacity: 0, y: 16 },
               visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } }
             }}
-            className="space-y-1 text-center lg:text-left lg:px-4 pt-4 lg:pt-0"
+            className="min-w-0 space-y-1 text-center lg:text-left lg:px-4 pt-4 lg:pt-0"
           >
             <div className="text-3xl sm:text-4xl font-semibold text-[#C73E28] font-mono-tag tracking-tight">
               <NumberTicker value={MODEL_FAMILY_COUNT} suffix={` ${t.hero.familyUnit}`} duration={1.2} />
             </div>
             <div className="text-xs font-semibold text-[#1C1C1C]">{t.hero.familiesLabel}</div>
-            <div className="text-[10px] text-[#1C1C1C]/60 font-mono-tag">{MODEL_FAMILY_LABEL}</div>
+            <div className="text-[10px] text-[#1C1C1C]/60 font-mono-tag break-words">{MODEL_FAMILY_LABEL}</div>
           </motion.div>
 
           <motion.div
@@ -264,7 +264,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               hidden: { opacity: 0, y: 16 },
               visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } }
             }}
-            className="space-y-1 text-center lg:text-left lg:px-4 pt-4 lg:pt-0"
+            className="min-w-0 space-y-1 text-center lg:text-left lg:px-4 pt-4 lg:pt-0"
           >
             <div className="text-3xl sm:text-4xl font-semibold text-[#1C1C1C] font-mono-tag tracking-tight">{t.hero.contractValue}</div>
             <div className="text-xs font-semibold text-[#1C1C1C]">{t.hero.contractSubline}</div>
@@ -280,7 +280,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       />
 
       {/* Exaggerated Promotional Standalone Site Showcase Section */}
-      <HorizontalSlideSection direction="alternate" distance={140}>
+      <HorizontalSlideSection direction="alternate" distance={140} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ExaggeratedShowcaseSection
           openApiKeyModal={openApiKeyModal}
           openContractModal={openContractModal}
@@ -288,7 +288,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       </HorizontalSlideSection>
 
       {/* 2.5 Keynote Scroll Narrative Storytelling (Jobs Design Philosophy) */}
-      <HorizontalSlideSection direction="left" distance={120}>
+      <HorizontalSlideSection direction="left" distance={120} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div id="story-section">
           <KeynoteScrollStory
             openApiKeyModal={openApiKeyModal}
@@ -298,7 +298,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       </HorizontalSlideSection>
 
       {/* Interactive Horizontal Comparison Split View */}
-      <HorizontalSlideSection direction="right" distance={120}>
+      <HorizontalSlideSection direction="right" distance={120} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <HorizontalComparisonSlider
           openApiKeyModal={openApiKeyModal}
         />
@@ -315,7 +315,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       </ScrollRevealSection>
 
       {/* Interactive Horizontal Drag/Swipe Carousel for Use Cases */}
-      <HorizontalSlideSection direction="left" distance={140}>
+      <HorizontalSlideSection direction="left" distance={140} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <HorizontalDragCarousel
           openApiKeyModal={openApiKeyModal}
           openContractModal={openContractModal}

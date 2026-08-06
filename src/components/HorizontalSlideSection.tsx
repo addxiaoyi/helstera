@@ -32,7 +32,7 @@ export const HorizontalSlideSection: React.FC<HorizontalSlideSectionProps> = ({
   // If children is an array, we can stagger them with alternating directions
   if (Array.isArray(children)) {
     return (
-      <div className={className}>
+      <div className={`${className} min-w-0 overflow-x-clip`}>
         {children.map((child, idx) => {
           const xInitial = getInitialX(idx);
           return (
@@ -67,7 +67,7 @@ export const HorizontalSlideSection: React.FC<HorizontalSlideSectionProps> = ({
         delay,
         ease: [0.16, 1, 0.3, 1]
       }}
-      className={className}
+      className={`${className} min-w-0 overflow-x-clip`}
     >
       {children}
     </motion.div>

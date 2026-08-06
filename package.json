@@ -11,7 +11,8 @@
     "lint": "tsc --noEmit",
     "test:content": "tsx scripts/validate-content.ts",
     "test:i18n": "tsx scripts/validate-translations.ts",
-    "test:navigation": "tsx scripts/validate-navigation.ts"
+    "test:navigation": "tsx scripts/validate-navigation.ts",
+    "test:responsive": "tsx scripts/validate-responsive.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

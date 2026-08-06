@@ -101,10 +101,10 @@ export const HorizontalDragCarousel: React.FC<HorizontalDragCarouselProps> = ({
   };
 
   return (
-    <div className="space-y-8">
+    <div className="min-w-0 space-y-8">
       {/* Direct Kinetic Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
-        <div className="space-y-2 max-w-2xl">
+        <div className="min-w-0 space-y-2 max-w-2xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C73E28]/10 text-[#C73E28] text-xs font-mono-tag font-bold">
             <Sparkles className="w-3.5 h-3.5" />
             <span>{carousel.eyebrow}</span>
@@ -153,26 +153,26 @@ export const HorizontalDragCarousel: React.FC<HorizontalDragCarouselProps> = ({
       <div
         ref={carouselRef}
         onScroll={checkScroll}
-        className="flex gap-6 overflow-x-auto pb-6 pt-2 scrollbar-none snap-x snap-mandatory scroll-smooth"
+        className="min-w-0 flex gap-4 sm:gap-6 overflow-x-auto pb-6 pt-2 scrollbar-none snap-x snap-mandatory scroll-smooth overscroll-x-contain"
       >
         {useCases.map((item) => (
           <motion.div
             key={item.id}
             whileHover={{ y: -4 }}
-            className="shrink-0 w-[300px] sm:w-[380px] bg-white/80 backdrop-blur-xs border border-[#1C1C1C]/15 hover:border-[#C73E28] rounded-2xl p-6 sm:p-7 flex flex-col justify-between space-y-6 shadow-2xs hover:shadow-md transition-all snap-start group"
+            className="min-w-0 shrink-0 w-[calc(100vw-2rem)] max-w-[380px] sm:w-[380px] bg-white/80 backdrop-blur-xs border border-[#1C1C1C]/15 hover:border-[#C73E28] rounded-2xl p-5 sm:p-7 flex flex-col justify-between space-y-6 shadow-2xs hover:shadow-md transition-all snap-start group"
           >
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
+              <div className="flex min-w-0 items-start justify-between gap-3">
                 <div className="p-2.5 rounded-xl bg-[#C73E28]/10 text-[#C73E28]">
                   {item.icon}
                 </div>
-                <span className="text-[10px] font-mono-tag font-bold text-[#1C1C1C]/50 uppercase tracking-wider">
+                <span className="min-w-0 text-right text-[10px] font-mono-tag font-bold text-[#1C1C1C]/50 uppercase tracking-wider break-words">
                   {carousel.useCases[item.id].category}
                 </span>
               </div>
 
               <div className="space-y-2">
-                <h3 className="font-serif-title text-xl sm:text-2xl font-semibold text-[#1C1C1C] group-hover:text-[#C73E28] transition-colors leading-snug">
+                <h3 className="font-serif-title text-xl sm:text-2xl font-semibold text-[#1C1C1C] group-hover:text-[#C73E28] transition-colors leading-snug break-words">
                   {carousel.useCases[item.id].title}
                 </h3>
                 <p className="text-xs font-mono-tag text-[#C73E28] font-semibold">
@@ -186,7 +186,7 @@ export const HorizontalDragCarousel: React.FC<HorizontalDragCarouselProps> = ({
 
             <button
               onClick={item.id === 'legal' ? openContractModal : openApiKeyModal}
-              className="btn-editorial-outline py-2 px-3 text-xs flex items-center justify-between group-hover:border-[#C73E28] group-hover:bg-[#C73E28] group-hover:text-white transition cursor-pointer"
+              className="btn-editorial-outline w-full min-w-0 py-2 px-3 text-xs flex items-center justify-between gap-2 group-hover:border-[#C73E28] group-hover:bg-[#C73E28] group-hover:text-white transition cursor-pointer"
             >
               <span>{carousel.useCases[item.id].cta}</span>
               <ArrowRight className="w-3.5 h-3.5" />

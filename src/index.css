@@ -9,13 +9,36 @@
 }
 
 @layer base {
+  html,
+  body,
+  #root {
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: clip;
+  }
+
   body {
+    margin: 0;
     background-color: var(--bg);
     color: var(--ink);
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     selection-background-color: var(--accent);
+  }
+
+  img,
+  svg,
+  video,
+  canvas {
+    max-width: 100%;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    max-width: 100%;
   }
 
   ::selection {
@@ -76,6 +99,14 @@
   background-color: #1C1C1C;
   color: #F8F7F4;
   border-color: #1C1C1C;
+}
+
+@media (max-width: 639px) {
+  .btn-editorial-primary,
+  .btn-editorial-outline {
+    min-height: 2.75rem;
+    padding-inline: 1rem;
+  }
 }
 
 /* Paper Card & Grid Styling */

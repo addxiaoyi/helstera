@@ -36,19 +36,19 @@ export const TokenBuyModal: React.FC<TokenBuyModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg p-6 sm:p-8 text-white space-y-6 shadow-2xl relative overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-md">
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg max-w-[calc(100vw-1.5rem)] max-h-[calc(100dvh-1.5rem)] overflow-y-auto p-4 sm:p-8 text-white space-y-6 shadow-2xl relative min-w-0">
         <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
 
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-4 relative z-10">
-          <div className="flex items-center gap-2">
+        <div className="flex min-w-0 items-start justify-between gap-3 border-b border-slate-800 pb-4 relative z-10">
+          <div className="min-w-0 flex items-center gap-2">
             <div className="p-2 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-400">
               <CreditCard className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white">{copy.title}</h3>
-              <p className="text-[11px] text-slate-400">{copy.description}</p>
+              <h3 className="text-lg font-bold text-white break-words">{copy.title}</h3>
+              <p className="text-[11px] text-slate-400 break-words">{copy.description}</p>
             </div>
           </div>
 
@@ -102,7 +102,7 @@ export const TokenBuyModal: React.FC<TokenBuyModalProps> = ({
             {/* Payment Method Tabs */}
             <div className="space-y-2">
               <label className="text-xs font-semibold text-slate-400 block">{copy.paymentMethod}</label>
-              <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 min-[360px]:grid-cols-3 gap-2">
                 <button
                   onClick={() => setPaymentMethod('CARD')}
                   className={`py-2 px-3 rounded-xl text-xs font-bold transition cursor-pointer border ${
@@ -142,7 +142,7 @@ export const TokenBuyModal: React.FC<TokenBuyModalProps> = ({
                 <span>{copy.depositAmount}</span>
                 <span>{copy.onboardingTerms}</span>
               </div>
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 min-[420px]:grid-cols-4 gap-2">
                 {[50, 100, 250, 500].map((amt) => (
                   <button
                     key={amt}
@@ -161,11 +161,11 @@ export const TokenBuyModal: React.FC<TokenBuyModalProps> = ({
 
             {/* Account credit terms */}
             <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
-              <div className="flex items-center justify-between text-xs">
+              <div className="flex flex-col min-[420px]:flex-row min-[420px]:items-center justify-between gap-2 text-xs">
                 <span className="text-slate-400">{copy.currentRate}</span>
                 <span className="text-blue-400 font-mono font-extrabold text-base">{copy.liveRateNotice}</span>
               </div>
-              <div className="flex items-center justify-between text-[10px] text-slate-500">
+              <div className="flex flex-col min-[420px]:flex-row min-[420px]:items-center justify-between gap-2 text-[10px] text-slate-500">
                 <span>{copy.balanceTerms}</span>
                 <span className="text-emerald-400 font-semibold">{copy.serviceTerms}</span>
               </div>

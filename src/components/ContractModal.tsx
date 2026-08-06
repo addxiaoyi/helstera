@@ -49,13 +49,13 @@ export const ContractModal: React.FC<ContractModalProps> = ({ isOpen, onClose })
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-      <div className="bg-slate-900 border border-slate-700/80 rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
+      <div className="bg-slate-900 border border-slate-700/80 rounded-2xl max-w-2xl max-w-[calc(100vw-1.5rem)] w-full overflow-hidden shadow-2xl relative min-w-0">
         {/* Header */}
-        <div className="bg-slate-950 px-6 py-4 border-b border-slate-800 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        <div className="bg-slate-950 px-4 sm:px-6 py-4 border-b border-slate-800 flex items-center justify-between gap-3">
+          <div className="min-w-0 flex items-center gap-2">
             <ShieldCheck className="w-5 h-5 text-emerald-400" />
-            <h3 className="text-base font-bold text-white font-mono">{copy.title}</h3>
+            <h3 className="min-w-0 text-base font-bold text-white font-mono break-words">{copy.title}</h3>
           </div>
           <button
             onClick={onClose}
@@ -66,10 +66,10 @@ export const ContractModal: React.FC<ContractModalProps> = ({ isOpen, onClose })
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex border-b border-slate-800 bg-slate-950/50 px-6 pt-3">
+        <div className="flex overflow-x-auto border-b border-slate-800 bg-slate-950/50 px-4 sm:px-6 pt-3 overscroll-x-contain">
           <button
             onClick={() => setActiveTab('documents')}
-            className={`pb-3 px-4 font-mono text-xs font-semibold transition border-b-2 cursor-pointer ${
+            className={`shrink-0 pb-3 px-4 font-mono text-xs font-semibold transition border-b-2 cursor-pointer ${
               activeTab === 'documents'
                 ? 'border-cyan-400 text-cyan-400'
                 : 'border-transparent text-slate-400 hover:text-slate-200'
@@ -79,7 +79,7 @@ export const ContractModal: React.FC<ContractModalProps> = ({ isOpen, onClose })
           </button>
           <button
             onClick={() => setActiveTab('request')}
-            className={`pb-3 px-4 font-mono text-xs font-semibold transition border-b-2 cursor-pointer ${
+            className={`shrink-0 pb-3 px-4 font-mono text-xs font-semibold transition border-b-2 cursor-pointer ${
               activeTab === 'request'
                 ? 'border-cyan-400 text-cyan-400'
                 : 'border-transparent text-slate-400 hover:text-slate-200'
@@ -90,7 +90,7 @@ export const ContractModal: React.FC<ContractModalProps> = ({ isOpen, onClose })
         </div>
 
         {/* Content Body */}
-        <div className="p-6 max-h-[75vh] overflow-y-auto">
+        <div className="min-w-0 p-4 sm:p-6 max-h-[calc(100dvh-10rem)] sm:max-h-[75vh] overflow-y-auto">
           {requestNotice && (
             <div className="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-300 text-xs flex items-center gap-2 animate-fadeIn">
               <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />

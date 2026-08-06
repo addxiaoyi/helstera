@@ -60,22 +60,22 @@ res = client.chat.completions.create(
       <motion.div
         animate={{ rotateX: rotate.x, rotateY: rotate.y }}
         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-        className="relative bg-white border border-[#1C1C1C]/20 rounded-2xl p-6 shadow-xl text-[#1C1C1C] space-y-5"
+        className="relative min-w-0 bg-white border border-[#1C1C1C]/20 rounded-2xl p-4 sm:p-6 shadow-xl text-[#1C1C1C] space-y-5"
       >
-        <div className="flex items-center justify-between pb-3 border-b border-[#1C1C1C]/10 font-mono-tag">
-          <div className="flex items-center gap-2">
+        <div className="flex min-w-0 items-center justify-between gap-3 pb-3 border-b border-[#1C1C1C]/10 font-mono-tag">
+          <div className="flex min-w-0 items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#C73E28]" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#1C1C1C]">{t.routeVisualizer.gatewayTitle}</span>
+            <span className="min-w-0 text-xs font-semibold uppercase tracking-wider text-[#1C1C1C] break-words">{t.routeVisualizer.gatewayTitle}</span>
           </div>
 
-          <div className="flex items-center gap-1.5 text-[11px] text-[#1C1C1C]/60">
+          <div className="min-w-0 flex items-center gap-1.5 text-[11px] text-[#1C1C1C]/60">
             <ShieldCheck className="w-3.5 h-3.5 text-[#C73E28]" />
-            <span>{t.routeVisualizer.dataPolicyLabel}</span>
+            <span className="truncate">{t.routeVisualizer.dataPolicyLabel}</span>
           </div>
         </div>
 
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-1.5 bg-[#F8F7F4] p-1 rounded-full border border-[#1C1C1C]/10 text-xs font-mono-tag overflow-x-auto">
+        <div className="flex min-w-0 items-center justify-between gap-2">
+          <div className="min-w-0 flex-1 flex items-center gap-1.5 bg-[#F8F7F4] p-1 rounded-full border border-[#1C1C1C]/10 text-xs font-mono-tag overflow-x-auto">
             {routeOptions.map((route) => (
               <button
                 type="button"
@@ -103,7 +103,7 @@ res = client.chat.completions.create(
           </button>
         </div>
 
-        <div className="p-4 bg-[#F8F7F4] rounded-xl border border-[#1C1C1C]/10 font-mono-tag text-[12px] leading-relaxed text-[#1C1C1C] relative overflow-hidden">
+        <div className="min-w-0 max-w-full p-4 bg-[#F8F7F4] rounded-xl border border-[#1C1C1C]/10 font-mono-tag text-[12px] leading-relaxed text-[#1C1C1C] relative overflow-x-auto touch-pan-x">
           <AnimatePresence mode="wait">
             <motion.pre
               key={selectedModelId}
@@ -111,7 +111,7 @@ res = client.chat.completions.create(
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.15 }}
-              className="font-mono-tag text-xs leading-relaxed whitespace-pre"
+              className="w-max max-w-none font-mono-tag text-xs leading-relaxed whitespace-pre"
             >
               <span className="text-[#C73E28]">from</span> openai <span className="text-[#C73E28]">import</span> OpenAI{ '\n\n' }
               <span className="text-[#1C1C1C]/40 italic">{t.routeVisualizer.snippetComment}</span>{ '\n' }

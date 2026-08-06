@@ -22,10 +22,10 @@ export const HorizontalMarqueeStream: React.FC<HorizontalMarqueeStreamProps> = (
   const row2Items = [...row2Metrics, ...row2Metrics];
 
   return (
-    <div className="space-y-6 overflow-hidden py-4 border-t border-b border-[#1C1C1C]/15 bg-white/40 backdrop-blur-xs relative">
+    <div className="min-w-0 space-y-6 overflow-x-clip py-4 border-t border-b border-[#1C1C1C]/15 bg-white/40 backdrop-blur-xs relative">
       {/* Editorial Label */}
-      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between text-xs font-mono-tag text-[#1C1C1C]/70">
-        <div className="flex items-center gap-2 font-bold">
+      <div className="max-w-7xl mx-auto px-4 flex min-w-0 items-center justify-between gap-3 text-xs font-mono-tag text-[#1C1C1C]/70">
+        <div className="min-w-0 flex items-center gap-2 font-bold">
           <span className="w-2 h-2 rounded-full bg-[#C73E28] animate-pulse" />
           <span>{marquee.label}</span>
         </div>
@@ -42,7 +42,7 @@ export const HorizontalMarqueeStream: React.FC<HorizontalMarqueeStreamProps> = (
             repeat: Infinity,
           }}
           whileHover={{ animationPlayState: 'paused' }}
-          className="flex items-center gap-4 shrink-0 pr-4"
+          className="w-max flex items-center gap-4 shrink-0 pr-4"
         >
           {row1Items.map((m, idx) => (
             <div
@@ -92,7 +92,7 @@ export const HorizontalMarqueeStream: React.FC<HorizontalMarqueeStreamProps> = (
             repeat: Infinity,
           }}
           whileHover={{ animationPlayState: 'paused' }}
-          className="flex items-center gap-4 shrink-0 pr-4"
+          className="w-max flex items-center gap-4 shrink-0 pr-4"
         >
           {row2Items.map((item, idx) => (
             <div
